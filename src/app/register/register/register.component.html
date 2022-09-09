@@ -1,0 +1,273 @@
+
+
+<div class="card">
+  <div class="card-header">
+    Register!
+  </div>
+
+  <div class="card-body">
+    <form novalidate
+          (ngSubmit)="register()"
+          [formGroup]="productForm">
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="productNameId">First Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="productNameId"
+                 type="text"
+                 placeholder="First Name (required)"              
+                 formControlName="productName"
+                 [ngClass]="{'is-invalid': (productForm.get('productName')?.touched || productForm.get('productName')?.dirty) && !productForm.get('productName')?.valid }" />
+                 <span class="invalid-feedback">
+                    <span *ngIf="productForm.controls['productName'].errors?.['required']">
+                      Please enter your first name.
+                    </span>
+                    <span *ngIf="productForm.controls['productName'].errors?.['minlength']">
+                      The first name must be longer than 3 characters.
+                    </span>
+                  </span> 
+     
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="passwordId">Last Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="passwordId"
+                 type="text"
+                 placeholder="Last Name (required)"            
+                 formControlName="lastName"
+                 [ngClass]="{'is-invalid': (productForm.get('lastName')?.touched || productForm.get('lastName')?.dirty) && !productForm.get('lastName')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.controls['lastName'].errors?.['required']">
+              Please enter your last name.
+            </span>
+            <span *ngIf="productForm.controls['lastName'].errors?.['maxlength']">
+              The last name must be less than 50 characters.
+            </span>
+          </span>
+        </div>
+      </div>  
+    
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="emailId">Email</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="emailId"
+                 type="email"
+                 placeholder="Email (required)"             
+                 formControlName="email"
+                 [ngClass]="{'is-invalid':emailMessage}"/>                
+
+          <span class="invalid-feedback">
+            {{emailMessage}}
+
+          </span>
+        </div>
+      </div>     
+      
+      
+  
+  <div formGroupName="passwords">      
+    <div class="form-group row mb-2">
+      <label class="col-md-2 col-form-label"
+             for="passwordId">Password</label>
+      <div class="col-md-8">
+        <input class="form-control"
+               id="passwordId"
+               type="text"
+               placeholder="Password"            
+               formControlName="password"
+               [ngClass]="{'is-invalid':productForm.get('passwords')?.errors ||
+               ((productForm.get('passwords.password')?.touched || 
+               productForm.get('passwords.password')?.dirty) && 
+                 !productForm.get('passwords.password')?.valid) }" />
+                 <span class="invalid-feedback">
+                  <span *ngIf="productForm.get('passwords.password').errors?.['required']">
+                    Please enter your  password.
+                  </span>
+                  <span *ngIf="productForm.get('passwords.password').errors?.['minlength']">
+                    minimum 4 characters.
+                  </span>
+                </span>
+         </div>
+       </div>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-2 col-form-label"
+             for="confirmPasswordId">ConfirmPassword</label>
+       <div class="col-md-8">
+          <input class="form-control"
+               id="confirmPasswordId"
+               type="text"
+               placeholder="Confirm password"            
+               formControlName="confirmPassword"
+               [ngClass]="{'is-invalid':productForm.get('passwords')?.errors ||
+               ((productForm.get('passwords.confirmPassword')?.touched || 
+               productForm.get('passwords.confirmPassword')?.dirty) && 
+                 !productForm.get('passwords.confirmPassword')?.valid) }" />
+                 <span class="invalid-feedback">
+                  <span *ngIf="productForm.get('passwords.confirmPassword').errors?.['required']">
+                    Please confirm your  password.
+                  </span>
+                  <span *ngIf="productForm.get('passwords').errors?.['match']">
+                    The confirmation password not match.
+                  </span>                 
+                </span>             
+         </div> 
+      </div>
+  </div>
+ 
+  <div class="form-group row mb-2">
+    <div class="col-md-8">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 id="includeAddressId"
+                 type="checkbox"                    
+                 formControlName="includeAddress"> include address
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="productForm.get('includeAddress')?.value">
+    <div formArrayName="addresses"
+    *ngFor="let address of addresses.controls; let i=index">
+    <div [formGroupName]="i">   <!--Porque ahora es el elemento cero en el Array-->
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label pt-0">Address Type</label>
+        <div class="col-md-8">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                    id="addressType1Id"
+                    type="radio"
+                    value="home"                     
+                    formControlName="addressType"> Home
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                    id="addressType1Id"
+                    type="radio"
+                    value="work"                     
+                    formControlName="addressType"> Work
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                    id="addressType1Id"
+                    type="radio"
+                    value="other"                    
+                    formControlName="addressType"> Other
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+              attr.for="{{'street1Id'+i}}">Street Address 1</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                id="{{'street1Id'+i}}"
+                type="text"
+                placeholder="Street address"                  
+                formControlName="street1">
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+              attr.for="{{'street2Id'+i}}">Street Address 2</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                id="{{'street2Id'+i}}"
+                type="text"
+                placeholder="Street address (second line)"             
+                formControlName="street2">
+        </div>
+      </div>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-2 col-form-label"
+            attr.for="{{'cityId'}}+i">City, State, Zip Code</label>
+      <div class="col-md-3">
+        <input class="form-control"
+              id="{{'cityId'+i}}"
+              type="text"
+              placeholder="City"
+              
+              formControlName="city">
+      </div>
+      <div class="col-md-3">
+        <select class="form-control"
+                id="{{'stateId'+i}}"
+              
+                formControlName="state">
+          <option value=""
+                  disabled
+                  selected
+                  hidden>Select a State...</option>
+          <option value="AL">Alabama</option>
+          <option value="AK">Alaska</option>
+          <option value="AZ">Arizona</option>
+          <option value="AR">Arkansas</option>
+          <option value="CA">California</option>
+          <option value="CO">Colorado</option>
+          <option value="FL">Florida</option>
+          <option value="WI">Wisconsin</option>
+          <option value="WY">Wyoming</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input class="form-control"
+              id="{{'zipId'+i}}"
+              type="number"
+              placeholder="Zip Code"            
+              formControlName="zip">
+      </div>
+    </div>
+  </div>
+</div> 
+    <div class="form-group row mb-2">
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary"
+          type="button"
+          [disabled]="!addresses.valid"
+          (click)="addAddress()">   
+          Add another Address      
+          </button>
+        </div>
+      </div>
+
+  </div>
+      <div class="form-group row mb-2">
+        <div class="offset-md-2 col-md-4">
+          <button class="btn btn-primary mr-3"
+                  type="submit"
+                  style="width:100px"
+                  [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!productForm.valid">
+            Register
+          </button>
+        
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<br>Dirty: {{ productForm.dirty }}
+<br>Touched: {{ productForm.touched }}
+<br>Valid: {{ productForm.valid }}
+<br>Value: {{ productForm.value | json }}
+<br>Pristine: {{ productForm.pristine }}

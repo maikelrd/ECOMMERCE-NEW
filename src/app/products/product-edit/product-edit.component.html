@@ -1,0 +1,213 @@
+<div class="card">
+    <div class="card-header">
+      {{pageTitle}}
+    </div>
+  
+    <div class="card-body">
+      <form novalidate
+            (ngSubmit)="saveProduct()"
+            [formGroup]="productForm">
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="productNameId">Product Name</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="productNameId"
+                   type="text"
+                   placeholder="Name (required)"
+                   formControlName="ProductName"
+                   [ngClass]="{'is-invalid': (productForm.get('ProductName')?.touched || productForm.get('ProductName')?.dirty) && !productForm.get('ProductName')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['ProductName'].errors?.['required']">
+                        Please enter product name.
+                      </span>
+                      <span *ngIf="productForm.controls['ProductName'].errors?.['minlength']">
+                        The product name must be longer than 3 characters.
+                      </span>
+                    </span> 
+          </div>
+        </div>
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="ProductCodeId">Product Code</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="ProductCodeId"
+                   type="text"
+                   placeholder="Code (required)"
+                   formControlName="ProductCode"
+                   [ngClass]="{'is-invalid': (productForm.get('ProductCode')?.touched || productForm.get('ProductCode')?.dirty) && !productForm.get('ProductCode')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['ProductCode'].errors?.['required']">
+                        Please enter product Code.
+                      </span>                
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="ReleaseDateId">Release Date</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="ReleaseDateId"
+                   type="text"
+                   placeholder="Release Date"
+                   formControlName="ReleaseDate"
+                   [ngClass]="{'is-invalid': (productForm.get('ReleaseDate')?.touched || productForm.get('ReleaseDate')?.dirty) && !productForm.get('ReleaseDate')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['ReleaseDate'].errors?.['required']">
+                        Please enter product release date.
+                      </span>                
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="CategoryIdId">CategoryId</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="CategoryIdId"
+                   type="text"
+                   placeholder="CategoryId"
+                   formControlName="CategoryId"
+                   [ngClass]="{'is-invalid': (productForm.get('CategoryId')?.touched || productForm.get('CategoryId')?.dirty) && !productForm.get('CategoryId')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['CategoryId'].errors?.['required']">
+                        Please enter product CategoryId.
+                      </span>                
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="UnitPriceId">Unit Price</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="UnitPriceId"
+                   type="text"
+                   placeholder="Unit Price"
+                   formControlName="UnitPrice"
+                   [ngClass]="{'is-invalid': (productForm.get('UnitPrice')?.touched || productForm.get('UnitPrice')?.dirty) && !productForm.get('UnitPrice')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['UnitPrice'].errors?.['required']">
+                        Please enter product Unit Price.
+                      </span>                
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="StockQtyId">StockQty</label>  
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="StockQtyId"
+                   type="text"
+                   placeholder="StockQty"
+                   formControlName="StockQty"
+                   [ngClass]="{'is-invalid': (productForm.get('StockQty')?.touched || productForm.get('StockQty')?.dirty) && !productForm.get('StockQty')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['StockQty'].errors?.['required']">
+                        Please enter the product stockqty.
+                      </span>                     
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="DescriptionId">Description</label>  
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="DescriptionId"
+                   type="text"
+                   placeholder="Description"
+                   formControlName="Description"
+                   [ngClass]="{'is-invalid': (productForm.get('Description')?.touched || productForm.get('Description')?.dirty) && !productForm.get('Description')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['Description'].errors?.['required']">
+                        Please enter the product Description.
+                      </span>                
+                    </span> 
+          </div>
+        </div>
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="StarRatingId">Star Rating (1-5)</label>  
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="StarRatingId"
+                   type="text"
+                   placeholder="Rating (1-5)"
+                   formControlName="StarRating"
+                   [ngClass]="{'is-invalid': (productForm.get('StarRating')?.touched || productForm.get('StarRating')?.dirty) && !productForm.get('StarRating')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['StarRating'].errors?.['required']">
+                        Please enter the product start Rating.
+                      </span>
+                      <span *ngIf="productForm.controls['StarRating'].errors?.['range']">
+                        The star rating must be between 1 to 5
+                      </span>
+                    </span> 
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="ImageUrlId">ImageUrl</label>  
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="ImageUrlId"
+                   type="text"
+                   placeholder="ImageUrl"
+                   formControlName="ImageUrl"
+                   [ngClass]="{'is-invalid': (productForm.get('ImageUrl')?.touched || productForm.get('ImageUrl')?.dirty) && !productForm.get('ImageUrl')?.valid }" />
+                   <span class="invalid-feedback">
+                      <span *ngIf="productForm.controls['ImageUrl'].errors?.['required']">
+                        Please enter the product ImageUrl.
+                      </span>                      
+                    </span> 
+          </div>
+        </div>
+  
+       
+        
+  
+        <div class="form-group row mb-2">
+          <div class="offset-md-2 col-md-4">
+            <button class="btn btn-primary mr-3"
+                    style="width:80px;"
+                    type="submit"
+                    [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                    [disabled]="!productForm.valid">
+              Save
+            </button>
+            <button class="btn btn-outline-secondary mr-3"
+                    style="width:80px;"
+                    type="button"
+                    title="Cancel your edits"
+                    [routerLink]="['/products']">
+              Cancel
+            </button>
+            <button class="btn btn-outline-warning"
+                    style="width:80px"
+                    type="button"
+                    title="Delete this product"
+                    (click)="deleteProduct()">
+              Delete
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  
+    <div class="alert alert-danger"
+         *ngIf="errorMessage">{{errorMessage}}
+    </div>
+  </div>

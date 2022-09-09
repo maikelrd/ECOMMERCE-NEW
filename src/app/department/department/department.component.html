@@ -1,0 +1,18 @@
+<h1>Probando</h1>
+<div class="row">
+    <div *ngFor="let department of departments">           
+            <ul>
+                <li>DepartmentName: {{department.DepartmentName}}</li>
+                <li>DepartmentId:  {{department.DepartmentId}}</li>                
+            </ul>    
+            <div *ngFor="let category of department.Categories" >
+                <ul>
+                    <li>CategoryName: {{category.CategoryName}}</li>
+                    <li>CategoryId:  {{category.CategoryId}}</li>
+                    <li>CategoryDepartmentId: {{category.DepartmentId}}</li>
+                </ul>   
+
+            </div>      
+    </div>
+</div>
+

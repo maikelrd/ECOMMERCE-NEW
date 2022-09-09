@@ -1,0 +1,126 @@
+
+<div class='card'>
+    <div class='card-header'>
+      <div class="row">
+        <div class="col-sm-4 col-lg-1">
+         <a type="button" class="btn btn-dark float-end"
+         data-bs-toggle="offcanvas" data-bs-target="#AllDepartments" aria-controls="AllDepartments">
+         All
+        </a>        
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          {{pageTitle}}
+        </div>
+      </div>
+    </div>
+    <div class='card-body'>
+      <div class='row'>
+        <div class='col-md-2'>Filter by:</div>
+        <div class='col-md-4'>
+          <input type='text' 
+          [(ngModel)]="listFilter"/>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-6'>
+          <h4>Filtered by: {{listFilter}}</h4>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
+           <div class="card">   
+            <img class="card-img-top"
+            [src]="product.ImageUrl"
+            [title]="product.ProductName"
+            [style.width.px]="imageWidth"
+            [style.margin.px]="imageMargin">          
+              <div class="card-body">
+                 <div >
+                    <ul>
+                      <ol> <b>{{product.ProductName}}</b> </ol>
+                      <ol>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</ol>
+                      <ol> Description: {{product.Description}}</ol>
+                      <ol>
+                        <div>
+                          StarRating: {{product.StarRating}} 
+                           <app-star [rating]='product.StarRating'
+                          (ratingClicked)="onRatingClicked($event)"></app-star>
+                        </div>
+                        </ol>                        
+                    </ul>  
+                    <a  class="btn btn-primary" [routerLink]="['/products',product.ProductId]"> 
+                      Details
+                    </a>
+                 </div> 
+                 <div>
+                   
+                 </div>
+            </div>
+           </div>
+        </div>
+
+      </div>
+
+      <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
+                       id="AllDepartments" aria-labelledby="AllDepartmentsLabel">
+
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="AllDepartmentsLabel">All departments</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+              </button>
+          </div>  
+          <div class="offcanvas-body">
+                        
+          </div>
+      </div>
+     <!--  <div class='table-responsive' *ngIf="products.length">    
+        <table class='table'>   
+          <thead>
+            <tr>
+              <th>
+                <button class='btn btn-primary'
+                (click)="toggleImage()">
+                  {{showImage ? 'Hide':'Show'}} Image
+                </button>
+              </th>
+              <th>ProductName</th>
+              <th>ProdCode</th>
+              <th>ReleaseDate</th>             
+              <th>UnitPrice</th>
+              <th>StockQty</th>
+              <th>5 Star Rating</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts">
+                <td>
+                    <img *ngIf="showImage"
+                          [src]="product.ImageUrl"
+                          [title]="product.ProductName"
+                          [style.width.px]="imageWidth"
+                          [style.margin.px]="imageMargin">
+                </td>
+                <td><a [routerLink]="['/products',product.ProductId]"> 
+                  {{ product.ProductName }}
+                </a>
+                 </td>
+                <td>{{ product.ProductCode | lowercase }}</td>
+                <td>{{ product.ReleaseDate }}</td>                
+                <td>{{ product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td>{{ product.StockQty }}</td>
+                <td>
+                    <!-- {{product.StarRating}} -->
+                <!--   <app-star [rating]='product.StarRating'
+                  (ratingClicked)="onRatingClicked($event)">
+                  
+                </app-star>
+            </td> 
+            </tr>
+          </tbody>
+        </table>
+      </div> --> 
+  
+    </div>
+  </div>
