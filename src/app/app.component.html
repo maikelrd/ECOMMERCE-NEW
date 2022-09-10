@@ -35,7 +35,7 @@
                 </button>
           
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="nav navbar-nav mr-auto">
+                    <ul class="nav navbar-nav me-auto">
                         <li class="nav-item">
                           <a class="nav-link" routerLink="/home">Home</a>
                         </li>                   
@@ -49,9 +49,7 @@
                               <li><a class="dropdown-item" [routerLink]="['/products/0/edit']">Add Product</a></li>
                           </ul>                          
                       </li>
-                      <button class="btn btn-dark">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"> 10</i>
-                      </button>
+                     
                       <!--   <li class="nav-item dropdown justify-content-end">
                             <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -62,7 +60,8 @@
                                 <li><a class="dropdown-item" *ngIf="!securityObject!.IsAuthenticated" routerLink="/login">Login</a></li>
                             </ul>
                         </li> -->
-                       <ul class="nav navbar-nav navbar-right">
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
                        
                         <li class="nav-item">
                           <a class="nav-link" *ngIf="!securityObject!.IsAuthenticated" routerLink="/login">Sign in</a>
@@ -74,9 +73,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="">Contact</a>
                         </li>
-                       </ul>
-                      
+                        <button class="btn btn-dark">
+                          <i class="fa fa-shopping-cart" aria-hidden="true"> 10</i>
+                        </button>
                     </ul>
+                      
+                    
                 </div>
             </div>
           </nav>
