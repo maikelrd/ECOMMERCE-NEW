@@ -72,6 +72,17 @@
               </button>
           </div>  
           <div class="offcanvas-body">
+             <div *ngFor="let department of departments">
+               <h2>{{department.DepartmentName}}</h2>
+               <div *ngFor="let category of department.Categories">
+                 <ul>
+                  <li>
+                    <a class="" [routerLink]="['/category', category.CategoryId ]">{{category.CategoryName}}</a>
+                  </li>
+                 </ul>
+               </div>
+             </div>
+
                         
           </div>
       </div>

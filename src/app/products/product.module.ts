@@ -7,6 +7,8 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ConvertToSpacesPipe } from '../shared/convert-to-space.pipe';
+import { CategoryComponent } from '../category/category/category.component';
+import { DepartmentComponent } from '../department/department/department.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +24,9 @@ import { AuthGuard } from '../guards/auth.guard';
     ProductDetailsComponent,
     ConvertToSpacesPipe,
     ProductEditComponent,
+    CategoryComponent,
+    DepartmentComponent
+    
  
    
   ],
@@ -29,7 +34,9 @@ import { AuthGuard } from '../guards/auth.guard';
     RouterModule.forChild([
       {path: 'products', component:ProductListComponent},
       {path: 'products/:id', canActivate:[ProductDetailsGuard],component:ProductDetailsComponent},
-      {path: 'products/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]}
+      {path: 'products/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
+      {path:"category/:id",component:CategoryComponent},
+      {path:"department", component:DepartmentComponent},
   
     ]),
     SharedModule,

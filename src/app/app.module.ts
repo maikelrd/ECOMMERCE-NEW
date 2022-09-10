@@ -10,14 +10,13 @@ import { RegisterComponent } from './register/register/register.component';
 import { ProductModule } from './products/product.module';
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './http-interceptor/auth.interceptor';
-import { CategoryComponent } from './category/category/category.component';
-import { DepartmentComponent } from './department/department/department.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent, 
-        RegisterComponent, LoginComponent, CategoryComponent, DepartmentComponent
+        RegisterComponent, LoginComponent
   ],
   imports: [
     BrowserModule,   
@@ -25,8 +24,7 @@ import { DepartmentComponent } from './department/department/department.componen
     HttpClientModule,RouterModule.forRoot([
       
       {path:"home",component:HomeComponent},
-      {path:"category",component:CategoryComponent},
-      {path:"department", component:DepartmentComponent},
+ 
       {path:"register",component:RegisterComponent},  
       {path:"login", component:LoginComponent}, 
       {path:'',redirectTo:'HomeComponent',pathMatch:'full'},

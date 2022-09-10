@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Category } from 'src/app/category/category';
+import { CategoryService } from 'src/app/category/category.service';
+import { DepartmentService } from 'src/app/department/department.service';
+import { Department } from 'src/app/department/department/department';
 import { ProductService } from '../product.service';
 import { IProduct } from '../products';
 
@@ -30,14 +34,18 @@ export class ProductListComponent implements OnInit {
  
   filteredProducts:IProduct[]=[];
   products:IProduct[]=[]
+  departments: Department[]= [];
+  categories: Category[]= [];
 
   
 
-  constructor(private productService:ProductService) { }
+  constructor(private productService:ProductService, private categoryService: CategoryService, private departmentService: DepartmentService) { }
   //constructor() { }
 
   ngOnInit(): void {
     this.getProducts();
+    this.getDepartments();
+    this.getCategories();
   }
 
   
@@ -65,6 +73,30 @@ export class ProductListComponent implements OnInit {
       console.log(err)}
     });
   } 
+
+  getDepartments(){
+    this.departmentService.getDepartments().subscribe({
+      next: departments => {
+        this.departments = departments;
+      },
+      error : err => {
+        this.errorMessage = err,
+        console.log(err)
+      }
+    });
+  }
+
+  getCategories(){
+    this.categoryService.getCategories().subscribe({
+  next: categories =>{
+        this.categories = categories;
+      },
+    error : err => {
+      this.errorMessage = err,
+      console.log(err) }    
+    });
+  }
+
 
 
 

@@ -8,6 +8,7 @@ import { Category } from './category';
 })
 export class CategoryService {
   private categoryUrl = "https://localhost:44386/api/Categories";
+  private categoryUrlProducts = "https://localhost:44386/api/Categories";
 
   constructor(private http: HttpClient) { }
   
@@ -19,7 +20,7 @@ export class CategoryService {
   }
 
   getCategory(id : number):Observable<Category>{
-    const url = `${this.categoryUrl}/${id}`;
+    const url = `${this.categoryUrl}/${id}?includeProducts=true`;
     return this.http.get<Category>(url).pipe(
       tap(data => console.log('Category: '+ JSON.stringify(data))),
       catchError(this.handleError)

@@ -1,10 +1,56 @@
-<h1>Probando</h1>
-<div class="row">
-    <div *ngFor="let category of categories">           
-            <ul>
-                <li>Name: {{category.CategoryName}}</li>
-                <li>Id:  {{category.CategoryId}}</li>
-                <li>Department: {{category.DepartmentId}}</li>
-            </ul>           
+
+<div class='card'>
+    <div class='card-header'>
+        <div class="col-sm-4 col-lg-2">
+           Product List <b>{{category.CategoryName}}</b>
+          </div>
+    
     </div>
-</div>
+    <div class='card-body'>
+      <div class='row'>
+        <div class='col-md-2'>Filter by:</div>
+        <div class='col-md-4'>
+          <input type='text' 
+          [(ngModel)]="listFilter"/>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-6'>
+          <h4>Filtered by: {{listFilter}}</h4>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
+           <div class="card">   
+            <img class="card-img-top"
+            [src]="product.ImageUrl"
+            [title]="product.ProductName"
+            [style.width.px]="imageWidth"
+            [style.margin.px]="imageMargin">          
+              <div class="card-body">
+                 <div >
+                    <ul>
+                      <ol> <b>{{product.ProductName}}</b> </ol>
+                      <ol>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</ol>
+                      <ol> Description: {{product.Description}}</ol>
+                      <ol>
+                        <div>
+                          StarRating: {{product.StarRating}} 
+                           <app-star [rating]='product.StarRating'
+                          ></app-star>
+                        </div>
+                        </ol>                        
+                    </ul>  
+                    <a  class="btn btn-primary" [routerLink]="['/products',product.ProductId]"> 
+                      Details
+                    </a>
+                 </div> 
+                 <div>
+                   
+                 </div>
+            </div>
+           </div>
+        </div>
+
+      </div>
