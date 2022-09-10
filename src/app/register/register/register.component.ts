@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormControl,FormBuilder, Validators, AbstractControl,ValidatorFn,FormArray } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+//import { UserService } from 'src/app/services/user.service';
+//import  { UserService } from 'src/app/services/user.service';
+
+
+
+
 
  function passwordMatcher(c:AbstractControl):{[key:string]:boolean}|null{
   const passwordControl=c.get('password');
@@ -23,11 +30,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  productForm:FormGroup;
+  registerForm:FormGroup;
   emailMessage:string='';
+  errorMessage:string='';
 
   get addresses():FormArray{
-    return <FormArray>this.productForm.get('addresses');
+    return <FormArray>this.registerForm.get('addresses');
   }
 
   private validationMessages={
@@ -37,9 +45,9 @@ export class RegisterComponent implements OnInit {
 
 
 
-  constructor(private fb:FormBuilder) {  
-    this.productForm=this.fb.group({
-      productName:['',[Validators.required,Validators.minLength(3)]],
+  constructor(private fb:FormBuilder, private userService:UserService) {  
+    this.registerForm=this.fb.group({
+      firstName:['',[Validators.required,Validators.minLength(3)]],
       lastName:['',[Validators.required,Validators.maxLength(20)]],    
       email:['',[Validators.required, Validators.email]],    
       passwords:this.fb.group({
@@ -56,7 +64,7 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit(): void {
-   const emailControl=this.productForm.get('email');
+   const emailControl=this.registerForm.get('email');
    emailControl?.valueChanges.pipe(
     debounceTime(1000)
    ).subscribe(
@@ -80,7 +88,21 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    console.log(this.productForm);
+   // console.log(this.registerForm);
+    let firstName = this.registerForm.controls['firstName'].value;
+    let lastName = this.registerForm.controls['lastName'].value;  
+    let password = this.registerForm.controls['passwords'].value.password;  
+    let email = this.registerForm.controls['email'].value;  
+    this.userService.register(firstName, lastName,email, password).subscribe((data)=>
+    {
+      console.log("response", data);
+    },
+    error =>{
+      console.log("error", error.error);
+
+    });
+
+
   }
 
   setMessage(c:AbstractControl):void{

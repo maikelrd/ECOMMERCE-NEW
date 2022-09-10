@@ -20,21 +20,23 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
 
-  public register(name:string|null,email:string|null, password:string|null){
+  public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
     const body={
-      Name:name,
+      FirstName:firstName,
+      LastName: lastName,
       Email:email,
       Password:password
     }
    
    // return this.httpClient.post("https://localhost:44305/api/user/RegisterUser",body).pipe(
-    return this.http.post("https://localhost:44305/api/user/RegisterUser",body,{responseType:'text'}).pipe(
+    return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{responseType:'text'}).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object
           //NOTE: Don't create a new AppUserAuth object
           //      because that destroys all reference to object
           console.log("user registered");  
+         // this.hasChanged.next(0);
        
       },Error=>{
         console.log("Error", console.error);       

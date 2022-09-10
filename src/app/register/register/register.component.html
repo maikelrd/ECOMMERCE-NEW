@@ -8,23 +8,23 @@
   <div class="card-body">
     <form novalidate
           (ngSubmit)="register()"
-          [formGroup]="productForm">
+          [formGroup]="registerForm">
 
       <div class="form-group row mb-2">
         <label class="col-md-2 col-form-label"
-               for="productNameId">First Name</label>
+               for="firstNameId">First Name</label>
         <div class="col-md-8">
           <input class="form-control"
-                 id="productNameId"
+                 id="firstNameId"
                  type="text"
                  placeholder="First Name (required)"              
-                 formControlName="productName"
-                 [ngClass]="{'is-invalid': (productForm.get('productName')?.touched || productForm.get('productName')?.dirty) && !productForm.get('productName')?.valid }" />
+                 formControlName="firstName"
+                 [ngClass]="{'is-invalid': (registerForm.get('firstName')?.touched || registerForm.get('firstName')?.dirty) && !registerForm.get('firstName')?.valid }" />
                  <span class="invalid-feedback">
-                    <span *ngIf="productForm.controls['productName'].errors?.['required']">
+                    <span *ngIf="registerForm.controls['firstName'].errors?.['required']">
                       Please enter your first name.
                     </span>
-                    <span *ngIf="productForm.controls['productName'].errors?.['minlength']">
+                    <span *ngIf="registerForm.controls['firstName'].errors?.['minlength']">
                       The first name must be longer than 3 characters.
                     </span>
                   </span> 
@@ -41,12 +41,12 @@
                  type="text"
                  placeholder="Last Name (required)"            
                  formControlName="lastName"
-                 [ngClass]="{'is-invalid': (productForm.get('lastName')?.touched || productForm.get('lastName')?.dirty) && !productForm.get('lastName')?.valid }" />
+                 [ngClass]="{'is-invalid': (registerForm.get('lastName')?.touched || registerForm.get('lastName')?.dirty) && !registerForm.get('lastName')?.valid }" />
           <span class="invalid-feedback">
-            <span *ngIf="productForm.controls['lastName'].errors?.['required']">
+            <span *ngIf="registerForm.controls['lastName'].errors?.['required']">
               Please enter your last name.
             </span>
-            <span *ngIf="productForm.controls['lastName'].errors?.['maxlength']">
+            <span *ngIf="registerForm.controls['lastName'].errors?.['maxlength']">
               The last name must be less than 50 characters.
             </span>
           </span>
@@ -84,17 +84,17 @@
                type="text"
                placeholder="Password"            
                formControlName="password"
-               [ngClass]="{'is-invalid':productForm.get('passwords')?.errors ||
-               ((productForm.get('passwords.password')?.touched || 
-               productForm.get('passwords.password')?.dirty) && 
-                 !productForm.get('passwords.password')?.valid) }" />
+               [ngClass]="{'is-invalid':registerForm.get('passwords')?.errors ||
+               ((registerForm.get('passwords.password')?.touched || 
+               registerForm.get('passwords.password')?.dirty) && 
+                 !registerForm.get('passwords.password')?.valid) }" />
                  <span class="invalid-feedback">
-                  <span *ngIf="productForm.get('passwords.password').errors?.['required']">
+                  <span *ngIf="registerForm.get('passwords.password').errors?.['required']">
                     Please enter your  password.
                   </span>
-                  <span *ngIf="productForm.get('passwords.password').errors?.['minlength']">
+                  <span *ngIf="registerForm.get('passwords.password').errors?.['minlength']">
                     minimum 4 characters.
-                  </span>
+                  </span> 
                 </span>
          </div>
        </div>
@@ -108,15 +108,15 @@
                type="text"
                placeholder="Confirm password"            
                formControlName="confirmPassword"
-               [ngClass]="{'is-invalid':productForm.get('passwords')?.errors ||
-               ((productForm.get('passwords.confirmPassword')?.touched || 
-               productForm.get('passwords.confirmPassword')?.dirty) && 
-                 !productForm.get('passwords.confirmPassword')?.valid) }" />
+               [ngClass]="{'is-invalid':registerForm.get('passwords')?.errors ||
+               ((registerForm.get('passwords.confirmPassword')?.touched || 
+               registerForm.get('passwords.confirmPassword')?.dirty) && 
+                 !registerForm.get('passwords.confirmPassword')?.valid) }" />
                  <span class="invalid-feedback">
-                  <span *ngIf="productForm.get('passwords.confirmPassword').errors?.['required']">
+                  <span *ngIf="registerForm.get('passwords.confirmPassword').errors?.['required']">
                     Please confirm your  password.
                   </span>
-                  <span *ngIf="productForm.get('passwords').errors?.['match']">
+                  <span *ngIf="registerForm.get('passwords').errors?.['match']">
                     The confirmation password not match.
                   </span>                 
                 </span>             
@@ -137,7 +137,7 @@
     </div>
   </div>
   
-  <div *ngIf="productForm.get('includeAddress')?.value">
+  <div *ngIf="registerForm.get('includeAddress')?.value">
     <div formArrayName="addresses"
     *ngFor="let address of addresses.controls; let i=index">
     <div [formGroupName]="i">   <!--Porque ahora es el elemento cero en el Array-->
@@ -256,8 +256,8 @@
           <button class="btn btn-primary mr-3"
                   type="submit"
                   style="width:100px"
-                  [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
-                  [disabled]="!productForm.valid">
+                  [title]="registerForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!registerForm.valid">
             Register
           </button>
         
@@ -266,8 +266,8 @@
     </form>
   </div>
 </div>
-<br>Dirty: {{ productForm.dirty }}
-<br>Touched: {{ productForm.touched }}
-<br>Valid: {{ productForm.valid }}
-<br>Value: {{ productForm.value | json }}
-<br>Pristine: {{ productForm.pristine }}
+<br>Dirty: {{ registerForm.dirty }}
+<br>Touched: {{ registerForm.touched }}
+<br>Valid: {{ registerForm.valid }}
+<br>Value: {{ registerForm.value | json }}
+<br>Pristine: {{ registerForm.pristine }}

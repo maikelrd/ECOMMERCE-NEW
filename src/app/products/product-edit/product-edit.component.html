@@ -6,23 +6,23 @@
     <div class="card-body">
       <form novalidate
             (ngSubmit)="saveProduct()"
-            [formGroup]="productForm">
+            [formGroup]="registerForm">
   
         <div class="form-group row mb-2">
           <label class="col-md-2 col-form-label"
-                 for="productNameId">Product Name</label>
+                 for="firstNameId">Product Name</label>
           <div class="col-md-8">
             <input class="form-control"
-                   id="productNameId"
+                   id="firstNameId"
                    type="text"
                    placeholder="Name (required)"
-                   formControlName="ProductName"
-                   [ngClass]="{'is-invalid': (productForm.get('ProductName')?.touched || productForm.get('ProductName')?.dirty) && !productForm.get('ProductName')?.valid }" />
+                   formControlName="firstName"
+                   [ngClass]="{'is-invalid': (registerForm.get('firstName')?.touched || registerForm.get('firstName')?.dirty) && !registerForm.get('firstName')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['ProductName'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['firstName'].errors?.['required']">
                         Please enter product name.
                       </span>
-                      <span *ngIf="productForm.controls['ProductName'].errors?.['minlength']">
+                      <span *ngIf="registerForm.controls['firstName'].errors?.['minlength']">
                         The product name must be longer than 3 characters.
                       </span>
                     </span> 
@@ -38,9 +38,9 @@
                    type="text"
                    placeholder="Code (required)"
                    formControlName="ProductCode"
-                   [ngClass]="{'is-invalid': (productForm.get('ProductCode')?.touched || productForm.get('ProductCode')?.dirty) && !productForm.get('ProductCode')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('ProductCode')?.touched || registerForm.get('ProductCode')?.dirty) && !registerForm.get('ProductCode')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['ProductCode'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['ProductCode'].errors?.['required']">
                         Please enter product Code.
                       </span>                
                     </span> 
@@ -56,9 +56,9 @@
                    type="text"
                    placeholder="Release Date"
                    formControlName="ReleaseDate"
-                   [ngClass]="{'is-invalid': (productForm.get('ReleaseDate')?.touched || productForm.get('ReleaseDate')?.dirty) && !productForm.get('ReleaseDate')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('ReleaseDate')?.touched || registerForm.get('ReleaseDate')?.dirty) && !registerForm.get('ReleaseDate')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['ReleaseDate'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['ReleaseDate'].errors?.['required']">
                         Please enter product release date.
                       </span>                
                     </span> 
@@ -74,9 +74,9 @@
                    type="text"
                    placeholder="CategoryId"
                    formControlName="CategoryId"
-                   [ngClass]="{'is-invalid': (productForm.get('CategoryId')?.touched || productForm.get('CategoryId')?.dirty) && !productForm.get('CategoryId')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('CategoryId')?.touched || registerForm.get('CategoryId')?.dirty) && !registerForm.get('CategoryId')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['CategoryId'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['CategoryId'].errors?.['required']">
                         Please enter product CategoryId.
                       </span>                
                     </span> 
@@ -92,9 +92,9 @@
                    type="text"
                    placeholder="Unit Price"
                    formControlName="UnitPrice"
-                   [ngClass]="{'is-invalid': (productForm.get('UnitPrice')?.touched || productForm.get('UnitPrice')?.dirty) && !productForm.get('UnitPrice')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('UnitPrice')?.touched || registerForm.get('UnitPrice')?.dirty) && !registerForm.get('UnitPrice')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['UnitPrice'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['UnitPrice'].errors?.['required']">
                         Please enter product Unit Price.
                       </span>                
                     </span> 
@@ -110,9 +110,9 @@
                    type="text"
                    placeholder="StockQty"
                    formControlName="StockQty"
-                   [ngClass]="{'is-invalid': (productForm.get('StockQty')?.touched || productForm.get('StockQty')?.dirty) && !productForm.get('StockQty')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('StockQty')?.touched || registerForm.get('StockQty')?.dirty) && !registerForm.get('StockQty')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['StockQty'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['StockQty'].errors?.['required']">
                         Please enter the product stockqty.
                       </span>                     
                     </span> 
@@ -128,9 +128,9 @@
                    type="text"
                    placeholder="Description"
                    formControlName="Description"
-                   [ngClass]="{'is-invalid': (productForm.get('Description')?.touched || productForm.get('Description')?.dirty) && !productForm.get('Description')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('Description')?.touched || registerForm.get('Description')?.dirty) && !registerForm.get('Description')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['Description'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['Description'].errors?.['required']">
                         Please enter the product Description.
                       </span>                
                     </span> 
@@ -146,12 +146,12 @@
                    type="text"
                    placeholder="Rating (1-5)"
                    formControlName="StarRating"
-                   [ngClass]="{'is-invalid': (productForm.get('StarRating')?.touched || productForm.get('StarRating')?.dirty) && !productForm.get('StarRating')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('StarRating')?.touched || registerForm.get('StarRating')?.dirty) && !registerForm.get('StarRating')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['StarRating'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['StarRating'].errors?.['required']">
                         Please enter the product start Rating.
                       </span>
-                      <span *ngIf="productForm.controls['StarRating'].errors?.['range']">
+                      <span *ngIf="registerForm.controls['StarRating'].errors?.['range']">
                         The star rating must be between 1 to 5
                       </span>
                     </span> 
@@ -167,9 +167,9 @@
                    type="text"
                    placeholder="ImageUrl"
                    formControlName="ImageUrl"
-                   [ngClass]="{'is-invalid': (productForm.get('ImageUrl')?.touched || productForm.get('ImageUrl')?.dirty) && !productForm.get('ImageUrl')?.valid }" />
+                   [ngClass]="{'is-invalid': (registerForm.get('ImageUrl')?.touched || registerForm.get('ImageUrl')?.dirty) && !registerForm.get('ImageUrl')?.valid }" />
                    <span class="invalid-feedback">
-                      <span *ngIf="productForm.controls['ImageUrl'].errors?.['required']">
+                      <span *ngIf="registerForm.controls['ImageUrl'].errors?.['required']">
                         Please enter the product ImageUrl.
                       </span>                      
                     </span> 
@@ -184,8 +184,8 @@
             <button class="btn btn-primary mr-3"
                     style="width:80px;"
                     type="submit"
-                    [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
-                    [disabled]="!productForm.valid">
+                    [title]="registerForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                    [disabled]="!registerForm.valid">
               Save
             </button>
             <button class="btn btn-outline-secondary mr-3"

@@ -23,11 +23,11 @@ export class ProductEditComponent implements OnInit {
   pageTitle='Product Edit';
   errorMessage: string='';
 
-  productForm:FormGroup;
+  registerForm:FormGroup;
 
   product:IProduct={
     ProductId:0,
-    ProductName:'',
+    firstName:'',
     ProductCode:'',
     ReleaseDate:'',
     CategoryId:0,
@@ -44,8 +44,8 @@ export class ProductEditComponent implements OnInit {
               private router:Router,
               private productService:ProductService)
   { 
-    this.productForm=this.fb.group({
-      ProductName:['',[Validators.required,
+    this.registerForm=this.fb.group({
+      firstName:['',[Validators.required,
                     Validators.minLength(3)]],
       ProductCode:['',Validators.required],
       ReleaseDate:['',Validators.required],
@@ -83,20 +83,20 @@ export class ProductEditComponent implements OnInit {
   }
 
   displayProduct(product: IProduct): void {
-    if(this.productForm){
-      this.productForm.reset();
+    if(this.registerForm){
+      this.registerForm.reset();
     }
     this.product=product;
 
     if(this.product.ProductId===0){
       this.pageTitle='Add Product';
     } else {
-      this.pageTitle = `Edit Product: ${this.product.ProductName}`;
+      this.pageTitle = `Edit Product: ${this.product.firstName}`;
     }
 
     // Update the data on the form
-    this.productForm.patchValue({
-      ProductName: this.product.ProductName,
+    this.registerForm.patchValue({
+      firstName: this.product.firstName,
       ProductCode: this.product.ProductCode,
       ReleaseDate: this.product.ReleaseDate,
       CategoryId: this.product.CategoryId,
@@ -114,7 +114,7 @@ export class ProductEditComponent implements OnInit {
       // Don't need delete, it was never.
       this.onSaveCompleted();
     } else {
-      if (confirm(`Really delete the product: ${this.product.ProductName}`)){
+      if (confirm(`Really delete the product: ${this.product.firstName}`)){
         this.productService.deleteProduct(this.product.ProductId).subscribe({
           next:()=>this.onSaveCompleted(),
           error: err=>this.errorMessage= err
@@ -124,9 +124,9 @@ export class ProductEditComponent implements OnInit {
   }
 
   saveProduct():void {
-    if (this.productForm.valid){
-      if (this.productForm.dirty){
-        const p= {...this.product, ...this.productForm.value};
+    if (this.registerForm.valid){
+      if (this.registerForm.dirty){
+        const p= {...this.product, ...this.registerForm.value};
 
         if(p.ProdId===0){
           this.productService.createProduct(p).subscribe({
@@ -150,7 +150,7 @@ export class ProductEditComponent implements OnInit {
 
   onSaveCompleted(): void {
     // Reset the form to clear the flags
-    this.productForm.reset();
+    this.registerForm.reset();
     this.router.navigate(['/products']);
   }
 
