@@ -10,7 +10,7 @@ export interface IProduct{
     StarRating: number;
     imageUrl:string; */
     ProductId:number;
-    firstName:string;
+    ProductName:string;
     ProductCode:string;
     ReleaseDate:string;
     CategoryId:number;

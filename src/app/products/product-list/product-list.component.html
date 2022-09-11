@@ -32,27 +32,26 @@
            <div class="card">   
             <img class="card-img-top"
             [src]="product.ImageUrl"
-            [title]="product.firstName"
+            [title]="product.ProductName"
             [style.width.px]="imageWidth"
             [style.margin.px]="imageMargin">          
-              <div class="card-body">
-                 <div >
-                    <ul>
-                      <ol> <b>{{product.firstName}}</b> </ol>
-                      <ol>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</ol>
-                      <ol> Description: {{product.Description}}</ol>
-                      <ol>
-                        <div>
+              <div class="card-body">                                
+                    <div> <b>{{product.ProductName}}</b> </div>
+                    <div>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
+                    <div> Description: {{product.Description}}</div>
+                    <div class="row">
+                         <div class="col-md-6 col-lg-4">
                           StarRating: {{product.StarRating}} 
-                           <app-star [rating]='product.StarRating'
+                         </div> 
+                         <div class="col-md-6 col-lg-4">
+                          <app-star [rating]='product.StarRating'
                           (ratingClicked)="onRatingClicked($event)"></app-star>
-                        </div>
-                        </ol>                        
-                    </ul>  
-                    <a  class="btn btn-primary" [routerLink]="['/products',product.ProductId]"> 
+                          </div> 
+                    </div>
+                    <a  class="btn btn-primary mt-2" [routerLink]="['/products',product.ProductId]"> 
                       Details
                     </a>
-                 </div> 
+               
                  <div>
                    
                  </div>
@@ -96,7 +95,7 @@
                   {{showImage ? 'Hide':'Show'}} Image
                 </button>
               </th>
-              <th>firstName</th>
+              <th>ProductName</th>
               <th>ProdCode</th>
               <th>ReleaseDate</th>             
               <th>UnitPrice</th>
@@ -109,12 +108,12 @@
                 <td>
                     <img *ngIf="showImage"
                           [src]="product.ImageUrl"
-                          [title]="product.firstName"
+                          [title]="product.ProductName"
                           [style.width.px]="imageWidth"
                           [style.margin.px]="imageMargin">
                 </td>
                 <td><a [routerLink]="['/products',product.ProductId]"> 
-                  {{ product.firstName }}
+                  {{ product.ProductName }}
                 </a>
                  </td>
                 <td>{{ product.ProductCode | lowercase }}</td>

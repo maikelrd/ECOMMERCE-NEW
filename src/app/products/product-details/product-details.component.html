@@ -1,37 +1,45 @@
 <div class="card">
     <div class="card-header"
          *ngIf="product">
-      {{pageTitle + ": " + product.firstName}}
+      {{pageTitle + ": " + product.ProductName}}
     </div>
   
     <div class="card-body"
          *ngIf="product">
   
       <div class="row">
+        <div class="col-md-4 col-lg-4"
+        *ngIf="product.ImageUrl">
+     <img class="center-block img-responsive"
+          [style.height.px]="250"
+          [style.margin.px]="2"
+          [src]="product.ImageUrl"
+          [title]="product.ProductName">
+   </div> 
   
-        <div class="col-md-8">
+        <div class="col-md-6 col-lg-4">
           <div class="row">
             <div class="col-md-3">Name:</div>
-            <div class="col-md-6">{{product.firstName}}</div>
+            <div class="col-md-6"><b>{{product.ProductName}}</b></div>
           </div>
-          <div class="row">
+   <!--        <div class="row">
             <div class="col-md-3">Code:</div>
             <div class="col-md-6">{{product.ProductCode}}</div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-md-3">Description:</div>
-            <div class="col-md-6">{{product.Description}}</div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">Availability:</div>
-            <div class="col-md-6">{{product.StockQty}}</div>
+            <div class="col-md-6"><b>{{product.Description}}</b></div>
           </div>
           <div class="row">
             <div class="col-md-3">Price:</div>
-            <div class="col-md-6">{{product.UnitPrice|currency:"USD":"symbol"}}</div>
+            <div class="col-md-6"><b>{{product.UnitPrice|currency:"USD":"symbol"}}</b></div>
           </div>
           <div class="row">
-            <div class="col-md-3">5 Star Rating:</div>
+            <div class="col-md-3">Availability:</div>
+            <div class="col-md-6"><b>{{product.StockQty}}</b></div>
+          </div>        
+          <div class="row">
+            <div class="col-md-3 ">5 Star Rating:</div>
             <div class="col-md-6">
               <app-star [rating]="product.StarRating">
               </app-star>
@@ -43,14 +51,7 @@
           </div>
         </div> -->
   
-        <div class="col-md-4"
-             *ngIf="product.ImageUrl">
-          <img class="center-block img-responsive"
-               [style.height.px]="150"
-               [style.margin.px]="2"
-               [src]="product.ImageUrl"
-               [title]="product.firstName">
-        </div> 
+   
       </div>
   
       <div class="row mt-4">
@@ -67,10 +68,14 @@
           </button> 
         </div>
       </div>
+      <div class="col-md-8">
+         <a type="button" class="btn btn-success mt-4" routerLink="/shopping-cart">Add to cart</a>
+      </div>
   
     </div>
   
     <div class="alert alert-danger"
          *ngIf="errorMessage">{{errorMessage}}
     </div>
+
   </div>

@@ -1,5 +1,5 @@
 export class User{
-    public firstName:string="";
+    public ProductName:string="";
     public lastName:string="";   
     public email:string="";     
     public isAuthenticated=false;

@@ -10,13 +10,14 @@ import { RegisterComponent } from './register/register/register.component';
 import { ProductModule } from './products/product.module';
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './http-interceptor/auth.interceptor';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart/shopping-cart.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent, 
-        RegisterComponent, LoginComponent
+        RegisterComponent, LoginComponent, ShoppingCartComponent
   ],
   imports: [
     BrowserModule,   
