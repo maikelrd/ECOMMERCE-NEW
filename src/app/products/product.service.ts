@@ -81,7 +81,7 @@ updateProduct(product: IProduct): Observable<IProduct> {
     //Return an initialized object
     return {
     ProductId:0,
-    ProductName:'',
+    firstName:'',
     ProductCode:'',
     ReleaseDate:'',
     CategoryId:0,

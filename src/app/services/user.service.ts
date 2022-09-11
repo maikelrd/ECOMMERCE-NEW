@@ -20,9 +20,9 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
 
-  public register(ProductName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
+  public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
     const body={
-      ProductName:ProductName,
+      firstName:firstName,
       LastName: lastName,
       Email:email,
       Password:password

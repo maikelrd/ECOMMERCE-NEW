@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.service';
 import { FormGroup, FormControl,FormBuilder, Validators, AbstractControl,ValidatorFn,FormArray } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UserBase } from 'src/app/Models/user-base';
+import {User} from 'src/app/Models/user'
 //import { UserService } from 'src/app/services/user.service';
 //import  { UserService } from 'src/app/services/user.service';
 
@@ -33,6 +35,9 @@ export class RegisterComponent implements OnInit {
   registerForm:FormGroup;
   emailMessage:string='';
   errorMessage:string='';
+  //userRegister:User;
+  userRegister: User;
+  
 
   get addresses():FormArray{
     return <FormArray>this.registerForm.get('addresses');
@@ -45,9 +50,9 @@ export class RegisterComponent implements OnInit {
 
 
 
-  constructor(private fb:FormBuilder, private userService:UserService) {  
+  constructor(private fb:FormBuilder, private userService:UserService, private toastr: ToastrService) {  
     this.registerForm=this.fb.group({
-      ProductName:['',[Validators.required,Validators.minLength(3)]],
+      firstName:['',[Validators.required,Validators.minLength(3)]],
       lastName:['',[Validators.required,Validators.maxLength(20)]],    
       email:['',[Validators.required, Validators.email]],    
       passwords:this.fb.group({
@@ -89,17 +94,22 @@ export class RegisterComponent implements OnInit {
 
   register(){
    // console.log(this.registerForm);
-    let ProductName = this.registerForm.controls['ProductName'].value;
+    let firstName = this.registerForm.controls['firstName'].value;
     let lastName = this.registerForm.controls['lastName'].value;  
     let password = this.registerForm.controls['passwords'].value.password;  
     let email = this.registerForm.controls['email'].value;  
-    this.userService.register(ProductName, lastName,email, password).subscribe((data)=>
+    this.userService.register(firstName, lastName,email, password).subscribe((data)=>
     {
       console.log("response", data);
+      this.userRegister=JSON.parse(data);
+      let temp=this.userRegister.FirstName+ " "+ this.userRegister.LastName;
+      this.toastr.success(temp, "User Register");
+      this.registerForm.reset();
     },
     error =>{
       console.log("error", error.error);
-
+      this.errorMessage= error.error;
+      this.toastr.error(error.error, "User Register");
     });
 
 

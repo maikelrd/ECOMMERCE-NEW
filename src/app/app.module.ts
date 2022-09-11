@@ -11,6 +11,7 @@ import { ProductModule } from './products/product.module';
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './http-interceptor/auth.interceptor';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart/shopping-cart.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -22,12 +23,14 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart/shopping-ca
   imports: [
     BrowserModule,   
         ReactiveFormsModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
     HttpClientModule,RouterModule.forRoot([
       
-      {path:"home",component:HomeComponent},
- 
+      {path:"home",component:HomeComponent}, 
       {path:"register",component:RegisterComponent},  
       {path:"login", component:LoginComponent}, 
+      {path:"shopping-cart", component: ShoppingCartComponent},
       {path:'',redirectTo:'HomeComponent',pathMatch:'full'},
       {path:'**',redirectTo:'HomeComponent',pathMatch:'full'}
     ]),  
