@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { UserService } from 'src/app/services/user.service';
+import { ToastrModule, ToastrService } from 'ngx-toastr';   
 import { UserService } from 'src/app/services/user.service';
 import { UserAuthBase } from 'src/app/Models/user-auth-base';
 
@@ -15,8 +16,10 @@ export class LoginComponent implements OnInit {
   errorString: string="";
   returnUrl: string|undefined;
   loginForm: FormGroup;
+  showPassword: boolean = false;
 
-  constructor(private fb:FormBuilder, private userService:UserService, private router:Router, private route:ActivatedRoute) {
+  constructor(private fb:FormBuilder, private userService:UserService, private router:Router, private route:ActivatedRoute,
+                                     private toastr: ToastrService) {
      this.loginForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['',Validators.required]
@@ -25,6 +28,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl')!;
+  }
+
+
+  showHidePassword(){
+    this.showPassword = !this.showPassword;
   }
 
   login(){
@@ -46,6 +54,7 @@ export class LoginComponent implements OnInit {
     },
     Error =>{
       console.log("Error", console.error);
+      this.toastr.error(Error.error, "User login");
       this.errorString=Error.error;
     })
   }

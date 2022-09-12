@@ -35,8 +35,8 @@ export class RegisterComponent implements OnInit {
   registerForm:FormGroup;
   emailMessage:string='';
   errorMessage:string='';
-  //userRegister:User;
-  userRegister: User;
+ 
+  userRegister= new User;
   
 
   get addresses():FormArray{
@@ -102,7 +102,7 @@ export class RegisterComponent implements OnInit {
     {
       console.log("response", data);
       this.userRegister=JSON.parse(data);
-      let temp=this.userRegister.FirstName+ " "+ this.userRegister.LastName;
+      let temp=this.userRegister.ProductName+ " "+ this.userRegister.LastName;
       this.toastr.success(temp, "User Register");
       this.registerForm.reset();
     },

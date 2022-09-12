@@ -22,7 +22,7 @@ export class UserService {
 
   public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
     const body={
-      firstName:firstName,
+      FirstName:firstName,
       LastName: lastName,
       Email:email,
       Password:password

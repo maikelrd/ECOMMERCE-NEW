@@ -27,7 +27,7 @@ export class ProductEditComponent implements OnInit {
 
   product:IProduct={
     ProductId:0,
-    firstName:'',
+    ProductName:'',
     ProductCode:'',
     ReleaseDate:'',
     CategoryId:0,
@@ -45,7 +45,7 @@ export class ProductEditComponent implements OnInit {
               private productService:ProductService)
   { 
     this.registerForm=this.fb.group({
-      firstName:['',[Validators.required,
+      ProductName:['',[Validators.required,
                     Validators.minLength(3)]],
       ProductCode:['',Validators.required],
       ReleaseDate:['',Validators.required],
@@ -91,12 +91,12 @@ export class ProductEditComponent implements OnInit {
     if(this.product.ProductId===0){
       this.pageTitle='Add Product';
     } else {
-      this.pageTitle = `Edit Product: ${this.product.firstName}`;
+      this.pageTitle = `Edit Product: ${this.product.ProductName}`;
     }
 
     // Update the data on the form
     this.registerForm.patchValue({
-      firstName: this.product.firstName,
+      ProductName: this.product.ProductName,
       ProductCode: this.product.ProductCode,
       ReleaseDate: this.product.ReleaseDate,
       CategoryId: this.product.CategoryId,
@@ -114,7 +114,7 @@ export class ProductEditComponent implements OnInit {
       // Don't need delete, it was never.
       this.onSaveCompleted();
     } else {
-      if (confirm(`Really delete the product: ${this.product.firstName}`)){
+      if (confirm(`Really delete the product: ${this.product.ProductName}`)){
         this.productService.deleteProduct(this.product.ProductId).subscribe({
           next:()=>this.onSaveCompleted(),
           error: err=>this.errorMessage= err

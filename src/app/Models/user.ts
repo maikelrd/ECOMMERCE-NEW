@@ -2,14 +2,14 @@ export class User{
     public constructor(init?: Partial<User>){
         Object.assign(this, init);
     }
-   FirstName:string="";
+   ProductName:string="";
      LastName:string="";   
      Email:string="";     
      IsAuthenticated:boolean=false;
 }
 /* export interface User{
     
-   FirstName:string;
+   ProductName:string;
      LastName:string;   
      Email:string;     
      IsAuthenticated:boolean;
@@ -18,7 +18,7 @@ export class User{
     public constructor(init?: Partial<User>){
         Object.assign(this, init);
     }
-   FirstName:string="";
+   ProductName:string="";
      LastName:string="";   
      Email:string="";     
      IsAuthenticated:boolean=false;
@@ -27,7 +27,7 @@ export class User{
  */
    /*  init():void{
 
-       this.FirstName="";
+       this.ProductName="";
         this.LastName="";  
        this.Email="";     
         this.IsAuthenticated=false; 
