@@ -1,4 +1,43 @@
 <div class="container">
+  <div class="row justify-content-center">
+      <div class="col-6">
+         <div class="card">
+             <form [formGroup]="loginForm" (ngSubmit)="login()">
+                 <div class="card-body">
+                     <h5 class="card-title text-center">Login</h5>
+                     <div class="mb-3 row">
+                         <label for="staticEmail" class="col-sm-2 col-lg-2 col-form-label">Email</label>
+                         <div class="col-sm-9 col-lg-9">
+                           <input type="text"  formControlName="email" class="form-control" id="staticEmail" value="">
+                         </div>
+                       </div>
+                       <div class="mb-3 row">
+                         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                         <div class="col-sm-9">
+                         
+                           <input [type]=" showPassword ? 'text' : 'password'" formControlName="password" class="form-control" id="inputPassword">
+                        
+                          </div>
+                          <div class="col-sm-1 ">
+                            <span>
+                              <i class="fa" [ngClass]="{'fa-eye-slash':!showPassword, 'fa-eye':showPassword}" (click)="showHidePassword()"> </i>
+                             </span>
+                          </div>
+                       
+                       </div>
+                     
+                 </div>    
+                 <button type="submit" class="btn btn-primary ms-4" [disabled]="!loginForm.valid">Sign in</button>          
+             </form> 
+             <a class="btn btn-success mt-4" routerLink="/register">Create an account</a>
+                        
+      </div>
+  </div>
+</div>
+</div> 
+
+
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
            <div class="card">
@@ -7,14 +46,14 @@
                        <h5 class="card-title text-center">Login</h5>
                        <div class="mb-3 row">
                            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                           <div class="col-sm-10">
+                           <div class="col-sm-9">
                              <input type="text"  formControlName="email" class="form-control" id="staticEmail" value="">
                            </div>
                          </div>
                          <div class="mb-3 row">
                            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                            <div class="col-sm-9">
-                             <!-- <input type="password" formControlName="password" class="form-control" id="inputPassword"> -->
+                           
                              <input [type]=" showPassword ? 'text' : 'password'" formControlName="password" class="form-control" id="inputPassword">
                           
                             </div>
@@ -25,9 +64,7 @@
                             </div>
                          
                          </div>
-                        <!--  <div class="row">              
-                          <label class="text-danger text-center">{{errorString }}</label>                     
-                        </div>   -->
+                       
                    </div>    
                    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Sign in</button>          
                </form> 
@@ -37,4 +74,4 @@
     </div>
 </div>
 </div> 
-
+ -->

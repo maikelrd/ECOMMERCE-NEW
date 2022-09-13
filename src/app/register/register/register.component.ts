@@ -37,6 +37,7 @@ export class RegisterComponent implements OnInit {
   errorMessage:string='';
  
   userRegister= new User;
+  showPassword: boolean = false;
   
 
   get addresses():FormArray{
@@ -74,7 +75,10 @@ export class RegisterComponent implements OnInit {
     debounceTime(1000)
    ).subscribe(
     value=>this.setMessage(emailControl));  
+  }
 
+  showHidePassword(){
+    this.showPassword = !this.showPassword;
   }
 
   addAddress():void{
