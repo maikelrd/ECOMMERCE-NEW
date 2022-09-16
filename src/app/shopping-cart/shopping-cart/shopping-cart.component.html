@@ -11,21 +11,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let product of productss">
+            <tr *ngFor="let shoppingCartItem of shoppingCartItems">
                 <td class="col sm-8 col-md-6">
                     <div class="media">
                         <img class="me-3 thumbnail img-fluid" width="75"
-                        [src]="product.ImageUrl">
+                        [src]="shoppingCartItem.Product.ImageUrl">
                     </div>
                     <div class="media-body">
-                        <h5 class="mt-0 media-heading text-primary">{{product.Description}}</h5>
+                        <h5 class="mt-0 media-heading text-primary">{{shoppingCartItem.Product.Description}}</h5>
                     </div>
                 </td>
                 <td class="col-sm-1 col-md-1" style="text-align: center">
-                    <input type="number" class="form-control" value="2">
+                    <input type="number" class="form-control" value={{shoppingCartItem.Amount}}>
                 </td>
-                <td clas="col-sm-1 col-md-1 text-center"><strong>{{product.UnitPrice}}</strong></td>
-                <td clas="col-sm-1 col-md-1 text-center"><strong>{{product.Total}}</strong></td>
+                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.UnitPrice}}</strong></td>
+                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.Total}}</strong></td>
                 <td class="col-sm-1 col-md-1">
                     <button type="button" class="btn btn-danger" (click)="deleteProduct()">X</button>
                 </td>

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵɵsetComponentScope } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription,  } from 'rxjs';
 import { IProduct } from 'src/app/products/products';
 import { ProductService } from 'src/app/products/product.service';
 import { ShoppingCartService } from '../shopping-cart.service';
+import { IShoppingCart } from './shopping-cart';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -11,36 +12,11 @@ import { ShoppingCartService } from '../shopping-cart.service';
   styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
-   productss: IProduct[] = [{
-    ProductId:1,
-    ProductName:'tv',
-    ProductCode:'tv 32 "',
-    ReleaseDate:'',
-    CategoryId:0,
-    UnitPrice:4,
-    StockQty:2,
-    Description: 'Tv 32 inches',
-    StarRating: 5,
-    ImageUrl:'/assets/images/711qRHKMRTL._AC_UY218_.jpg',
-    Total:340
-  },
-  {
-    ProductId:1,
-    ProductName:'tv',
-    ProductCode:'tv 32 "',
-    ReleaseDate:'',
-    CategoryId:0,
-    UnitPrice:4,
-    StockQty:2,
-    Description: 'Tv 32 inches',
-    StarRating: 5,
-    ImageUrl:'/assets/images/711qRHKMRTL._AC_UY218_.jpg',
-    Total:340
-  }];  
+   products: IProduct[] = [];  
   //products: IProduct[] = [];
 
   product:IProduct | undefined;
-
+  shoppingCartItems: IShoppingCart[]=[];
   errorMessage: string ='';
   userEmail: string='';
 
@@ -59,9 +35,7 @@ export class ShoppingCartComponent implements OnInit {
     if(param){
       const id = +param;   
       this.getProduct(id);
-      /* if(this.product){
-        this.createCartItem(this.product, this.userEmail);
-      } */
+      this.getShoppingCarts();
       
     }
   }
@@ -74,6 +48,18 @@ export class ShoppingCartComponent implements OnInit {
       }   ,                   
       error: err => this.errorMessage= err
     });
+  }
+
+  getShoppingCarts(){
+    this.shoppingCartService.getShoppingCarts(this.userEmail).subscribe({
+      next: shoppingCartItems => {
+        this.shoppingCartItems = shoppingCartItems;
+      },
+      error: err => {
+        this.errorMessage = err;
+        console.log(err)
+      }
+    })
   }
 
   createCartItem(product: IProduct, email: string){

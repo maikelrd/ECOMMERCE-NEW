@@ -26,6 +26,19 @@ export class ShoppingCartService {
 
   }
 
+  getShoppingCarts(userEmail: string): Observable<IShoppingCart[]>{
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
+   // userEmail.replace('@','%40');
+    const url=`${this.cartUrl}/email?email=${userEmail}`;
+    //"https://localhost:44386/api/ShoppingCart/email?email=maikelrd%40gmail.com"
+    return this.http.get<IShoppingCart[]>(url)
+         .pipe(
+          tap(data => console.log('shoppingCarts' +JSON.stringify(data))),
+          catchError(this.handleError) 
+         );
+  }
+
+
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
     //instead of just logging it to the console
