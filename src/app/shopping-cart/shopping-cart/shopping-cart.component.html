@@ -1,1 +1,77 @@
-<p>shopping-cart works!</p>
+<h2>Your shopping Cart</h2>
+<div class="table-responsive col-sm-6 col-lg-6">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th class="">Price</th>
+                <th class="ernte">Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of productss">
+                <td class="col sm-8 col-md-6">
+                    <div class="media">
+                        <img class="me-3 thumbnail img-fluid" width="75"
+                        [src]="product.ImageUrl">
+                    </div>
+                    <div class="media-body">
+                        <h5 class="mt-0 media-heading text-primary">{{product.Description}}</h5>
+                    </div>
+                </td>
+                <td class="col-sm-1 col-md-1" style="text-align: center">
+                    <input type="number" class="form-control" value="2">
+                </td>
+                <td clas="col-sm-1 col-md-1 text-center"><strong>{{product.UnitPrice}}</strong></td>
+                <td clas="col-sm-1 col-md-1 text-center"><strong>{{product.Total}}</strong></td>
+                <td class="col-sm-1 col-md-1">
+                    <button type="button" class="btn btn-danger" (click)="deleteProduct()">X</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-rigt">
+                    <h5>Subtotal</h5>
+                </td>
+                <td class="text-center">
+                    <h5><strong>$45</strong></h5>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-rigt">
+                    <h5>Fee</h5>
+                </td>
+                <td class="text-center">
+                    <h5><strong>$45</strong></h5>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-right">
+                    <h5>Shipping</h5>
+                </td>
+                <td class="text-center">
+                    <h5><strong>$10.00</strong></h5>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-right">
+                    <h3>Total</h3>
+                </td>
+                <td class="text-center">
+                    <h3><strong>$54.34</strong></h3>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <button class="btn btn-success  col-sm-3 col-md-3 m-4" (click)="checkOut()">Proceed to checkout</button>
+</div>
+<div class="row">
+    <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()">Clear your shopping cart</button>
+</div>

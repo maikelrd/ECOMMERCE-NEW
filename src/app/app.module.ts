@@ -9,8 +9,7 @@ import { HomeComponent } from './Home/home/home.component';
 import { RegisterComponent } from './register/register/register.component';
 import { ProductModule } from './products/product.module';
 import { LoginComponent } from './login/login/login.component';
-import { AuthInterceptor } from './http-interceptor/auth.interceptor';
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart/shopping-cart.component';
+import { AuthInterceptor } from './http-interceptor/auth.interceptor';;
 import { ToastrModule } from 'ngx-toastr';
 
 
@@ -18,7 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
   declarations: [
     AppComponent,
     HomeComponent, 
-        RegisterComponent, LoginComponent, ShoppingCartComponent
+        RegisterComponent, LoginComponent
   ],
   imports: [
     BrowserModule,   
@@ -29,8 +28,7 @@ import { ToastrModule } from 'ngx-toastr';
       
       {path:"home",component:HomeComponent}, 
       {path:"register",component:RegisterComponent},  
-      {path:"login", component:LoginComponent}, 
-      {path:"shopping-cart", component: ShoppingCartComponent},
+      {path:"login", component:LoginComponent},      
       {path:'',redirectTo:'HomeComponent',pathMatch:'full'},
       {path:'**',redirectTo:'HomeComponent',pathMatch:'full'}
     ]),  

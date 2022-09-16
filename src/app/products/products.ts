@@ -19,4 +19,5 @@ export interface IProduct{
     Description: string;
     StarRating: number;
     ImageUrl:string;
+    Total:Number;
 }

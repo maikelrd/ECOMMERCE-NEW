@@ -35,7 +35,8 @@ export class ProductEditComponent implements OnInit {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:''
+    ImageUrl:'',
+    Total:0
   };
   //private sub:Subscription;
 

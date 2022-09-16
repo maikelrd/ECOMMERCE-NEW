@@ -9,6 +9,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ConvertToSpacesPipe } from '../shared/convert-to-space.pipe';
 import { CategoryComponent } from '../category/category/category.component';
 import { DepartmentComponent } from '../department/department/department.component';
+import { ShoppingCartComponent } from '../shopping-cart/shopping-cart/shopping-cart.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +26,8 @@ import { AuthGuard } from '../guards/auth.guard';
     ConvertToSpacesPipe,
     ProductEditComponent,
     CategoryComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    ShoppingCartComponent
     
  
    
@@ -37,6 +39,7 @@ import { AuthGuard } from '../guards/auth.guard';
       {path: 'products/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
       {path:"category/:id",component:CategoryComponent},
       {path:"department", component:DepartmentComponent},
+      {path:"shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]}
   
     ]),
     SharedModule,
