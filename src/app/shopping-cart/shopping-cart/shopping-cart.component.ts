@@ -19,6 +19,7 @@ export class ShoppingCartComponent implements OnInit {
   shoppingCartItems: IShoppingCart[]=[];
   errorMessage: string ='';
   userEmail: string='';
+  totalItems: number = 0;
 
   constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService) { 
     let auth = undefined;
@@ -35,14 +36,24 @@ export class ShoppingCartComponent implements OnInit {
     if(param){
       const id = +param;   
       this.getProduct(id);
+    //  this.createCartItem(this.product, this.userEmail);
       this.getShoppingCarts();
+      
+     // this.getTotalItem()
       
     }
   }
 
+ /* getTotalItem(){
+  this.shoppingCartService.getTotalCartItem().subscribe({
+    next: total => this.totalItems = total,
+    error: err => this.errorMessage = err
+   })
+ } */
+
   getProduct(id: number){
     this.productService.getProduct(id).subscribe({
-      next: (product: IProduct) =>{
+      next: product =>{
         this.product=product;
         this.createCartItem(this.product, this.userEmail);
       }   ,                   
@@ -54,6 +65,11 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCartService.getShoppingCarts(this.userEmail).subscribe({
       next: shoppingCartItems => {
         this.shoppingCartItems = shoppingCartItems;
+       /*  this.totalItems = 0;
+
+         this.shoppingCartItems.forEach(element => {
+          this.totalItems++
+        }); */ 
       },
       error: err => {
         this.errorMessage = err;
@@ -64,7 +80,10 @@ export class ShoppingCartComponent implements OnInit {
 
   createCartItem(product: IProduct, email: string){
    this.shoppingCartService.createCartItem(product, email).subscribe({
-    next: data=> console.log(data),
+    next: data=> {
+      console.log(data);    
+    this.getShoppingCarts();
+  },
     error: err=> {
       this.errorMessage = err,
       console.log(err)

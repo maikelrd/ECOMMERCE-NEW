@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, tap, throwError, of } from 'rxjs';
+import { Observable, catchError, tap, throwError, of, Subject } from 'rxjs';
 import { IShoppingCart } from './shopping-cart/shopping-cart';
 import { IProduct } from '../products/products';
 
@@ -10,8 +10,23 @@ import { IProduct } from '../products/products';
 })
 export class ShoppingCartService {
  private cartUrl = "https://localhost:44386/api/ShoppingCart";
+
+ shoppingCartItems: IShoppingCart[]=[];
+ totalItems: number = 0;
+ private totalCartItem$: Subject<number>;
  
   constructor(private http: HttpClient) { 
+    this.totalCartItem$ = new Subject();
+   /*  this.getTotalCartItem = new Observable(
+      function(observer){
+        try{
+            observer.next(this.totalItems)
+        }
+        catch(e){
+
+        }
+      }
+    ) */
    
   }
 
@@ -33,12 +48,30 @@ export class ShoppingCartService {
     //"https://localhost:44386/api/ShoppingCart/email?email=maikelrd%40gmail.com"
     return this.http.get<IShoppingCart[]>(url)
          .pipe(
-          tap(data => console.log('shoppingCarts' +JSON.stringify(data))),
+          tap(data =>{ console.log('shoppingCarts' +JSON.stringify(data));
+          this.shoppingCartItems = data;
+          this.totalItems = 0;
+          
+           this.shoppingCartItems.forEach(element => {
+            this.totalItems++
+          }); 
+          this.totalCartItem(this.totalItems);
+        }),
           catchError(this.handleError) 
          );
   }
 
-
+  totalCartItem(total: number){
+    // this.totalCartItem$=this.totalItems;
+     this.totalCartItem$.next(total);
+   }
+ 
+   getTotalCartItem():Observable<number>{
+     return this.totalCartItem$.asObservable();
+   }
+ /*  getTotalCartItem(): Observable<number>{
+    return totalItems;
+  } */
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
     //instead of just logging it to the console
@@ -63,6 +96,7 @@ export class ShoppingCartService {
       Amount: 1,
       UserEmail: userEmail
     };
-
   }
+
+
 }
