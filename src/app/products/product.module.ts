@@ -40,7 +40,7 @@ import { AuthGuard } from '../guards/auth.guard';
       {path:"category/:id",component:CategoryComponent},
       {path:"department", component:DepartmentComponent},
       {path:"shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]},
-     // {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}
+      {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}
   
     ]),
     SharedModule,

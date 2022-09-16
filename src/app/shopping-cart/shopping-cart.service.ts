@@ -69,9 +69,17 @@ export class ShoppingCartService {
    getTotalCartItem():Observable<number>{
      return this.totalCartItem$.asObservable();
    }
- /*  getTotalCartItem(): Observable<number>{
-    return totalItems;
-  } */
+
+   updateShoppingCart(shoppingCart: IShoppingCart):Observable<IShoppingCart>{
+    const headers= new HttpHeaders({ 'Content-Type': 'application/json' });
+    const url = `${this.cartUrl}/${shoppingCart.ShoppingCartItemId}`;
+    return this.http.put<IShoppingCart>(url, shoppingCart, {headers})
+     .pipe(
+      tap(() =>console.log('updateShoppingCart: ' + shoppingCart.ShoppingCartItemId)),
+      catchError(this.handleError)
+     );
+   }
+   
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
     //instead of just logging it to the console

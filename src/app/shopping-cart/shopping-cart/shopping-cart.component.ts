@@ -21,7 +21,7 @@ export class ShoppingCartComponent implements OnInit {
   userEmail: string='';
   totalItems: number = 0;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService) { 
+  constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService, private router: Router) { 
     let auth = undefined;
     let value = localStorage.getItem("AuthObject");
     if(value){
@@ -34,13 +34,17 @@ export class ShoppingCartComponent implements OnInit {
   ngOnInit(): void {
     const param = this.route.snapshot.paramMap.get('id');
     if(param){
+      //this.router.navigate(['shopping-cart']);
       const id = +param;   
       this.getProduct(id);
     //  this.createCartItem(this.product, this.userEmail);
-      this.getShoppingCarts();
+      
       
      // this.getTotalItem()
-      
+     
+    }
+    else{
+      this.getShoppingCarts();
     }
   }
 
@@ -55,7 +59,7 @@ export class ShoppingCartComponent implements OnInit {
     this.productService.getProduct(id).subscribe({
       next: product =>{
         this.product=product;
-        this.createCartItem(this.product, this.userEmail);
+        this.createCartItem(this.product, this.userEmail);        
       }   ,                   
       error: err => this.errorMessage= err
     });
@@ -89,6 +93,12 @@ export class ShoppingCartComponent implements OnInit {
       console.log(err)
     }
    })
+  }
+
+  update(shoppingCart : IShoppingCart){
+    this.shoppingCartService.updateShoppingCart(shoppingCart).subscribe({
+      
+    })
   }
   checkOut(){}
 
