@@ -6,6 +6,7 @@ import { ProductService } from 'src/app/products/product.service';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { IShoppingCart } from './shopping-cart';
 
+
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
@@ -21,7 +22,10 @@ export class ShoppingCartComponent implements OnInit {
   userEmail: string='';
   totalItems: number = 0;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService, private router: Router) { 
+
+
+  constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService, 
+                                            private router: Router) { 
     let auth = undefined;
     let value = localStorage.getItem("AuthObject");
     if(value){
@@ -29,6 +33,7 @@ export class ShoppingCartComponent implements OnInit {
       this.userEmail=JSON.parse(JSON.stringify(auth.Email));
 
     }
+    
   }
 
   ngOnInit(): void {
@@ -95,9 +100,18 @@ export class ShoppingCartComponent implements OnInit {
    })
   }
 
-  update(shoppingCart : IShoppingCart){
-    this.shoppingCartService.updateShoppingCart(shoppingCart).subscribe({
-      
+  update(shoppingCartItem: IShoppingCart){
+    
+    this.shoppingCartService.updateShoppingCart(shoppingCartItem).subscribe({
+      next: data =>{ 
+        console.log(data);
+        this.getShoppingCarts();
+      },
+      error: err =>{
+        this.errorMessage = err;
+        console.log(err);
+      }
+
     })
   }
   checkOut(){}

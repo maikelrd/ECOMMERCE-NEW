@@ -1,4 +1,4 @@
-<h2>Your shopping Cart</h2>
+ <h2>Your shopping Cart</h2>
 <div class="table-responsive col-sm-6 col-lg-6">
     <table class="table table-hover">
         <thead>
@@ -22,11 +22,11 @@
                     </div>
                 </td>
                 <td class="col-sm-3 col-md-3" style="text-align: center">
-                   <!--  <input type="number" class="form-control" value={{shoppingCartItem.Amount}}>
-                    <button>update</button> -->
+                  
                     <div class="input-group ">
-                        <input type="number" value={{shoppingCartItem.Amount}} class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-success" type="button" id="button-addon2" type="submit">update</button>
+                        <!-- <input type="number" value={{shoppingCartItem.Amount}} class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
+                        <input type="number" [(ngModel)]="shoppingCartItem.Amount" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(shoppingCartItem)">update</button>
                       </div>
                       
                 </td>
