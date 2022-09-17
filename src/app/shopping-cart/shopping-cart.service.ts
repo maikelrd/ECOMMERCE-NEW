@@ -17,17 +17,7 @@ export class ShoppingCartService {
  
   constructor(private http: HttpClient) { 
     this.totalCartItem$ = new Subject();
-   /*  this.getTotalCartItem = new Observable(
-      function(observer){
-        try{
-            observer.next(this.totalItems)
-        }
-        catch(e){
 
-        }
-      }
-    ) */
-   
   }
 
   createCartItem(product:IProduct, userEmail: string): Observable<IShoppingCart>{
@@ -79,7 +69,17 @@ export class ShoppingCartService {
       catchError(this.handleError)
      );
    }
-   
+
+   deleteShoppingCarItem(id: number): Observable<any>{
+    const headers= new HttpHeaders({ 'Content-Type': 'application/json'});
+    const url= `${this.cartUrl}/${id}`;
+    return this.http.delete(url, {headers})
+    .pipe(
+      tap(data => console.log('delete shoppingCartItem: '+ id)),
+      catchError(this.handleError)
+    )
+   }
+
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
     //instead of just logging it to the console

@@ -111,13 +111,20 @@ export class ShoppingCartComponent implements OnInit {
         this.errorMessage = err;
         console.log(err);
       }
-
-    })
+    });
   }
+
+  deleteShoppingCartItem(shoppingCartItemId: number): any{
+   this.shoppingCartService.deleteShoppingCarItem(shoppingCartItemId).subscribe({
+    next: data =>console.log(data),
+    error: err => this.errorMessage = err
+   });
+  }
+
   checkOut(){}
 
   clearShoppingCart(){}
 
-  deleteProduct(){}
+ 
 
 }

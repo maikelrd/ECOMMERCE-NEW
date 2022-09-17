@@ -33,7 +33,7 @@
                 <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.UnitPrice}}</strong></td>
                 <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.Total}}</strong></td>
                 <td class="col-sm-1 col-md-1">
-                    <button type="button" class="btn btn-danger" (click)="deleteProduct()">X</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteShoppingCartItem(shoppingCartItem.ShoppingCartItemId)">X</button>
                 </td>
             </tr>
             <tr>
@@ -75,9 +75,10 @@
         </tbody>
     </table>
 </div>
-<div class="row">
-    <button class="btn btn-success  col-sm-3 col-md-3 m-4" (click)="checkOut()">Proceed to checkout</button>
-</div>
+
 <div class="row">
     <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()">Clear your shopping cart</button>
+</div>
+<div class="row">
+    <button class="btn btn-success  col-sm-3 col-md-3 m-4" (click)="checkOut()">Proceed to checkout</button>
 </div>
