@@ -6,4 +6,5 @@ export interface IShoppingCart{
     ProductId: number;
     Amount: number;
     UserEmail: string;
+    Total: number;
 }

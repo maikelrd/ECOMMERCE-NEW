@@ -12,6 +12,7 @@ export class ShoppingCartService {
  private cartUrl = "https://localhost:44386/api/ShoppingCart";
 
  shoppingCartItems: IShoppingCart[]=[];
+ //shoppingCartItem: IShoppingCart | undefined;
  totalItems: number = 0;
  private totalCartItem$: Subject<number>;
  
@@ -38,7 +39,8 @@ export class ShoppingCartService {
     //"https://localhost:44386/api/ShoppingCart/email?email=maikelrd%40gmail.com"
     return this.http.get<IShoppingCart[]>(url)
          .pipe(
-          tap(data =>{ console.log('shoppingCarts' +JSON.stringify(data));
+          tap(data =>{
+             console.log('shoppingCarts' +JSON.stringify(data));
           this.shoppingCartItems = data;
           this.totalItems = 0;
           
@@ -51,6 +53,18 @@ export class ShoppingCartService {
          );
   }
 
+/*   getShoppingCart(id: number): Observable<IShoppingCart>{
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
+    const url = `${this.cartUrl}/${id}`;
+    return this.http.get<IShoppingCart>(url)
+     .pipe(
+      tap(data => {
+        console.log('ShoppingCart'+ JSON.stringify(data));   
+      }),
+      catchError(this.handleError)
+     )
+  }
+ */
   totalCartItem(total: number){
     // this.totalCartItem$=this.totalItems;
      this.totalCartItem$.next(total);
@@ -71,14 +85,25 @@ export class ShoppingCartService {
    }
 
    deleteShoppingCarItem(id: number): Observable<any>{
-    const headers= new HttpHeaders({ 'Content-Type': 'application/json'});
+    // super importante esto para evitar este error "Server returned code: 200, error message is: Http failure during parsing for https://localhost:44386/api"
+    let headers=  { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
     const url= `${this.cartUrl}/${id}`;
-    return this.http.delete(url, {headers})
+    return this.http.delete(url, headers)
     .pipe(
       tap(data => console.log('delete shoppingCartItem: '+ id)),
       catchError(this.handleError)
     )
    }
+
+  clearShoppingCart(userEmail: string){
+    let headers=  { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
+    const url=`${this.cartUrl}/email?email=${userEmail}`;
+    return this.http.delete(url, headers)
+     .pipe(
+      tap(data => console.log('Deleting all ShoppingCartItem of user:'+ userEmail)),
+      catchError(this.handleError)
+     )
+  }
 
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
@@ -102,7 +127,8 @@ export class ShoppingCartService {
       Product: product,
       ProductId: product.ProductId,
       Amount: 1,
-      UserEmail: userEmail
+      UserEmail: userEmail,
+      Total: 0
     };
   }
 

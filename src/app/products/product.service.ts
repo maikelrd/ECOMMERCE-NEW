@@ -89,8 +89,8 @@ updateProduct(product: IProduct): Observable<IProduct> {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:'',
-    Total:0
+    ImageUrl:''
+    //Total:0
     };
   }
 }
