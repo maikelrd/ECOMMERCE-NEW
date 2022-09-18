@@ -36,7 +36,8 @@ export class RegisterComponent implements OnInit {
   emailMessage:string='';
   errorMessage:string='';
  
-  userRegister= new User;
+  userRegister = new User();
+ // userRegister: User | undefined;
   showPassword: boolean = false;
   
 
@@ -104,12 +105,12 @@ export class RegisterComponent implements OnInit {
     let email = this.registerForm.controls['email'].value;  
     this.userService.register(firstName, lastName,email, password).subscribe((data)=>
     {
-      console.log("response", data);
-      this.userRegister=JSON.parse(data);
-      let temp=this.userRegister.ProductName+ " "+ this.userRegister.LastName;
-      this.toastr.success(temp, "User Register");
+      console.log("response", data); 
+       this.userRegister = data;    
+      this.toastr.success((this.userRegister?.FirstName + ' '+ this.userRegister?.LastName), "User Register");
       this.registerForm.reset();
-    },
+     }    
+    ,
     error =>{
       console.log("error", error.error);
       this.errorMessage= error.error;

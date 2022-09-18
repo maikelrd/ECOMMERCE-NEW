@@ -1,11 +1,13 @@
 export class User{
-    public constructor(init?: Partial<User>){
-        Object.assign(this, init);
+     public constructor(init?: Partial<User>){
+        Object.assign(this, init); 
+     
     }
-   ProductName:string="";
-     LastName:string="";   
-     Email:string="";     
-     IsAuthenticated:boolean=false;
+    
+     FirstName:string="";
+     LastName:string="";    
+     //Email:string="";     
+     //IsAuthenticated:boolean=false;
 }
 /* export interface User{
     

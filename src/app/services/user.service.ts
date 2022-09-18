@@ -5,6 +5,7 @@ import { } from 'rxjs/operators';
 import { UserAuthBase } from '../Models/user-auth-base';
 import { UserBase } from '../Models/user-base';
 import { IProduct } from '../products/products';
+import { User } from '../Models/user';
 
 
 
@@ -27,9 +28,9 @@ export class UserService {
       Email:email,
       Password:password
     }
-   
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
    // return this.httpClient.post("https://localhost:44305/api/user/RegisterUser",body).pipe(
-    return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{responseType:'text'}).pipe(
+    return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{headers}).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object
