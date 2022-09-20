@@ -45,10 +45,14 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("AuthObject",JSON.stringify(resp));
         this.securityObject = resp;
         this.errorString = "";
+        this.loginForm.reset();
         if(this.returnUrl){
           this.router.navigateByUrl(this.returnUrl);
         }
-        this.loginForm.reset();
+        else{
+          this.router.navigate(["shopping-cart"]);
+        }
+       
         
       }
     },
