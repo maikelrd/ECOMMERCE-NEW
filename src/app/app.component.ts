@@ -36,5 +36,6 @@ export class AppComponent {
     this.securityService.logOut();
     this.securityObject=this.securityService.securityObject;
     localStorage.removeItem("AuthObject");
+    this.totalCartItems = 0;
   }
 }
