@@ -129,7 +129,7 @@ export class ProductEditComponent implements OnInit {
       if (this.registerForm.dirty){
         const p= {...this.product, ...this.registerForm.value};
 
-        if(p.ProdId===0){
+        if(p.ProductId===0){
           this.productService.createProduct(p).subscribe({
             next: () => this.onSaveCompleted(),
             error: err => this.errorMessage = err

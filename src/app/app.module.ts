@@ -7,10 +7,13 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AppComponent } from './app.component';
 import { HomeComponent } from './Home/home/home.component';
 import { RegisterComponent } from './register/register/register.component';
-import { ProductModule } from './products/product.module';
+//import { ProductModule } from './products/product.module';
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './http-interceptor/auth.interceptor';;
 import { ToastrModule } from 'ngx-toastr';
+import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
+
+//import { ProductService } from './products/product.service';
 
 
 @NgModule({
@@ -28,11 +31,12 @@ import { ToastrModule } from 'ngx-toastr';
       
       {path:"home",component:HomeComponent}, 
       {path:"register",component:RegisterComponent},  
-      {path:"login", component:LoginComponent},      
+      {path:"login", component:LoginComponent},   
+      {path:'', loadChildren: ()=> import('./products/product.module').then(m=> m.ProductModule)} ,  
       {path:'',redirectTo:'HomeComponent',pathMatch:'full'},
       {path:'**',redirectTo:'HomeComponent',pathMatch:'full'}
     ]),  
-    ProductModule
+   // ProductModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}

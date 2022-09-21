@@ -48,7 +48,7 @@
                           (ratingClicked)="onRatingClicked($event)"></app-star>
                           </div> 
                     </div>
-                    <a  class="btn btn-primary mt-2" [routerLink]="['/products',product.ProductId]"> 
+                    <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
                       Details
                     </a>
                
@@ -76,7 +76,7 @@
                <div *ngFor="let category of department.Categories">
                  <ul>
                   <li>
-                    <a class="" [routerLink]="['/category', category.CategoryId ]">{{category.CategoryName}}</a>
+                    <a class="" [routerLink]="['category', category.CategoryId ]">{{category.CategoryName}}</a>
                   </li>
                  </ul>
                </div>

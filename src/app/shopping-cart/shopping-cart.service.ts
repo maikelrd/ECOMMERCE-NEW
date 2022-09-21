@@ -3,11 +3,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, catchError, tap, throwError, of, Subject } from 'rxjs';
 import { IShoppingCart } from './shopping-cart/shopping-cart';
 import { IProduct } from '../products/products';
+//import {ShoppingCartService as LazyServiceInterface}
+//import { Resolve } from '@angular/router';
 
 
-@Injectable({
+@Injectable(
+  {
   providedIn: 'root'
-})
+}
+)
 export class ShoppingCartService {
  private cartUrl = "https://localhost:44386/api/ShoppingCart";
 

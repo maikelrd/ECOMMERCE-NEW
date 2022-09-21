@@ -63,13 +63,13 @@
           </button>
            <button class="btn btn-outline-primary"
                   style="width:80px"
-                  [routerLink]="['/products', product.ProductId, 'edit']">
+                  [routerLink]="['product', product.ProductId, 'edit']">
             Edit
           </button> 
         </div>
       </div>
       <div class="col-md-8">
-         <a type="button" class="btn btn-success mt-4" [routerLink]="['/shopping-cart', product.ProductId]">Add to cart</a>
+         <a type="button" class="btn btn-success mt-4" [routerLink]="['shopping-cart', product.ProductId]">Add to cart</a>
       </div>
   
     </div>

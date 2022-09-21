@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProductDetailsGuard } from './product-details/product-details.guard';
 import { ProductEditGuard } from './product-edit/product-edit.guard';
 import { AuthGuard } from '../guards/auth.guard';
+import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 
 
 
@@ -27,24 +28,25 @@ import { AuthGuard } from '../guards/auth.guard';
     ProductEditComponent,
     CategoryComponent,
     DepartmentComponent,
-    ShoppingCartComponent
-    
- 
-   
+    ShoppingCartComponent 
   ],
   imports: [ 
     RouterModule.forChild([
-      {path: 'products', component:ProductListComponent},
-      {path: 'products/:id', canActivate:[ProductDetailsGuard],component:ProductDetailsComponent},
-      {path: 'products/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
+     {path: "",
+    children: [
+      {path: '', component:ProductListComponent},
+      {path: 'product/:id', component:ProductDetailsComponent},
+      {path: 'product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
       {path:"category/:id",component:CategoryComponent},
       {path:"department", component:DepartmentComponent},
-      {path:"shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]},
+      {path:"product/:id/shopping-cart/:id", component: ShoppingCartComponent},
       {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}
+    ]}
   
     ]),
     SharedModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: []
 })
 export class ProductModule { }
