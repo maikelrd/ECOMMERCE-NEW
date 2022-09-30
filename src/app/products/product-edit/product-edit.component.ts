@@ -9,6 +9,8 @@ import { IProduct } from '../products';
 import { ProductService } from '../product.service';
 
 import { NumberValidators } from 'src/app/shared/number.validator';
+import { FileHandle } from '../file-handle';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -35,7 +37,9 @@ export class ProductEditComponent implements OnInit {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:''
+    ImageUrl:'',
+
+    productImages: []
     //Total:0
   };
   //private sub:Subscription;
@@ -43,7 +47,8 @@ export class ProductEditComponent implements OnInit {
   constructor(private fb:FormBuilder,
               private route:ActivatedRoute,
               private router:Router,
-              private productService:ProductService)
+              private productService:ProductService,
+              private sanitizer: DomSanitizer)
   { 
     this.registerForm=this.fb.group({
       ProductName:['',[Validators.required,
@@ -85,7 +90,7 @@ export class ProductEditComponent implements OnInit {
 
   displayProduct(product: IProduct): void {
     if(this.registerForm){
-      this.registerForm.reset();
+     // this.registerForm.reset();
     }
     this.product=product;
 
@@ -105,7 +110,7 @@ export class ProductEditComponent implements OnInit {
       StockQty: this.product.StockQty,
       Description: this.product.Description,
       StarRating: this.product.StarRating,
-      ImageUrl: this.product.ImageUrl
+      ImageUrl: this.product.ImageUrl     
       
     })
   }
@@ -130,7 +135,9 @@ export class ProductEditComponent implements OnInit {
         const p= {...this.product, ...this.registerForm.value};
 
         if(p.ProductId===0){
-          this.productService.createProduct(p).subscribe({
+          const productFormData = this.prepareFormData(p);
+          console.log(...productFormData)
+          this.productService.createProduct(productFormData).subscribe({
             next: () => this.onSaveCompleted(),
             error: err => this.errorMessage = err
           });
@@ -151,10 +158,48 @@ export class ProductEditComponent implements OnInit {
 
   onSaveCompleted(): void {
     // Reset the form to clear the flags
-    this.registerForm.reset();
+   //1 this.registerForm.reset();
     this.router.navigate(['/products']);
   }
 
+  prepareFormData(product: IProduct): FormData{
+    const formData = new FormData();  
 
+// Display the key/value pairs
+
+
+   /*   formData.append(
+      'Product', 
+      new Blob([JSON.stringify(product)], {type: 'application/json'})
+      ); */
+       
+       for(var i = 0; i < product.productImages.length; i++){
+   /*      formData.append(
+          'ImageFile',
+          product.productImages[i].file,
+          product.productImages[i].file.name
+        ); */
+
+        formData.append(
+          'Name',
+          product.productImages[i].file.name
+        );
+      }  
+    console.log(...formData) 
+      return formData;
+  }
+
+  onFileSelected(event: any){
+  if(event.target.files){
+    const file = event.target.files[0]; 
+
+    const fileHandle: FileHandle ={
+      file: file,
+      url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
+    }
+
+    this.product.productImages.push(fileHandle);
+  }
+  }
 
 }

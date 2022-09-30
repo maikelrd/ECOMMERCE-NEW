@@ -31,10 +31,11 @@ getProduct(id:number): Observable<IProduct>{
    );
 }
 
-createProduct(product:IProduct): Observable<IProduct> {
+createProduct(product:FormData): Observable<IProduct> {
   const headers= new HttpHeaders({'Content-type': 'application/json'});
-  product.ProductId=0;
-  return this.http.post<IProduct>(this.productUrl,product,{headers})
+ //product.ProductId=0;
+ console.log(...product);
+  return this.http.post<any>(this.productUrl,product,{headers})
      .pipe(
       tap(data=>console.log('createProduct: '+ JSON.stringify(data))),
       catchError(this.handleError)
@@ -89,8 +90,10 @@ updateProduct(product: IProduct): Observable<IProduct> {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:''
+    ImageUrl:'',
     //Total:0
+    productImages:  []
+    
     };
   }
 }

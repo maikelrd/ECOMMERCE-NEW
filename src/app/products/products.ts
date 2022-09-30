@@ -1,3 +1,5 @@
+import { FileHandle } from "./file-handle";
+
 export interface IProduct{
 /*     prodId:number;
     prodName:string;
@@ -19,5 +21,7 @@ export interface IProduct{
     Description: string;
     StarRating: number;
     ImageUrl:string;
+    
+    productImages: FileHandle[];
     //Total:Number;
 }
