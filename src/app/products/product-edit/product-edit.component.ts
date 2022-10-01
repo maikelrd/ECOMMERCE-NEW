@@ -100,7 +100,7 @@ export class ProductEditComponent implements OnInit {
   getProduct(id: number):void {
     this.productService.getProduct(id).subscribe({
       next:(product:IProduct)=>{
-        product = this.createImages(product);
+       // product = this.createImages(product);
         this.displayProduct(product)
       },
       error:err=>this.errorMessage=err
@@ -181,35 +181,6 @@ export class ProductEditComponent implements OnInit {
     this.router.navigate(['/products']);
   }
 
-
- /*  prepareFormData(product: IProduct): FormData{
-    const formData = new FormData();  
-       
-       for(var i = 0; i < product.Images.length; i++){   
-
-        formData.append(
-          'Name',
-          product.Images[i].fileHandle.file.name
-        );
-      }  
-    console.log(...formData) 
-      return formData;
-  }
-
-  onFileSelected(event: any){
-  if(event.target.files){
-    const file = event.target.files[0]; 
-
-    const fileHandle: FileHandle ={
-      file: file,
-      url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
-    }
-
-    this.product.productImages.push(fileHandle);
-  }
-  } */
-
-
   onFileSelected(event: any){
     if(event.target.files){
       const file = event.target.files[0]; 
@@ -269,37 +240,6 @@ export class ProductEditComponent implements OnInit {
 
         return formData;
     }
-
-
-    createImages(product: IProduct): IProduct{
-    
-      for(let i =0; i<product.Images.length; i++){
-        const imageBlob= this.dataUrltoBlob(product.Images[i].PicByte, product.Images[i].Type);
-   
-       const imageFile= new File([imageBlob], product.Images[i].Name, {type: product.Images[i].Type});
-   
-       const finalFileHandle :FileHandle ={
-         file: imageFile,
-         url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageFile))
-       };
-       product.Images[i].fileHandle = finalFileHandle;
-       
-      }
-       return product;
-     }
-   
-     dataUrltoBlob(picBytes:string,imageType:string): Blob{
-       const byteString= window.atob(picBytes);
-       const arrayBuffer = new ArrayBuffer(byteString.length);
-       const int8Array = new Uint8Array(arrayBuffer);
-   
-       for(let i=0; i<byteString.length; i++){
-         int8Array[i]= byteString.charCodeAt(i);
-       }
-       const blob = new Blob([int8Array], {type: imageType});
-       return blob;
-     }
-
     
 
 }

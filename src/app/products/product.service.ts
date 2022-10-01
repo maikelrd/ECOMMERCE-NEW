@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import { Observable,catchError,tap,throwError, of } from 'rxjs';
+import { Observable,catchError,tap,throwError, of , map} from 'rxjs';
 import { IProduct } from './products';
+
+import { FileHandle } from './file-handle';
+import { IImageModel } from './images-model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Injectable({
@@ -10,11 +14,12 @@ import { IProduct } from './products';
 export class ProductService {
   private productUrl="https://localhost:44386/api/Products";
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private sanitizer: DomSanitizer) { }
 
   getProducts():Observable<IProduct[]>{
     return this.http.get<IProduct[]>("https://localhost:44386/api/Products").pipe(
-      tap(data=>console.log('All',JSON.stringify(data))),
+     // tap(data=>console.log('All',JSON.stringify(data))),
+     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -26,7 +31,8 @@ getProduct(id:number): Observable<IProduct>{
   const url=`${this.productUrl}/${id}`;
   return this.http.get<IProduct>(url)
    .pipe(
-    tap(data=>console.log('getProduct: '+ JSON.stringify(data))),
+    //tap(data=>console.log('getProduct: '+ JSON.stringify(data))),
+    map(x =>{return this.createImages(x)}),
     catchError(this.handleError)
    );
 }
@@ -96,4 +102,36 @@ updateProduct(product: IProduct): Observable<IProduct> {
     
     };
   }
+
+
+  createImages(product: IProduct): IProduct{
+    
+    for(let i =0; i<product.Images.length; i++){
+      const imageBlob= this.dataUrltoBlob(product.Images[i].PicByte, product.Images[i].Type);
+ 
+     const imageFile= new File([imageBlob], product.Images[i].Name, {type: product.Images[i].Type});
+ 
+     const finalFileHandle :FileHandle ={
+       file: imageFile,
+       url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageFile))
+     };
+     product.Images[i].fileHandle = finalFileHandle;
+     
+    }
+     return product;
+   }
+ 
+   dataUrltoBlob(picBytes:string,imageType:string): Blob{
+     const byteString= window.atob(picBytes);
+     const arrayBuffer = new ArrayBuffer(byteString.length);
+     const int8Array = new Uint8Array(arrayBuffer);
+ 
+     for(let i=0; i<byteString.length; i++){
+       int8Array[i]= byteString.charCodeAt(i);
+     }
+     const blob = new Blob([int8Array], {type: imageType});
+     return blob;
+   }
+
+  
 }
