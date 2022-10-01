@@ -17,6 +17,7 @@ import { ProductDetailsGuard } from './product-details/product-details.guard';
 import { ProductEditGuard } from './product-edit/product-edit.guard';
 import { AuthGuard } from '../guards/auth.guard';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
+import { DragDirective } from './drag.directive';
 
 
 
@@ -28,7 +29,8 @@ import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
     ProductEditComponent,
     CategoryComponent,
     DepartmentComponent,
-    ShoppingCartComponent 
+    ShoppingCartComponent,
+    DragDirective 
   ],
   imports: [ 
     RouterModule.forChild([

@@ -9,11 +9,11 @@
   
       <div class="row">
         <div class="col-md-4 col-lg-4"
-        *ngIf="product.ImageUrl">
+        *ngIf="product.Images">
      <img class="center-block img-responsive"
           [style.height.px]="250"
           [style.margin.px]="2"
-          [src]="product.ImageUrl"
+          [src]="product.Images[0].fileHandle.url"
           [title]="product.ProductName">
    </div> 
   

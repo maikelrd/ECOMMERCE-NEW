@@ -1,4 +1,4 @@
-import { FileHandle } from "./file-handle";
+import { IImageModel } from "./images-model";
 
 export interface IProduct{
 /*     prodId:number;
@@ -20,8 +20,8 @@ export interface IProduct{
     StockQty:number;
     Description: string;
     StarRating: number;
-    ImageUrl:string;
+    //ImageUrl:string;
     
-    productImages: FileHandle[];
+    Images: IImageModel[];
     //Total:Number;
 }

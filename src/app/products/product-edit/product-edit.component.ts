@@ -11,6 +11,7 @@ import { ProductService } from '../product.service';
 import { NumberValidators } from 'src/app/shared/number.validator';
 import { FileHandle } from '../file-handle';
 import { DomSanitizer } from '@angular/platform-browser';
+import { IImageModel } from '../images-model';
 
 
 
@@ -25,7 +26,12 @@ export class ProductEditComponent implements OnInit {
   pageTitle='Product Edit';
   errorMessage: string='';
 
+  imageWidth:number=150;
+    imageMargin:number=2;
+
   registerForm:FormGroup;
+
+  arrayFile: FileHandle[]=[]
 
   product:IProduct={
     ProductId:0,
@@ -37,11 +43,19 @@ export class ProductEditComponent implements OnInit {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:'',
-
-    productImages: []
-    //Total:0
+    //ImageUrl:'',
+    Images: [] 
+  
   };
+
+  imageModel: IImageModel ={
+    Id:0,
+    Type: '',
+   PicByte:'' ,
+    Name: '',
+   ProductId: 0,
+  fileHandle: {file: {} as File, url:''}        
+}
   //private sub:Subscription;
 
   constructor(private fb:FormBuilder,
@@ -59,8 +73,8 @@ export class ProductEditComponent implements OnInit {
       UnitPrice:['', Number],
       StockQty:['', Number],
       Description:'',
-      StarRating:['', NumberValidators.range(1,5)],
-      ImageUrl:''
+      StarRating:['', NumberValidators.range(1,5)]
+     // ImageUrl:''
      
     });
   
@@ -81,9 +95,14 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
+  
+
   getProduct(id: number):void {
     this.productService.getProduct(id).subscribe({
-      next:(product:IProduct)=>this.displayProduct(product),
+      next:(product:IProduct)=>{
+        product = this.createImages(product);
+        this.displayProduct(product)
+      },
       error:err=>this.errorMessage=err
     });
   }
@@ -109,10 +128,10 @@ export class ProductEditComponent implements OnInit {
       UnitPrice: this.product.UnitPrice,
       StockQty: this.product.StockQty,
       Description: this.product.Description,
-      StarRating: this.product.StarRating,
-      ImageUrl: this.product.ImageUrl     
-      
+      StarRating: this.product.StarRating
+      //ImageUrl: this.product.ImageUrl      
     })
+
   }
 
   deleteProduct():void{
@@ -162,27 +181,15 @@ export class ProductEditComponent implements OnInit {
     this.router.navigate(['/products']);
   }
 
-  prepareFormData(product: IProduct): FormData{
+
+ /*  prepareFormData(product: IProduct): FormData{
     const formData = new FormData();  
-
-// Display the key/value pairs
-
-
-   /*   formData.append(
-      'Product', 
-      new Blob([JSON.stringify(product)], {type: 'application/json'})
-      ); */
        
-       for(var i = 0; i < product.productImages.length; i++){
-   /*      formData.append(
-          'ImageFile',
-          product.productImages[i].file,
-          product.productImages[i].file.name
-        ); */
+       for(var i = 0; i < product.Images.length; i++){   
 
         formData.append(
           'Name',
-          product.productImages[i].file.name
+          product.Images[i].fileHandle.file.name
         );
       }  
     console.log(...formData) 
@@ -200,6 +207,99 @@ export class ProductEditComponent implements OnInit {
 
     this.product.productImages.push(fileHandle);
   }
-  }
+  } */
+
+
+  onFileSelected(event: any){
+    if(event.target.files){
+      const file = event.target.files[0]; 
+  
+      const fileHandle: FileHandle ={
+        file: file,
+       // url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
+       url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
+      }
+      
+      this.arrayFile.push(fileHandle);
+      /* this.arrayFiles.push(fileHandle);
+      this.count=this.count +1; */
+      console.log(this.arrayFile);
+    
+     
+    }
+    }
+
+    deleteImage(id: number){     
+      console.log(id);
+      /* this.arrayFiles.forEach((element, index)=>{
+        if(element == id) this.arrayFiles.splice(index,1);
+      )}; */
+   
+          this.arrayFile.splice(id,1);
+
+      console.log(this.arrayFile)
+    }
+
+
+    fileDropped(fileHandle: FileHandle){
+      this.arrayFile.push(fileHandle);
+      console.log(this.arrayFile)
+    }
+    prepareFormData(product: IProduct): FormData{
+      const formData = new FormData();  
+  
+  // Display the key/value pairs
+  
+  
+        formData.append(
+        'Product', 
+         //new Blob([JSON.stringify(this.product)], {type: 'application/json'})
+         JSON.stringify(product)
+         ) ; 
+         
+         for(var i = 0; i < this.arrayFile.length; i++){
+          formData.append(
+            'ImageFile',
+            this.arrayFile[i].file,
+           this.arrayFile[i].file.name   
+         );         
+        }  
+      console.log(...formData) 
+   
+
+        return formData;
+    }
+
+
+    createImages(product: IProduct): IProduct{
+    
+      for(let i =0; i<product.Images.length; i++){
+        const imageBlob= this.dataUrltoBlob(product.Images[i].PicByte, product.Images[i].Type);
+   
+       const imageFile= new File([imageBlob], product.Images[i].Name, {type: product.Images[i].Type});
+   
+       const finalFileHandle :FileHandle ={
+         file: imageFile,
+         url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageFile))
+       };
+       product.Images[i].fileHandle = finalFileHandle;
+       
+      }
+       return product;
+     }
+   
+     dataUrltoBlob(picBytes:string,imageType:string): Blob{
+       const byteString= window.atob(picBytes);
+       const arrayBuffer = new ArrayBuffer(byteString.length);
+       const int8Array = new Uint8Array(arrayBuffer);
+   
+       for(let i=0; i<byteString.length; i++){
+         int8Array[i]= byteString.charCodeAt(i);
+       }
+       const blob = new Blob([int8Array], {type: imageType});
+       return blob;
+     }
+
+    
 
 }

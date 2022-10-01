@@ -1,6 +1,6 @@
 <div class="card m-4">
     <div class="card-header">
-      {{pageTitle}}
+      <b></b>
     </div>
   
     <div class="row">
@@ -159,7 +159,7 @@
             </div>
           </div>
   
-          <div class="form-group row mb-2">
+         <!--  <div class="form-group row mb-2">
             <label class="col-lg-3 col-form-label"
                    for="ImageUrlId">ImageUrl</label>  
             <div class="col-lg-8">
@@ -175,7 +175,7 @@
                         </span>                      
                       </span> 
             </div>
-          </div>
+          </div> -->
     
          
           
@@ -213,9 +213,47 @@
           </div>
         </form>
       </div>
-      <div class="col-6">
+      <!-- <div class="col-6">
         <input type="file" multiple value="select" #selectFile
            (change)="onFileSelected($event)">
+      </div> -->
+      <div class="col-6">
+        <div class="row">
+          <div class="dropzone"
+          appDrag
+          (files)="fileDropped($event)">
+              <div class="text-wrapper">
+                <div class="centered">
+                  Drag and drop your image or 
+                  <a (click)="selectFile.click()" class="browse-button">browse </a>
+                  a image
+                </div>
+              </div>                
+          </div>
+          <div > 
+              
+              <!-- <input type="file" multiple value="select" #selectFile -->
+              <input type="file" style="display: none" multiple="multiple" #selectFile
+              (change)="onFileSelected($event)">
+             <!--  <input type="button" value="select" (click)="onUpload()"> -->
+          </div>
+      </div>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let file of arrayFile; index as i">               
+                <div class="card">
+                  <div class="card-body ">
+                    <img class=" img-responsive"
+                [style.height.px]="250"
+                [style.margin.px]="2"
+                [src]="file.url">   
+                      <!-- <button class="btn btn-danger" (click)="deleteImage(i)">x</button>  -->
+                      <span class="btn-remove-image " (click)="deleteImage(i)">x</span>
+                  </div>
+                </div>
+               
+            </div>
+        </div>
+
       </div>
     </div>
   
