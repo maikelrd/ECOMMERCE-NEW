@@ -21,15 +21,56 @@
         </div>
       </div>
 
-      <div class="row" >
+     <div class="row" >
         <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
-           <div class="card">   
-            <img class="card-img-top"
-            [src]=""
+           <div class="card border-light " >   
+            <!-- <img class="card-img-top"
+            [src]="product.Images[0].fileHandle.url"
             [title]="product.ProductName"
             [style.width.px]="imageWidth"
-            [style.margin.px]="imageMargin">          
+            [style.height.px]="imageHeigth"
+            [style.margin.px]="imageMargin">    -->       
+              <div class="card-body ">    
+                <img class=" img-responsive"
+                [style.height.px]="250"
+                [style.margin.px]="2"
+                [src]="product.Images[0].fileHandle.url">                    
+                    <div> <b>{{product.ProductName}}</b> </div>
+                    <div>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
+                    <div> Description: {{product.Description}}</div>
+                    <div class="row">
+                         <div class="col-md-7 col-lg-4">
+                          StarRating: {{product.StarRating}} 
+                         </div> 
+                         <div class="col-md-5 col-lg-7">
+                          <app-star [rating]='product.StarRating'
+                          ></app-star>
+                          </div> 
+                    </div>
+                    <!-- <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]">  -->
+                      
+                    <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
+                      Details
+                    </a>
+               
+                 <div>
+                   
+                 </div>
+            </div>
+           </div>
+        </div>
+
+      </div>
+
+      <!-- <div class="row" >
+        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
+           <div class="card">          
+           
               <div class="card-body">
+                <img class=" img-responsive"
+                [style.width.px]="250"
+                [style.margin.px]="2"
+                [src]="product.Images[0].fileHandle.url">   
                  <div >
                     <ul>
                       <ol> <b>{{product.ProductName}}</b> </ol>
@@ -54,4 +95,4 @@
            </div>
         </div>
 
-      </div>
+      </div> -->

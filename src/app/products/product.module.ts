@@ -37,9 +37,11 @@ import { DragDirective } from './drag.directive';
      {path: "",
     children: [
       {path: '', component:ProductListComponent},
-      {path: 'product/:id', component:ProductDetailsComponent},
+      {path: 'product/:id', component:ProductDetailsComponent},  
       {path: 'product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
       {path:"category/:id",component:CategoryComponent},
+      {path: 'category/:id/product/:id', component:ProductDetailsComponent},
+      {path: 'category/:id/product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
       {path:"department", component:DepartmentComponent},
       {path:"product/:id/shopping-cart/:id", component: ShoppingCartComponent},
       {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}

@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, catchError, tap, throwError, of } from 'rxjs';
 import { Category } from './category';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +12,7 @@ export class CategoryService {
   private categoryUrl = "https://localhost:44386/api/Categories";
   private categoryUrlProducts = "https://localhost:44386/api/Categories";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient ) { }
   
   getCategories(): Observable<Category[]>{
     return this.http.get<Category[]>(this.categoryUrl).pipe(
@@ -42,5 +44,7 @@ export class CategoryService {
     console.error(errorMessage);
     return throwError(()=>errorMessage);
 }
+
+
 
 }

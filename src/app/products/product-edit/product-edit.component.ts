@@ -178,7 +178,9 @@ export class ProductEditComponent implements OnInit {
   onSaveCompleted(): void {
     // Reset the form to clear the flags
    //1 this.registerForm.reset();
-    this.router.navigate(['/products']);
+    //this.router.navigate(['/products']);
+    this.registerForm.reset();
+    this.router.navigate(['']);
   }
 
   onFileSelected(event: any){

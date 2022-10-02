@@ -5,6 +5,10 @@ import { CategoryService } from '../category.service';
 import { Category } from '../category';
 import { IProduct } from 'src/app/products/products';
 
+import { FileHandle } from 'src/app/products/file-handle';
+import { IImageModel } from 'src/app/products/images-model';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
@@ -38,7 +42,7 @@ export class CategoryComponent implements OnInit {
 
 
 
-  constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router) { 
+  constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { 
     
   }
 
@@ -75,13 +79,46 @@ export class CategoryComponent implements OnInit {
   next: category =>{
         this.category = category;
         this.products=category.Products;
-        this.filteredProducts = category.Products;
+        for(let i=0; i< this.products.length; i++){
+          this.products[i]=this.createImages(this.products[i])
+        }
+        this.filteredProducts = this.products;
       },
     error : err => {
       this.errorMessage = err,
       console.log(err) }    
     });
   }
+
+  
+createImages(product: IProduct): IProduct{
+    
+  for(let i =0; i<product.Images.length; i++){
+    const imageBlob= this.dataUrltoBlob(product.Images[i].PicByte, product.Images[i].Type);
+
+   const imageFile= new File([imageBlob], product.Images[i].Name, {type: product.Images[i].Type});
+
+   const finalFileHandle :FileHandle ={
+     file: imageFile,
+     url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageFile))
+   };
+   product.Images[i].fileHandle = finalFileHandle;
+   
+  }
+   return product;
+ }
+
+ dataUrltoBlob(picBytes:string,imageType:string): Blob{
+   const byteString= window.atob(picBytes);
+   const arrayBuffer = new ArrayBuffer(byteString.length);
+   const int8Array = new Uint8Array(arrayBuffer);
+
+   for(let i=0; i<byteString.length; i++){
+     int8Array[i]= byteString.charCodeAt(i);
+   }
+   const blob = new Blob([int8Array], {type: imageType});
+   return blob;
+ }
 
 
 }
