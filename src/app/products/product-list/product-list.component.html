@@ -28,7 +28,7 @@
       </div>
 
       <div class="row" >
-        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
+        <div *ngFor="let product of filteredProducts | paginate: {itemsPerPage: 10, currentPage: page}"  class="col-sm-3 col-lg-3 mb-4">
            <div class="card border-light " >   
             <!-- <img class="card-img-top"
             [src]="product.Images[0].fileHandle.url"
@@ -65,6 +65,8 @@
         </div>
 
       </div>
+
+     
 
       <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
                        id="AllDepartments" aria-labelledby="AllDepartmentsLabel">
@@ -126,7 +128,7 @@
                 <td>{{ product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</td>
                 <td>{{ product.StockQty }}</td>
                 <td>
-                    <!-- {{product.StarRating}} -->
+                    !-- {{product.StarRating}} -->
                 <!--   <app-star [rating]='product.StarRating'
                   (ratingClicked)="onRatingClicked($event)">
                   
@@ -139,3 +141,5 @@
   
     </div>
   </div>
+
+  <pagination-controls (pageChange)="page= $event" previousLabel="previous" nextLabel="next"></pagination-controls>

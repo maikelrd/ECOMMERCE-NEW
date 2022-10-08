@@ -19,6 +19,8 @@ import { AuthGuard } from '../guards/auth.guard';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { DragDirective } from './drag.directive';
 
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 
 @NgModule({
@@ -49,7 +51,8 @@ import { DragDirective } from './drag.directive';
   
     ]),
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ],
   providers: []
 })

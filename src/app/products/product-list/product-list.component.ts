@@ -23,6 +23,8 @@ export class ProductListComponent implements OnInit {
   errorMessage:string='';
   sub!: Subscription;
 
+  public page!:number;
+
   private _listFilter:string='';
 
   get listFilter():string{

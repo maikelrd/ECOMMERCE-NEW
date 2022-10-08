@@ -67,8 +67,8 @@ export class ProductEditComponent implements OnInit {
     this.registerForm=this.fb.group({
       ProductName:['',[Validators.required,
                     Validators.minLength(3)]],
-      ProductCode:['',Validators.required],
-      ReleaseDate:['',Validators.required],
+      ProductCode:[''],
+      ReleaseDate:[''],
       CategoryId:['',Number],
       UnitPrice:['', Number],
       StockQty:['', Number],
