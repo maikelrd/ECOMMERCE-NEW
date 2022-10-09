@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ProductService {
   private productUrl="https://localhost:44386/api/Products";
+  private productPageUrl = "https://localhost:44386/api/Pagination";
 
   constructor(private http:HttpClient, private sanitizer: DomSanitizer) { }
 
@@ -22,6 +23,23 @@ export class ProductService {
      map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
+  }
+
+  getProductsByPage(page: number):Observable<IProduct[]>{
+    const url =`${this.productPageUrl}/${page}`;
+    return this.http.get<IProduct[]>(url).pipe(
+     // tap(data=>console.log('All',JSON.stringify(data))),
+     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      catchError(this.handleError)
+    );
+  }
+
+  getCountProducts(): Observable<number>{     
+    return this.http.get<number>(this.productPageUrl)
+     .pipe(
+      tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
+      catchError(this.handleError)
+     );
   }
 
 getProduct(id:number): Observable<IProduct>{
