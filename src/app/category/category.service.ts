@@ -29,6 +29,9 @@ export class CategoryService {
     )
   }
 
+  
+  
+
   private handleError(err:HttpErrorResponse){
     //in a real world app, we may send the server to some remonte loggin infraestructure
     //instead of just logging it to the console

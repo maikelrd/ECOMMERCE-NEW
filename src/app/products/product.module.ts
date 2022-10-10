@@ -23,6 +23,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
+
 @NgModule({
   declarations: [
     ProductListComponent,
@@ -32,7 +33,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CategoryComponent,
     DepartmentComponent,
     ShoppingCartComponent,
-    DragDirective 
+    DragDirective    
   ],
   imports: [ 
     RouterModule.forChild([

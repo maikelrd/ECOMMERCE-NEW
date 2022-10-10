@@ -121,6 +121,11 @@ export class ProductListComponent implements OnInit {
           this.nextEnable = false;
           this.previousEnable = false;
         }
+
+        if(this.countPages <= 1){
+          this.nextEnable = true ;
+          this.previousEnable = true;
+        }
         this.filteredProducts=this.products;
       },
       error:err=>{this.errorMessage=err,

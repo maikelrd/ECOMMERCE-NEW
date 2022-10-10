@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ProductService {
   private productUrl="https://localhost:44386/api/Products";
   private productPageUrl = "https://localhost:44386/api/Pagination";
+  private productPageByCategoryUrl: string = "https://localhost:44386/api/PaginationCategory";
 
   constructor(private http:HttpClient, private sanitizer: DomSanitizer) { }
 
@@ -40,6 +41,24 @@ export class ProductService {
       tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
       catchError(this.handleError)
      );
+  }
+
+  getCountProductsByCategory(categoryId: number): Observable<number>{     
+    const url =`${this.productPageByCategoryUrl}/${categoryId}`
+    return this.http.get<number>(url)
+     .pipe(
+      tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
+      catchError(this.handleError)
+     );
+  }
+
+  getProductsByCategoryPage(categoryId: number,page: number):Observable<IProduct[]>{
+    const url =`${this.productPageByCategoryUrl}/${categoryId}/${page}`;
+    return this.http.get<IProduct[]>(url).pipe(
+     // tap(data=>console.log('All',JSON.stringify(data))),
+     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      catchError(this.handleError)
+    );
   }
 
 getProduct(id:number): Observable<IProduct>{

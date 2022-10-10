@@ -6,9 +6,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 
+
 @NgModule({
   declarations: [
-    StarComponent
+    StarComponent,   
   ],
   imports: [
     CommonModule

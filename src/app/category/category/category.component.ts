@@ -5,6 +5,8 @@ import { CategoryService } from '../category.service';
 import { Category } from '../category';
 import { IProduct } from 'src/app/products/products';
 
+import { ProductService } from 'src/app/products/product.service';
+
 import { FileHandle } from 'src/app/products/file-handle';
 import { IImageModel } from 'src/app/products/images-model';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -22,6 +24,9 @@ export class CategoryComponent implements OnInit {
   products: IProduct[] = []
   errorMessage:string='';
 
+  categoryId: number = 0;
+  
+ 
  
   imageWidth:number=200;
   imageMargin:number=2;
@@ -39,10 +44,19 @@ export class CategoryComponent implements OnInit {
   }
  
   filteredProducts:IProduct[]=[];
+  
+ 
+  //pagination
+  categoryPageUrl: string = "https://localhost:44386/api/PaginationCategory";
+  countProducts: number = 0; // count of products by category in the BD
+  countPages: number = 0; //count pages of products of 10 products each one
+  arrayCountPages: number[]= []; //Array that store consecutive number until countPage.
+  previousEnable: boolean = false;
+  nextEnable: boolean = false;
+  page: number = 0; // actual page
 
-
-
-  constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { 
+  constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
+                     private productService: ProductService) { 
     
   }
 
@@ -50,7 +64,20 @@ export class CategoryComponent implements OnInit {
     const param = this.route.snapshot.paramMap.get('id');
     if(param){
       const id= +param;
-      this.getCategory(id);
+      this.categoryId = id;
+      //this.getCategory(id);
+      
+      this.page = 0; 
+      if(this.page == 0){
+        this.previousEnable = true;
+        this.nextEnable = false ;
+      }
+      this.getCountProducts(id);
+      if(this.countPages<=1){
+         this.previousEnable =true;
+         this.nextEnable = true;
+      }
+      this.getProductsByPage(id, this.page);
     }
   }
 
@@ -90,7 +117,85 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  
+  getProductsByPage(categoryId: number, page: number){
+    this.productService.getProductsByCategoryPage(categoryId, page).subscribe({
+      next:products=>{
+        
+        this.products=products;
+        console.log(this.products)
+        if(page == 0){
+          this.previousEnable = true;
+          this.nextEnable = false;
+        }
+        
+        if(page == this.countPages -1){
+          this.nextEnable = true;
+          this.previousEnable =false;
+        }
+
+        if (this.page > 0 && this.page < this.countPages-1){
+          this.nextEnable = false;
+          this.previousEnable = false;
+        }
+
+        if(this.countPages <= 1){
+          this.nextEnable = true ;
+          this.previousEnable = true;
+        }
+        this.filteredProducts=this.products;
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  } 
+
+  getCountProducts(categoryId: number){
+    this.productService.getCountProductsByCategory(categoryId).subscribe({
+      next: count=>{       
+        this.countProducts=count;
+        //this.countPages = Math.ceil(this.countProducts/10);
+        this.countPages = Math.ceil(this.countProducts/10);
+        for(let i=0 ; i< this.countPages; i++){
+          this.arrayCountPages[i]= i+1;
+        }        
+
+        console.log(this.countProducts);    
+        console.log(this.countPages);       
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  } 
+
+  productsPage(page: number){
+    this.page = page
+    this.getProductsByPage(this.categoryId,this.page);
+  }
+
+  nextPageProducts(){
+    if(this.page < this.countPages -1){
+      this.page= this.page + 1;
+      this.previousEnable = false;
+      this.productsPage(this.page);      
+    }
+    if(this.page ==  this.countPages -1){
+      this.nextEnable = true;
+    }
+    
+  }
+
+  previousPageProducts(){
+    if(this.page > 0){
+      this.page = this.page - 1;
+      this.nextEnable = false;
+      this.productsPage(this.page);      
+    }
+    if(this.page == 0){
+      this.previousEnable = true;
+    }
+
+  }
+
 createImages(product: IProduct): IProduct{
     
   for(let i =0; i<product.Images.length; i++){
