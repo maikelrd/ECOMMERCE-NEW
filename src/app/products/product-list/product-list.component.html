@@ -88,58 +88,9 @@
                   </li>
                  </ul>
                </div>
-             </div>
-
-                        
+             </div>                        
           </div>
-      </div>
-     <!--  <div class='table-responsive' *ngIf="products.length">    
-        <table class='table'>   
-          <thead>
-            <tr>
-              <th>
-                <button class='btn btn-primary'
-                (click)="toggleImage()">
-                  {{showImage ? 'Hide':'Show'}} Image
-                </button>
-              </th>
-              <th>ProductName</th>
-              <th>ProdCode</th>
-              <th>ReleaseDate</th>             
-              <th>UnitPrice</th>
-              <th>StockQty</th>
-              <th>5 Star Rating</th> 
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of filteredProducts">
-                <td>
-                    <img *ngIf="showImage"
-                          [src]="product.ImageUrl"
-                          [title]="product.ProductName"
-                          [style.width.px]="imageWidth"
-                          [style.margin.px]="imageMargin">
-                </td>
-                <td><a [routerLink]="['/products',product.ProductId]"> 
-                  {{ product.ProductName }}
-                </a>
-                 </td>
-                <td>{{ product.ProductCode | lowercase }}</td>
-                <td>{{ product.ReleaseDate }}</td>                
-                <td>{{ product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</td>
-                <td>{{ product.StockQty }}</td>
-                <td>
-                    !-- {{product.StarRating}} -->
-                <!--   <app-star [rating]='product.StarRating'
-                  (ratingClicked)="onRatingClicked($event)">
-                  
-                </app-star>
-            </td> 
-            </tr>
-          </tbody>
-        </table>
-      </div> --> 
-  
+      </div>  
     </div>
   </div>
 

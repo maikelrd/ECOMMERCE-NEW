@@ -45,6 +45,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
       {path:"category/:id",component:CategoryComponent},
       {path: 'category/:id/product/:id', component:ProductDetailsComponent},
       {path: 'category/:id/product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
+      {path:"category/:id/category/:id",component:CategoryComponent},
       {path:"department", component:DepartmentComponent},
       {path:"product/:id/shopping-cart/:id", component: ShoppingCartComponent},
       {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}

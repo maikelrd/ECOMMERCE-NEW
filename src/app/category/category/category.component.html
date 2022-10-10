@@ -1,9 +1,17 @@
 
 <div class='card'>
     <div class='card-header'>
-        <div class="col-sm-4 col-lg-2">
-           Product List <b>{{category.CategoryName}}</b>
-          </div>
+        <div class="row">
+          <div class="col-sm-4 col-lg-1">
+            <a type="button" class="btn btn-dark float-end"
+            data-bs-toggle="offcanvas" data-bs-target="#AllDepartments" aria-controls="AllDepartments">
+            All
+           </a>        
+           </div>
+          <div class="col-sm-4 col-lg-2">
+            Products List by Category <b>{{category.CategoryName}}</b>
+         </div>
+        </div>
   
     
     </div>
@@ -61,6 +69,29 @@
         </div>
 
       </div>
+
+      <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
+                       id="AllDepartments" aria-labelledby="AllDepartmentsLabel">
+
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="AllDepartmentsLabel">All departments</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+              </button>
+          </div>  
+          <div class="offcanvas-body">
+             <div *ngFor="let department of departments">
+               <h2>{{department.DepartmentName}}</h2>
+               <div *ngFor="let category of department.Categories">
+                 <ul>
+                  <li>
+                    <a class="" [routerLink]="['category', category.CategoryId ]">{{category.CategoryName}}</a>
+                  </li>
+                 </ul>
+               </div>
+             </div>                        
+          </div>
+      </div>  
 
       <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
  <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">

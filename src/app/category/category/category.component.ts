@@ -11,6 +11,9 @@ import { FileHandle } from 'src/app/products/file-handle';
 import { IImageModel } from 'src/app/products/images-model';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { Department } from 'src/app/department/department/department';
+import { DepartmentService } from 'src/app/department/department.service';
+
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
@@ -44,6 +47,9 @@ export class CategoryComponent implements OnInit {
   }
  
   filteredProducts:IProduct[]=[];
+
+  departments: Department[]= [];
+ 
   
  
   //pagination
@@ -56,7 +62,7 @@ export class CategoryComponent implements OnInit {
   page: number = 0; // actual page
 
   constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-                     private productService: ProductService) { 
+                     private productService: ProductService, private departmentService: DepartmentService) { 
     
   }
 
@@ -65,7 +71,7 @@ export class CategoryComponent implements OnInit {
     if(param){
       const id= +param;
       this.categoryId = id;
-      //this.getCategory(id);
+      this.getCategory(id);
       
       this.page = 0; 
       if(this.page == 0){
@@ -78,7 +84,11 @@ export class CategoryComponent implements OnInit {
          this.nextEnable = true;
       }
       this.getProductsByPage(id, this.page);
+      this.getDepartments();
+      this.getCategories();
+      this.router.navigate(['category',id])
     }
+    
   }
 
   performFilter(filterBy:string):IProduct[]{
@@ -105,10 +115,10 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategory(id).subscribe({
   next: category =>{
         this.category = category;
-        this.products=category.Products;
+        /* this.products=category.Products;
         for(let i=0; i< this.products.length; i++){
           this.products[i]=this.createImages(this.products[i])
-        }
+        } */
         this.filteredProducts = this.products;
       },
     error : err => {
@@ -195,6 +205,20 @@ export class CategoryComponent implements OnInit {
     }
 
   }
+
+  getDepartments(){
+    this.departmentService.getDepartments().subscribe({
+      next: departments => {
+        this.departments = departments;
+      },
+      error : err => {
+        this.errorMessage = err,
+        console.log(err)
+      }
+    });
+  }
+
+ 
 
 createImages(product: IProduct): IProduct{
     

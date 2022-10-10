@@ -22,7 +22,7 @@ export class CategoryService {
   }
 
   getCategory(id : number):Observable<Category>{
-    const url = `${this.categoryUrl}/${id}?includeProducts=true`;
+    const url = `${this.categoryUrl}/${id}?includeProducts=false`;
     return this.http.get<Category>(url).pipe(
       tap(data => console.log('Category: '+ JSON.stringify(data))),
       catchError(this.handleError)
