@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { Department } from 'src/app/department/department/department';
 import { DepartmentService } from 'src/app/department/department.service';
+import { IFilterModel } from 'src/app/Models/filterModel';
 
 @Component({
   selector: 'app-category',
@@ -36,6 +37,7 @@ export class CategoryComponent implements OnInit {
   showImage:boolean=false;
 
   private _listFilter:string='';
+  textfilter: string = "";
 
   get listFilter():string{
     return this._listFilter;
@@ -53,13 +55,18 @@ export class CategoryComponent implements OnInit {
   
  
   //pagination
-  categoryPageUrl: string = "https://localhost:44386/api/PaginationCategory";
+  
   countProducts: number = 0; // count of products by category in the BD
   countPages: number = 0; //count pages of products of 10 products each one
   arrayCountPages: number[]= []; //Array that store consecutive number until countPage.
   previousEnable: boolean = false;
   nextEnable: boolean = false;
   page: number = 0; // actual page
+
+  filterModel: IFilterModel= {
+    Products:[],
+    count:0
+  }
 
   constructor(private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
                      private productService: ProductService, private departmentService: DepartmentService) { 
@@ -176,6 +183,45 @@ export class CategoryComponent implements OnInit {
       console.log(err)}
     });
   } 
+
+  filter(){
+    let temp=this.textfilter;
+    this.GetProductsByCategoryFilter(this.category.CategoryId, this.textfilter)
+  }
+
+  /* GetProductsByCategoryFilter(categoryId: number, filterBy: string){
+    this.productService.GetProductsByCategoryFilter(categoryId, filterBy).subscribe({
+      next:products=>{      
+       
+        this.filteredProducts=products;
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  } */ 
+  GetProductsByCategoryFilter(categoryId: number, filterBy: string){
+    this.productService.GetProductsByCategoryFilter(categoryId, filterBy).subscribe({
+      next:filterModel=>{      
+       this.filterModel = filterModel
+       this.countProducts=this.filterModel.count;
+        //this.countPages = Math.ceil(this.countProducts/10);
+        this.countPages = Math.ceil(this.countProducts/10);
+        for(let i=0 ; i< this.countPages; i++){
+          this.arrayCountPages[i]= i+1;
+        }        
+
+        console.log(this.countProducts);    
+        console.log(this.countPages);  
+
+       for(let i = 0; i< filterModel.Products.length; i++){
+        this.filterModel.Products[i] = this.createImages(this.filterModel.Products[i]);
+       }
+        this.filteredProducts=filterModel.Products;
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  }
 
   productsPage(page: number){
     this.page = page

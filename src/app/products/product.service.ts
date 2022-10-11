@@ -7,6 +7,8 @@ import { FileHandle } from './file-handle';
 import { IImageModel } from './images-model';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { IFilterModel } from '../Models/filterModel';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,7 @@ export class ProductService {
   private productUrl="https://localhost:44386/api/Products";
   private productPageUrl = "https://localhost:44386/api/Pagination";
   private productPageByCategoryUrl: string = "https://localhost:44386/api/PaginationCategory";
+  private filterUrl = "https://localhost:44386/api/Filter";
 
   constructor(private http:HttpClient, private sanitizer: DomSanitizer) { }
 
@@ -57,6 +60,32 @@ export class ProductService {
     return this.http.get<IProduct[]>(url).pipe(
      // tap(data=>console.log('All',JSON.stringify(data))),
      map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      catchError(this.handleError)
+    );
+  }
+
+  /* GetProductsByCategoryFilter(categoryId: number, filterBy: string):Observable<IProduct[]>{
+    const url =`${this.filterUrl}/${categoryId}/${filterBy}`;
+    return this.http.get<IProduct[]>(url).pipe(
+     // tap(data=>console.log('All',JSON.stringify(data))),
+     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      catchError(this.handleError)
+    );
+  } */
+  GetProductsByCategoryFilter(categoryId: number, filterBy: string):Observable<IFilterModel>{
+    const url =`${this.filterUrl}/${categoryId}/${filterBy}`;
+    return this.http.get<IFilterModel>(url).pipe(
+      tap(data=>console.log('All',JSON.stringify(data))),
+    // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      catchError(this.handleError)
+    );
+  }
+
+  GetProductsFilter( filterBy: string):Observable<IFilterModel>{
+    const url =`${this.filterUrl}/${filterBy}`;
+    return this.http.get<IFilterModel>(url).pipe(
+      tap(data=>console.log('All',JSON.stringify(data))),
+    // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }

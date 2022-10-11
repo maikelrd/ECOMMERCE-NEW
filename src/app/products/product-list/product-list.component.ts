@@ -7,6 +7,11 @@ import { Department } from 'src/app/department/department/department';
 import { ProductService } from '../product.service';
 import { IProduct } from '../products';
 
+import { IFilterModel } from 'src/app/Models/filterModel';
+import { FileHandle } from '../file-handle';
+
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-product-list',
@@ -33,6 +38,7 @@ export class ProductListComponent implements OnInit {
   page: number = 0; // actual page
 
   private _listFilter:string='';
+  textfilter: string = "";
 
   get listFilter():string{
     return this._listFilter;
@@ -48,10 +54,16 @@ export class ProductListComponent implements OnInit {
   departments: Department[]= [];
   categories: Category[]= [];
 
+  filterModel: IFilterModel= {
+    Products:[],
+    count:0
+  }
+
 
   
 
-  constructor(private productService:ProductService, private categoryService: CategoryService, private departmentService: DepartmentService ) { }
+  constructor(private productService:ProductService, private categoryService: CategoryService, private departmentService: DepartmentService,
+                  private sanitizer: DomSanitizer ) { }
   //constructor() { }
 
   ngOnInit(): void {
@@ -149,6 +161,35 @@ export class ProductListComponent implements OnInit {
     });
   } 
 
+  filter(){
+    let temp=this.textfilter;
+    this.GetProductsFilter( this.textfilter)
+  }
+
+  GetProductsFilter(filterBy: string){
+    this.productService.GetProductsFilter(filterBy).subscribe({
+      next:filterModel=>{      
+       this.filterModel = filterModel
+       this.countProducts=this.filterModel.count;
+        //this.countPages = Math.ceil(this.countProducts/10);
+        this.countPages = Math.ceil(this.countProducts/10);
+        for(let i=0 ; i< this.countPages; i++){
+          this.arrayCountPages[i]= i+1;
+        }        
+
+        console.log(this.countProducts);    
+        console.log(this.countPages);  
+
+       for(let i = 0; i< filterModel.Products.length; i++){
+        this.filterModel.Products[i] = this.createImages(this.filterModel.Products[i]);
+       }
+        this.filteredProducts=filterModel.Products;
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  }
+
   productsPage(page: number){
     this.page = page
     this.getProductsByPage(this.page);
@@ -200,4 +241,33 @@ export class ProductListComponent implements OnInit {
       console.log(err) }    
     });
   }
+
+  createImages(product: IProduct): IProduct{
+    
+    for(let i =0; i<product.Images.length; i++){
+      const imageBlob= this.dataUrltoBlob(product.Images[i].PicByte, product.Images[i].Type);
+  
+     const imageFile= new File([imageBlob], product.Images[i].Name, {type: product.Images[i].Type});
+  
+     const finalFileHandle :FileHandle ={
+       file: imageFile,
+       url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageFile))
+     };
+     product.Images[i].fileHandle = finalFileHandle;
+     
+    }
+     return product;
+   }
+  
+   dataUrltoBlob(picBytes:string,imageType:string): Blob{
+     const byteString= window.atob(picBytes);
+     const arrayBuffer = new ArrayBuffer(byteString.length);
+     const int8Array = new Uint8Array(arrayBuffer);
+  
+     for(let i=0; i<byteString.length; i++){
+       int8Array[i]= byteString.charCodeAt(i);
+     }
+     const blob = new Blob([int8Array], {type: imageType});
+     return blob;
+   }
 }
