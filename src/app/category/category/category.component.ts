@@ -36,8 +36,9 @@ export class CategoryComponent implements OnInit {
   imageMargin:number=2;
   showImage:boolean=false;
 
-  private _listFilter:string='';
   textfilter: string = "";
+  /* private _listFilter:string='';
+  
 
   get listFilter():string{
     return this._listFilter;
@@ -46,7 +47,7 @@ export class CategoryComponent implements OnInit {
     this._listFilter=value;
     console.log('In setter: ',value);
     this.filteredProducts=this.performFilter(value);
-  }
+  } */
  
   filteredProducts:IProduct[]=[];
 
@@ -98,15 +99,13 @@ export class CategoryComponent implements OnInit {
     
   }
 
-  performFilter(filterBy:string):IProduct[]{
-    filterBy=filterBy.toLocaleLowerCase();
-   /*  return this.products.filter((product:IProduct)=>
-    product.ProductName.toLocaleLowerCase().includes(filterBy)); */
+ /*  performFilter(filterBy:string):IProduct[]{
+    filterBy=filterBy.toLocaleLowerCase();   
     return this.products.filter((product:IProduct)=>
-    product.ProductName.toLocaleLowerCase().includes(filterBy)); 
-   
-  }
+    product.ProductName.toLocaleLowerCase().includes(filterBy));    
+  } */
 
+//get all categories by department
   getCategories(){
     this.categoryService.getCategories().subscribe({
   next: categories =>{
@@ -118,14 +117,11 @@ export class CategoryComponent implements OnInit {
     });
   }
 
+  //get data of category selected in the department
   getCategory(id: number){
     this.categoryService.getCategory(id).subscribe({
   next: category =>{
         this.category = category;
-        /* this.products=category.Products;
-        for(let i=0; i< this.products.length; i++){
-          this.products[i]=this.createImages(this.products[i])
-        } */
         this.filteredProducts = this.products;
       },
     error : err => {
@@ -133,7 +129,7 @@ export class CategoryComponent implements OnInit {
       console.log(err) }    
     });
   }
-
+//get products by page when is not filter by filtertext of the input
   getProductsByPage(categoryId: number, page: number){
     this.productService.getProductsByCategoryPage(categoryId, page).subscribe({
       next:products=>{
@@ -166,6 +162,7 @@ export class CategoryComponent implements OnInit {
     });
   } 
 
+  //get amount of product when is not used the filter text of the input.
   getCountProducts(categoryId: number){
     this.productService.getCountProductsByCategory(categoryId).subscribe({
       next: count=>{       
@@ -184,39 +181,68 @@ export class CategoryComponent implements OnInit {
     });
   } 
 
+  //to get product by category wheather filter by a text or not
   filter(){
-    let temp=this.textfilter;
-    this.GetProductsByCategoryFilter(this.category.CategoryId, this.textfilter)
+    if(this.textfilter == ''){
+    this.getCountProducts(this.category.CategoryId);
+    this.page = 0; 
+      if(this.page == 0){
+        this.previousEnable = true;
+        this.nextEnable = false ;
+        this.getProductsByPage(this.category.CategoryId,this.page)
+      }
+    }else{        
+        this.getCountProductsCategoryFilter(this.category.CategoryId, this.textfilter);
+        this.GetProductsByCategoryFilter(this.category.CategoryId, this.page, this.textfilter);
+    }
   }
-
-  /* GetProductsByCategoryFilter(categoryId: number, filterBy: string){
-    this.productService.GetProductsByCategoryFilter(categoryId, filterBy).subscribe({
-      next:products=>{      
-       
-        this.filteredProducts=products;
+  
+  //get amount of products by category and filter by text of input
+  getCountProductsCategoryFilter(categoryId: number,textfilter: string){
+    this.productService.getCountProductsCategoryFilter(categoryId,textfilter).subscribe({
+      next: count=>{       
+        this.countProducts=count;
+        this.countPages = Math.ceil(this.countProducts/10);
+        this.arrayCountPages =[];
+        for(let i=0 ; i< this.countPages; i++){
+          this.arrayCountPages[i]= i+1;
+        }
+        console.log(this.countProducts);    
+        console.log(this.countPages);       
       },
       error:err=>{this.errorMessage=err,
       console.log(err)}
     });
-  } */ 
-  GetProductsByCategoryFilter(categoryId: number, filterBy: string){
-    this.productService.GetProductsByCategoryFilter(categoryId, filterBy).subscribe({
-      next:filterModel=>{      
-       this.filterModel = filterModel
-       this.countProducts=this.filterModel.count;
-        //this.countPages = Math.ceil(this.countProducts/10);
-        this.countPages = Math.ceil(this.countProducts/10);
-        for(let i=0 ; i< this.countPages; i++){
-          this.arrayCountPages[i]= i+1;
-        }        
+  } 
 
-        console.log(this.countProducts);    
-        console.log(this.countPages);  
+  //Get product by category, page, and filter by text of input.
+  GetProductsByCategoryFilter(categoryId: number, page: number,filterBy: string){
+    this.productService.GetProductsByCategoryFilter(categoryId, page,filterBy).subscribe({
+      next: products=>{     
+        this.products = products;
+        console.log(this.products)
+        if(page == 0){
+          this.previousEnable = true;
+          this.nextEnable = false;
+        }
+        
+        if(page == this.countPages -1){
+          this.nextEnable = true;
+          this.previousEnable =false;
+        }
 
-       for(let i = 0; i< filterModel.Products.length; i++){
-        this.filterModel.Products[i] = this.createImages(this.filterModel.Products[i]);
-       }
-        this.filteredProducts=filterModel.Products;
+        if (this.page > 0 && this.page < this.countPages-1){
+          this.nextEnable = false;
+          this.previousEnable = false;
+        }
+
+        if(this.countPages <= 1){
+          this.nextEnable = true ;
+          this.previousEnable = true;
+        }
+        this.filteredProducts=this.products;
+     
+       
       },
       error:err=>{this.errorMessage=err,
       console.log(err)}
@@ -224,8 +250,13 @@ export class CategoryComponent implements OnInit {
   }
 
   productsPage(page: number){
-    this.page = page
+    if(this.textfilter ==''){
+      this.page = page
     this.getProductsByPage(this.categoryId,this.page);
+    }else{
+      this.page = page;
+      this.GetProductsByCategoryFilter(this.category.CategoryId, this.page, this.textfilter)
+    }
   }
 
   nextPageProducts(){

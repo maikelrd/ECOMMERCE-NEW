@@ -113,6 +113,7 @@ export class ProductListComponent implements OnInit {
     });
   } 
 
+  //get products by page without filter
   getProductsByPage(page: number){
     this.productService.getProductsByPage(page).subscribe({
       next:products=>{
@@ -145,6 +146,7 @@ export class ProductListComponent implements OnInit {
     });
   } 
 
+  //get amount of products without the filtertext of the input
   getCountProducts(){
     this.productService.getCountProducts().subscribe({
       next: count=>{       
@@ -161,38 +163,83 @@ export class ProductListComponent implements OnInit {
     });
   } 
 
-  filter(){
-    let temp=this.textfilter;
-    this.GetProductsFilter( this.textfilter)
-  }
-
-  GetProductsFilter(filterBy: string){
-    this.productService.GetProductsFilter(filterBy).subscribe({
-      next:filterModel=>{      
-       this.filterModel = filterModel
-       this.countProducts=this.filterModel.count;
-        //this.countPages = Math.ceil(this.countProducts/10);
+  //get amount of products filtered by textfilter of the input
+  getCountProductsFilter(textfilter: string){
+    this.productService.getCountProductsFilter(textfilter).subscribe({
+      next: count=>{       
+        this.countProducts=count;
         this.countPages = Math.ceil(this.countProducts/10);
+        this.arrayCountPages =[];
         for(let i=0 ; i< this.countPages; i++){
           this.arrayCountPages[i]= i+1;
-        }        
-
+        }
         console.log(this.countProducts);    
-        console.log(this.countPages);  
-
-       for(let i = 0; i< filterModel.Products.length; i++){
-        this.filterModel.Products[i] = this.createImages(this.filterModel.Products[i]);
-       }
-        this.filteredProducts=filterModel.Products;
+        console.log(this.countPages);       
       },
       error:err=>{this.errorMessage=err,
       console.log(err)}
     });
+  } 
+
+  //get products filtered by textfilter of the input
+  GetProductsFilter(page: number, textfilter: string){
+    this.productService.GetProductsFilter(page, textfilter).subscribe({
+      next:products=>{
+        
+        this.products=products;
+        console.log(this.products)
+        if(page == 0){
+          this.previousEnable = true;
+          this.nextEnable = false;
+        }
+        
+        if(page == this.countPages -1){
+          this.nextEnable = true;
+          this.previousEnable =false;
+        }
+
+        if (this.page > 0 && this.page < this.countPages-1){
+          this.nextEnable = false;
+          this.previousEnable = false;
+        }
+
+        if(this.countPages <= 1){
+          this.nextEnable = true ;
+          this.previousEnable = true;
+        }
+        this.filteredProducts=this.products;
+      },
+      error:err=>{this.errorMessage=err,
+      console.log(err)}
+    });
+  } 
+
+  filter(){    
+    if(this.textfilter == ''){
+      this.getCountProducts();
+      this.page = 0; 
+      if(this.page == 0){
+        this.previousEnable = true;
+        this.nextEnable = false ;
+        this.getProductsByPage(this.page)
+      }
+    }else{
+      this.getCountProductsFilter(this.textfilter);
+      this.GetProductsFilter( 0, this.textfilter)
+    }
+   
   }
 
+
   productsPage(page: number){
-    this.page = page
-    this.getProductsByPage(this.page);
+    if(this.textfilter == ''){
+      this.page = page
+      this.getProductsByPage(this.page);
+    }
+    else{
+      this.page = page;
+      this.GetProductsFilter(this.page, this.textfilter);
+    }
   }
 
   nextPageProducts(){
