@@ -213,6 +213,13 @@ export class ProductListComponent implements OnInit {
       console.log(err)}
     });
   } 
+  
+  filterKeyPressed(e: any){
+    if(e.keyCode == 13){
+      console.log(e.keyCode);
+      this.filter();
+    }
+  }
 
   filter(){    
     if(this.textfilter == ''){

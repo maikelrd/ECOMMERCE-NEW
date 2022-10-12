@@ -180,7 +180,13 @@ export class CategoryComponent implements OnInit {
       console.log(err)}
     });
   } 
-
+ 
+  filterKeyPressed(e: any){
+    if(e.keyCode == 13){
+      console.log(e.keyCode);
+      this.filter();
+    }
+  }
   //to get product by category wheather filter by a text or not
   filter(){
     if(this.textfilter == ''){
