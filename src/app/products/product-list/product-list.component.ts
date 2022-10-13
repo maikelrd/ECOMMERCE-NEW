@@ -213,7 +213,8 @@ export class ProductListComponent implements OnInit {
       console.log(err)}
     });
   } 
-  
+
+  //filter when key enter is pressed
   filterKeyPressed(e: any){
     if(e.keyCode == 13){
       console.log(e.keyCode);

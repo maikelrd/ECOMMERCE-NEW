@@ -20,16 +20,32 @@ export class AppComponent {
   totalCartItems: number = 0;
   errorMessage: string = '';
   constructor(private securityService: UserService, private router: Router, private shoppingCartService: ShoppingCartService){
-    this.securityObject=securityService.securityObject;
+    let auth = undefined;
+    let value = localStorage.getItem("AuthObject");
+    if (value){
+      this.securityObject = JSON.parse(value);
+    }
+    //this.securityObject=securityService.securityObject;
     // shoppingCartService.totalItems.subscribe;
-    this.getTotalItem();
+    //this.shoppingCartService.getShoppingCarts
+    this.shoppingCartService.getShoppingCarts(this.securityObject?.Email).subscribe({
+      next: shoppingCartItems => {
+        this.totalCartItems= shoppingCartItems.length;
+      },
+      error: err => {
+        this.errorMessage = err;
+        console.log(err)
+      }
+    })
+   // this.getTotalItem();
   }
-  getTotalItem(){
+  //The method below in not longer need it
+  /* getTotalItem(){
     this.shoppingCartService.getTotalCartItem().subscribe({
       next: total => this.totalCartItems = total,
       error: err => this.errorMessage = err
      })
-   }
+   } */
 
 
   logOut(){

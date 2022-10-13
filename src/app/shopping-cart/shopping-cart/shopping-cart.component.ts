@@ -50,7 +50,7 @@ export class ShoppingCartComponent implements OnInit {
     }
   } */
   ngOnInit(): void {
-    const param = this.route.snapshot.paramMap.get('id');
+    var param = this.route.snapshot.paramMap.get('id');
     if(param){
       //this.router.navigate(['shopping-cart']);
       const id = +param;   
@@ -59,7 +59,8 @@ export class ShoppingCartComponent implements OnInit {
       
       
      // this.getTotalItem()
-     
+     //param ='';
+     //this.router.navigate(['shopping-cart'])
     }
     else{
       this.getShoppingCarts();
@@ -106,7 +107,7 @@ export class ShoppingCartComponent implements OnInit {
         this.fee = this.subTotalToPay *0.10;
         this.totalToPay = this.subTotalToPay + this.fee + this.shipping;
         //Hago lo de abajo para evitar tener ruta http://localhost:4200/shopping-cart/1 o el Id del shoppigCart, y cuando le doy f5 a la pagina crea un nuevo Item
-        this.router.navigate(['shopping-cart']);
+       // this.router.navigate(['shopping-cart']);
       },
       error: err => {
         this.errorMessage = err;
