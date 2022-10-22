@@ -15,7 +15,7 @@ import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
 })
 export class AppComponent {
   pageTitle = 'ECOMMERCE';
-  securityObject: UserAuthBase | undefined;
+  securityObject: UserAuthBase = new UserAuthBase()// | undefined;
   subscription :Subscription | undefined;
   totalCartItems: number = 0;
   errorMessage: string = '';
@@ -24,10 +24,9 @@ export class AppComponent {
     let value = localStorage.getItem("AuthObject");
     if (value){
       this.securityObject = JSON.parse(value);
+      
     }
-    //this.securityObject=securityService.securityObject;
-    // shoppingCartService.totalItems.subscribe;
-    //this.shoppingCartService.getShoppingCarts
+   
     this.shoppingCartService.getShoppingCarts(this.securityObject?.Email).subscribe({
       next: shoppingCartItems => {
         this.totalCartItems= shoppingCartItems.length;
@@ -37,15 +36,15 @@ export class AppComponent {
         console.log(err)
       }
     })
-   // this.getTotalItem();
+ this.getTotalItem();
   }
-  //The method below in not longer need it
-  /* getTotalItem(){
+
+   getTotalItem(){
     this.shoppingCartService.getTotalCartItem().subscribe({
       next: total => this.totalCartItems = total,
       error: err => this.errorMessage = err
      })
-   } */
+   } 
 
 
   logOut(){

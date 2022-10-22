@@ -64,11 +64,11 @@
                     <ul class="nav navbar-nav navbar-right">
                        
                         <li class="nav-item">
-                          <a class="nav-link" *ngIf="!securityObject!.IsAuthenticated" routerLink="/login">Sign in</a>
+                          <a class="nav-link"  *ngIf="!securityObject.IsAuthenticated" routerLink="/login">Sign in</a>
                         </li>
 
-                        <li class="nav-item">
-                          <a class="nav-link" *ngIf="securityObject!.IsAuthenticated" href="#" (click)="logOut()">LogOut  {{securityObject!.UserName}}</a>
+                        <li class="nav-item">                       
+                          <a class="nav-link" *ngIf="securityObject.IsAuthenticated" href="#" (click)="logOut()">LogOut  {{securityObject.UserName}}</a>
                       </li>
                         <li class="nav-item">
                             <a class="nav-link" routerLink="">Contact</a>
@@ -87,6 +87,7 @@
           <div>
             <router-outlet></router-outlet>
           </div>
+
             
           
            

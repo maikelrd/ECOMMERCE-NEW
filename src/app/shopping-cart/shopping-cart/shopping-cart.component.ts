@@ -6,6 +6,9 @@ import { ProductService } from 'src/app/products/product.service';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { IShoppingCart } from './shopping-cart';
 
+import { IProductShoppingCart } from '../productShoppingCart';
+//import { IProductShoppingCart } from '../productInShoppingCart';
+
 
 @Component({
   selector: 'app-shopping-cart',
@@ -17,7 +20,15 @@ export class ShoppingCartComponent implements OnInit {
   //products: IProduct[] = [];
 
   product:IProduct | undefined;
-  shoppingCartItems: IShoppingCart[]=[];
+  //shoppingCart: IShoppingCart;
+  shoppingCart: IShoppingCart={ShoppingCartId: 0,
+    UserEmail:"",
+    ProductsInShoppingCart:[{
+      ProductShoppingCart: {ProductId:0, ProductCode:'', ProductName:'',UnitPrice:0,StockQty:0, StarRating:0, ReleaseDate:'', Description:'', Images:[], CategoryId:0},
+      Quantity: 1
+    }],
+    Total:0
+  } ;
   errorMessage: string ='';
   userEmail: string='';
   totalItems: number = 0;
@@ -30,6 +41,7 @@ export class ShoppingCartComponent implements OnInit {
 
   totalCartItems: number = 0;
 
+   productShoppingCart: IProductShoppingCart[]=[];
 
 
   constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService, 
@@ -96,14 +108,14 @@ export class ShoppingCartComponent implements OnInit {
 
   getShoppingCarts(){
     this.shoppingCartService.getShoppingCarts(this.userEmail).subscribe({
-      next: shoppingCartItems => {
-        this.shoppingCartItems = shoppingCartItems;
+      next: productsShoppingCart => {
+        this.productShoppingCart = productsShoppingCart;
         this.totalToPay = 0;
         this.subTotalToPay = 0;
-         this.shoppingCartItems.forEach(element => {
-          element.Total= element.Product.UnitPrice * element.Amount;
+          this.productShoppingCart.forEach(element => {
+          element.Total= element.Product.UnitPrice * element.Quantity;
           this.subTotalToPay = this.subTotalToPay + element.Total;
-        }); 
+        });  
         this.fee = this.subTotalToPay *0.10;
         this.totalToPay = this.subTotalToPay + this.fee + this.shipping;
         //Hago lo de abajo para evitar tener ruta http://localhost:4200/shopping-cart/1 o el Id del shoppigCart, y cuando le doy f5 a la pagina crea un nuevo Item
@@ -131,6 +143,7 @@ export class ShoppingCartComponent implements OnInit {
    this.shoppingCartService.createCartItem(product, email).subscribe({
     next: data=> {
       console.log(data);    
+      //this.shoppingCart = data;
     this.getShoppingCarts();
   },
     error: err=> {
@@ -140,9 +153,9 @@ export class ShoppingCartComponent implements OnInit {
    })
   }
 
-  update(shoppingCartItem: IShoppingCart){
+  update(productShoppingCart: IProductShoppingCart){
     
-    this.shoppingCartService.updateShoppingCart(shoppingCartItem).subscribe({
+    this.shoppingCartService.updateShoppingCart(productShoppingCart).subscribe({
       next: data =>{ 
         console.log(data);
         this.getShoppingCarts();
@@ -154,8 +167,8 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  deleteShoppingCartItem(shoppingCartItemId: number): any{
-   this.shoppingCartService.deleteShoppingCarItem(shoppingCartItemId).subscribe({
+  deleteShoppingCartItem(productShoppingCartId: number): any{
+   this.shoppingCartService.deleteShoppingCarItem(productShoppingCartId).subscribe({
     next: data =>{
       console.log(data);
       this.getShoppingCarts();

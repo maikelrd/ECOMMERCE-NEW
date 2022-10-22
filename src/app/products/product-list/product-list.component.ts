@@ -63,7 +63,9 @@ export class ProductListComponent implements OnInit {
   
 
   constructor(private productService:ProductService, private categoryService: CategoryService, private departmentService: DepartmentService,
-                  private sanitizer: DomSanitizer ) { }
+                  private sanitizer: DomSanitizer ) { 
+                   
+                  }
   //constructor() { }
 
   ngOnInit(): void {

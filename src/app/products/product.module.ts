@@ -41,14 +41,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
     children: [
       {path: '', component:ProductListComponent},
       {path: 'product/:id', component:ProductDetailsComponent},  
-      {path: 'product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
+      {path: 'product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent},
       {path:"category/:id",component:CategoryComponent},
       {path: 'category/:id/product/:id', component:ProductDetailsComponent},
-      {path: 'category/:id/product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent,canActivate:[AuthGuard]},
+      {path: 'category/:id/product/:id/product/:id/edit', canDeactivate:[ProductEditGuard],component:ProductEditComponent},
       {path:"category/:id/category/:id",component:CategoryComponent},//this was added for the category in the offcanvas in category.component.html
       {path:"department", component:DepartmentComponent},
       {path:"product/:id/shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]},
-      {path:"category/:id/product/:id/shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]},
+      {path:"category/:id/product/:id/shopping-cart/:id", component:ShoppingCartComponent, canActivate: [AuthGuard]},
       {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}
     ]}
   

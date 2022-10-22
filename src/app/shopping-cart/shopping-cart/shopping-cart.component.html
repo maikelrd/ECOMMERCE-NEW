@@ -18,28 +18,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let shoppingCartItem of shoppingCartItems">
+                            <tr *ngFor="let productInShoppingCart of productShoppingCart; ">
                                 <td class="col sm-8 col-md-6">
                                     <div class="media">
                                         <img class="me-3 thumbnail img-fluid" width="75">
                                         <!-- [src]="shoppingCartItem.Product.ImageUrl"> -->
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="mt-0 media-heading text-primary">{{shoppingCartItem.Product.ProductName}}</h5>
+                                        <h5 class="mt-0 media-heading text-primary">{{productInShoppingCart.Product.ProductName}}</h5>
                                     </div>
                                 </td>
                                 <td class="col-sm-3 col-md-3" style="text-align: center">
                                   
                                     <div class="input-group ">                           
-                                        <input type="number" [(ngModel)]="shoppingCartItem.Amount" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(shoppingCartItem)">update</button>
+                                        <input type="number" [(ngModel)]="productInShoppingCart.Quantity" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(productInShoppingCart)">update</button>
                                       </div>
                                       
                                 </td>
-                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</strong></td>
-                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Total | currency:'USD':'symbol':'1.2-2'}}</strong></td>
+                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{productInShoppingCart.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</strong></td>
+                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{productInShoppingCart.Total | currency:'USD':'symbol':'1.2-2'}}</strong></td>
                                 <td class="col-sm-1 col-md-1">
-                                    <button type="button" class="btn btn-danger" (click)="deleteShoppingCartItem(shoppingCartItem.ShoppingCartItemId )">X</button>
+                                    <button type="button" class="btn btn-danger" (click)="deleteShoppingCartItem(productInShoppingCart.ProductShoppingCartId )">X</button>
                                 </td>
                             </tr>
                             <tr  *ngIf="totalCartItems">
@@ -102,7 +102,7 @@
        </div>
     </div>
 </div>
-
+{{productShoppingCart}}
 
 <!--  <h2>Your shopping Cart</h2>
 <div class="row">
