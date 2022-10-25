@@ -37,6 +37,7 @@ export class AppComponent {
       }
     })
  this.getTotalItem();
+this.getSecurityObject();
   }
 
    getTotalItem(){
@@ -45,6 +46,17 @@ export class AppComponent {
       error: err => this.errorMessage = err
      })
    } 
+
+   getSecurityObject(){
+    this.securityService.getSecurityObjetct().subscribe({
+      next: securityObject =>{
+       if(securityObject){
+        this.securityObject = securityObject;
+       }
+      },      
+       error: err => this.errorMessage = err
+    })
+   }
 
 
   logOut(){

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable,throwError,  of, BehaviorSubject, catchError,tap} from 'rxjs';
+import { Observable,throwError,  of, BehaviorSubject, catchError,tap, Subject} from 'rxjs';
 import { } from 'rxjs/operators';
 import { UserAuthBase } from '../Models/user-auth-base';
 import { UserBase } from '../Models/user-base';
 import { IProduct } from '../products/products';
 import { User } from '../Models/user';
+import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 
 
@@ -18,7 +19,12 @@ export class UserService {
   private hasChanged= new BehaviorSubject<number>(0);
   private readonly baseUrl:string="https://localhost:44305/api/"
 
-  constructor(private http:HttpClient) { }
+  private securityObject$: Subject<UserAuthBase|undefined>
+
+  constructor(private http:HttpClient) {
+    this.securityObject$ = new Subject();
+  }
+
 
 
   public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
@@ -60,6 +66,8 @@ export class UserService {
           //      because that destroys all reference to object
          
           Object.assign(this.securityObject,resp);
+          //adding this below in order to show the user in appcomponent.html
+          this.securityObject$.next(this.securityObject);
           //Inform everyone that a new login has occurred
           this.hasChanged.next(0);
        
@@ -67,9 +75,11 @@ export class UserService {
         console.log("Error", console.error);       
        
       })
+    )  
+  }
 
-    )
-  
+  getSecurityObjetct(): Observable<UserAuthBase|undefined>{
+    return this.securityObject$.asObservable();
   }
  
   private handleError(err:HttpErrorResponse){
