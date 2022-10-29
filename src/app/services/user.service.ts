@@ -36,7 +36,9 @@ export class UserService {
     }
     const headers= new HttpHeaders({'Content-type': 'application/json'});
    // return this.httpClient.post("https://localhost:44305/api/user/RegisterUser",body).pipe(
-    return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{headers}).pipe(
+    
+   // return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{headers}).pipe(
+    return this.http.post("https://localhost:44386/api/Users/RegisterUser",body,{headers}).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object
@@ -58,7 +60,8 @@ export class UserService {
       Email:email,
       Password:password
     }
-    return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
+    //return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
+      return this.http.post("https://localhost:44386/api/Users/Login",body).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object

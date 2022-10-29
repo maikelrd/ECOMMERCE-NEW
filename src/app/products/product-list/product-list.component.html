@@ -42,23 +42,20 @@
             [style.width.px]="imageWidth"
             [style.height.px]="imageHeigth"
             [style.margin.px]="imageMargin">    -->       
-              <div class="card-body">    
-                <img class=" img-responsive"
-                [style.height.px]="250"
-                [style.margin.px]="2"
-                [src]="product.Images[0].fileHandle.url">                    
+              <div class="card-body">
+                <div class="text-center">
+                  <img class="img-responsive pb-3"
+                  [style.height.px]="250"
+                  [style.margin.px]="2"
+                  [src]="product.Images[0].fileHandle.url"> 
+                </div>                 
                     <div> <b>{{product.ProductName}}</b> </div>
-                    <div>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
-                    <div> Description: {{product.Description}}</div>
-                    <div class="row">
-                         <div class="col-md-7 col-lg-4">
-                          StarRating: {{product.StarRating}} 
-                         </div> 
-                         <div class="col-md-5 col-lg-7">
-                          <app-star [rating]='product.StarRating'
-                          (ratingClicked)="onRatingClicked($event)"></app-star>
-                          </div> 
-                    </div>
+                    <div class="pb-3"> 
+                       <app-star [rating]='product.StarRating'
+                       (ratingClicked)="onRatingClicked($event)"></app-star>
+                 </div>
+                    <div class="price pb-3">{{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
+                    <!-- <div> Description: {{product.Description}}</div> -->
                     <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
                       Details
                     </a>
@@ -99,10 +96,17 @@
     </div>
   </div>
 
- <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
- <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">
-   <button class="btn btn-primary" (click)="productsPage(i)" [ngStyle]="{'background-color': i === page ? 'green' : 'blue'}" >{{count}}</button>
+ <div class="text-center pb-5">
+  <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
+  <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">
+    <button class="btn btn-primary" (click)="productsPage(i)" [ngStyle]="{'background-color': i === page ? 'green' : 'blue'}" >{{count}}</button>
+  </div>
+  <button class="btn btn-primary ms-2" (click)="nextPageProducts()" [disabled]="nextEnable">&gt; next</button>
  </div>
- <button class="btn btn-primary ms-2" (click)="nextPageProducts()" [disabled]="nextEnable">&gt; next</button>
   
   <!-- <pagination-controls (pageChange)="page= $event" previousLabel="previous" nextLabel="next"></pagination-controls> -->
+<div class="card-footer bg-dark pb-2 pt-2">
+  <div>
+    <p class="text-center" style="color:#ffffff">Copyright (c) 2002,  Maykel Store</p>
+  </div>
+</div>

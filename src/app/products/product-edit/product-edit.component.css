@@ -35,3 +35,22 @@ vertical-align: middle;
     color: blue;
     cursor: pointer;
 }
+
+.card-body .img-upload {
+    height: unset !important;
+    width: 100%;
+}
+
+.btn-edit-product > * {
+    width: unset !important;
+}
+
+@media screen and (max-width: 991px){
+    .upload-img {
+        display: none;
+    }
+
+    .upload-img-mobile {
+        display: block !important;
+    }
+}
