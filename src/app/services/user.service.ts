@@ -17,7 +17,7 @@ import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 export class UserService {
   securityObject:UserAuthBase=new UserAuthBase();
   private hasChanged= new BehaviorSubject<number>(0);
-  private readonly baseUrl:string="https://localhost:44305/api/"
+  private  url:string=""
 
   private securityObject$: Subject<UserAuthBase|undefined>
 
@@ -27,7 +27,7 @@ export class UserService {
 
 
 
-  public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null): Observable<any>{
+  public register(firstName:string|null,lastName:string|null,email:string|null, password:string|null, isAdmin: boolean|null): Observable<any>{
     const body={
       FirstName:firstName,
       LastName: lastName,
@@ -38,7 +38,12 @@ export class UserService {
    // return this.httpClient.post("https://localhost:44305/api/user/RegisterUser",body).pipe(
     
    // return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{headers}).pipe(
-    return this.http.post("https://localhost:44386/api/Users/RegisterUser",body,{headers}).pipe(
+    if(!isAdmin){
+     this.url= "https://localhost:44386/api/Users/RegisterUser"
+    }else{
+      this.url = "https://localhost:44386/api/Users/register-admin"
+    }
+    return this.http.post(this.url,body,{headers}).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object

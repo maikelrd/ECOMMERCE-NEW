@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit {
         confirmPassword:['',Validators.required]
       },{validators:passwordMatcher}),
       includeAddress:false,
+      isAdmin:false,
       addresses:this.fb.array([this.buildAddress()])
 
       });     
@@ -108,7 +109,8 @@ export class RegisterComponent implements OnInit {
     let lastName = this.registerForm.controls['lastName'].value;  
     let password = this.registerForm.controls['passwords'].value.password;  
     let email = this.registerForm.controls['email'].value;  
-    this.userService.register(firstName, lastName,email, password).subscribe((data)=>
+    let isAdmin = this.registerForm.controls['isAdmin'].value; 
+    this.userService.register(firstName, lastName,email, password, isAdmin).subscribe((data)=>
     {
       console.log("response", data); 
        this.registerResponse = data;    
