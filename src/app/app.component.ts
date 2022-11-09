@@ -41,21 +41,21 @@ this.getSecurityObject();
   }
 
    getTotalItem(){
-    this.shoppingCartService.getTotalCartItem().subscribe({
+     this.shoppingCartService.getTotalCartItem().subscribe({
       next: total => this.totalCartItems = total,
       error: err => this.errorMessage = err
-     })
+     }) 
    } 
 
    getSecurityObject(){
-    this.securityService.getSecurityObjetct().subscribe({
+     this.securityService.getSecurityObjetct().subscribe({
       next: securityObject =>{
        if(securityObject){
         this.securityObject = securityObject;
        }
       },      
        error: err => this.errorMessage = err
-    })
+    }) 
    }
 
 

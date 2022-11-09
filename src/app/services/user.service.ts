@@ -60,6 +60,7 @@ export class UserService {
       Email:email,
       Password:password
     }
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
     //return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
       return this.http.post("https://localhost:44386/api/Users/Login",body).pipe(
       tap(resp=>{

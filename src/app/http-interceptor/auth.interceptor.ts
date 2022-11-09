@@ -13,8 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let auth = undefined;
+    let auth = undefined;    
     let value = localStorage.getItem("AuthObject");
+   
     if (value){
       auth = JSON.parse(value);
     }

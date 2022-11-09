@@ -5,6 +5,10 @@ import { debounce, debounceTime } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserBase } from 'src/app/Models/user-base';
 import {User} from 'src/app/Models/user'
+
+import {RegisterResponse} from 'src/app/Models/RegisterResponse'
+
+//import {Regi}
 //import { UserService } from 'src/app/services/user.service';
 //import  { UserService } from 'src/app/services/user.service';
 
@@ -38,6 +42,7 @@ export class RegisterComponent implements OnInit {
  
   userRegister = new User();
  // userRegister: User | undefined;
+  registerResponse = new RegisterResponse();
   showPassword: boolean = false;
   
 
@@ -106,15 +111,16 @@ export class RegisterComponent implements OnInit {
     this.userService.register(firstName, lastName,email, password).subscribe((data)=>
     {
       console.log("response", data); 
-       this.userRegister = data;    
-      this.toastr.success((this.userRegister?.FirstName + ' '+ this.userRegister?.LastName), "User Register");
+       this.registerResponse = data;    
+     // this.toastr.success((this.userRegister?.FirstName + ' '+ this.userRegister?.LastName), "User Register");
+     this.toastr.success((this.registerResponse.Message), "User Register");
       this.registerForm.reset();
      }    
     ,
     error =>{
       console.log("error", error.error);
-      this.errorMessage= error.error;
-      this.toastr.error(error.error, "User Register");
+      this.errorMessage= error.error.Message;
+      this.toastr.error(error.error.Message, "User Register");
     });
 
 
