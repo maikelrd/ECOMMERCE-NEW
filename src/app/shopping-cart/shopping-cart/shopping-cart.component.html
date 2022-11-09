@@ -4,8 +4,29 @@
         <div class="card-header">
             <h2>Your shopping Cart</h2>
         </div>
-        <div class="card-body">
+
+        <div class="shopping-cart-list sc-mobile" *ngFor="let productInShoppingCart of productShoppingCart ">
+            <p class="sc-product-name">{{productInShoppingCart.Product.ProductName}}</p>
+            <p class="sc-product-price">{{productInShoppingCart.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</p>
             <div class="row">
+                <div class="col-8">
+                    <div class="input-group ">                           
+                        <input type="number" [(ngModel)]="productInShoppingCart.Quantity" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(productInShoppingCart)"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    </div>
+        
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-secondary" (click)="deleteShoppingCartItem(productInShoppingCart.ProductShoppingCartId )"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</button>
+
+                </div>
+
+            </div>
+            
+        </div>
+
+        <div class="card-body">
+            <div class="sc-desktop row">
                 <div class="table-responsive  col-sm-9 col-lg-9">
                     <table class="table table-hover table-borderless">
                         <thead>
@@ -18,7 +39,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let productInShoppingCart of productShoppingCart; ">
+                            <tr *ngFor="let productInShoppingCart of productShoppingCart ">
                                 <td class="col sm-8 col-md-6">
                                     <div class="media">
                                         <img class="me-3 thumbnail img-fluid" width="75">
@@ -83,7 +104,7 @@
                 </div>  
             </div>
         </div>
-        <div class="card-footer">
+        <div class="scart-list card-footer">
             <div class="row ">
                 <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()" [disabled]="disableButton">Clear your shopping cart</button>
             </div>
@@ -92,7 +113,7 @@
     <div class=" card col-sm-4 col-lg-4 ">       
        <div class="card-body">
             <div class="row">
-                <h3 class="text-center">Subtotal({{totalCartItems}}  Items): {{subTotalToPay | currency:'USD':'symbol':'1.2-2'}}</h3>
+                <h3 class="text-center">Subtotal({{totalCartItems}}  Items): {{totalToPay | currency:'USD':'symbol':'1.2-2'}}</h3>
             </div>
             <div class="row" >            
                 <div class="d-grid gap-2  col-6 mx-auto">

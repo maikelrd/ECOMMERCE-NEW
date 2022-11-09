@@ -44,6 +44,7 @@ export class ProductEditComponent implements OnInit {
     Description: '',
     StarRating: 0,
     //ImageUrl:'',
+//Url: '',
     Images: [] 
   
   };
@@ -54,7 +55,8 @@ export class ProductEditComponent implements OnInit {
    PicByte:'' ,
     Name: '',
    ProductId: 0,
-  fileHandle: {file: {} as File, url:''}        
+  fileHandle: {file: {} as File, url:''}   ,
+  Url: ''     
 }
   //private sub:Subscription;
 

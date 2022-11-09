@@ -13,7 +13,23 @@ import { ProductService } from '../product.service';
 export class ProductDetailsComponent implements OnInit {
   pageTitle='Product Detail';
   errorMessage='';
-  product:IProduct | undefined;
+ // product:IProduct | undefined;
+ product:IProduct =
+  {
+    ProductId:0,
+    ProductName:'',
+    ProductCode:'',
+    ReleaseDate:'',
+    CategoryId:0,
+    UnitPrice:0,
+    StockQty:0,
+    Description: '',
+    StarRating: 0,
+    //Url:'',
+    //Total:0
+    Images:  []
+    
+    };
 
   constructor(private route: ActivatedRoute,
               private router:Router,

@@ -6,6 +6,31 @@
     --bs-card-border-color: transparent;
 }
 
+#AllDepartments {
+    background-color: #212529;
+}
+
+#AllDepartments .btn-close {
+    color: #FFFF !important;
+}
+#AllDepartments ul {
+    list-style-type: none !important;
+  }
+  #AllDepartments h5, #AllDepartments h2 {
+    color: #FFFF;
+  }
+  #AllDepartments h2 {
+    border-bottom: solid 1px #525252;
+    padding-bottom: 10px;
+  }
+
+#AllDepartments a {
+    color: #FFFF;
+    text-decoration: none;
+  }
+
+
+
 @media screen and (max-width: 1199px) {
     .card-body img {
      height: unset !important;

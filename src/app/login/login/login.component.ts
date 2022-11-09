@@ -47,10 +47,12 @@ export class LoginComponent implements OnInit {
         this.errorString = "";
         this.loginForm.reset();
         if(this.returnUrl){
+          this.loginForm.reset();
           this.router.navigateByUrl(this.returnUrl);
         }
-        else{
+        else{       
           this.router.navigate(["shopping-cart"]);
+         //this.router.navigate([""]);
         }
        
         

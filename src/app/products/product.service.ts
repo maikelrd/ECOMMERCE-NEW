@@ -24,8 +24,8 @@ export class ProductService {
 
   getProducts():Observable<IProduct[]>{
     return this.http.get<IProduct[]>("https://localhost:44386/api/Products").pipe(
-     // tap(data=>console.log('All',JSON.stringify(data))),
-     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      tap(data=>console.log('All',JSON.stringify(data))),
+    // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -33,8 +33,8 @@ export class ProductService {
   getProductsByPage(page: number):Observable<IProduct[]>{
     const url =`${this.productPageUrl}/${page}`;
     return this.http.get<IProduct[]>(url).pipe(
-     // tap(data=>console.log('All',JSON.stringify(data))),
-     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      tap(data=>console.log('All',JSON.stringify(data))),
+    // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -59,8 +59,8 @@ export class ProductService {
   getProductsByCategoryPage(categoryId: number,page: number):Observable<IProduct[]>{
     const url =`${this.productPageByCategoryUrl}/${categoryId}/${page}`;
     return this.http.get<IProduct[]>(url).pipe(
-     // tap(data=>console.log('All',JSON.stringify(data))),
-     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      tap(data=>console.log('All',JSON.stringify(data))),
+     //map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -85,8 +85,8 @@ export class ProductService {
   GetProductsByCategoryFilter(categoryId: number, page: number,filterBy: string):Observable<IProduct[]>{
     const url =`${this.filterInCategoryUrl}/${categoryId}/${page}/${filterBy}`;
     return this.http.get<IProduct[]>(url).pipe(
-      //tap(data=>console.log('All',JSON.stringify(data))),
-     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      tap(data=>console.log('All',JSON.stringify(data))),
+    // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -102,8 +102,8 @@ export class ProductService {
   GetProductsFilter(page: number, filterBy: string):Observable<IProduct[]>{
     const url =`${this.filterProductUrl}/${page}/${filterBy}`;
     return this.http.get<IProduct[]>(url).pipe(
-     // tap(data=>console.log('All',JSON.stringify(data))),
-     map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
+      tap(data=>console.log('All',JSON.stringify(data))),
+     //map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
@@ -116,8 +116,8 @@ getProduct(id:number): Observable<IProduct>{
   const url=`${this.productUrl}/${id}`;
   return this.http.get<IProduct>(url)
    .pipe(
-    //tap(data=>console.log('getProduct: '+ JSON.stringify(data))),
-    map(x =>{return this.createImages(x)}),
+    tap(data=>console.log('getProduct: '+ JSON.stringify(data))),
+   // map(x =>{return this.createImages(x)}),
     catchError(this.handleError)
    );
 }
@@ -181,7 +181,7 @@ updateProduct(product: IProduct): Observable<IProduct> {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    //ImageUrl:'',
+    //Url:'',
     //Total:0
     Images:  []
     

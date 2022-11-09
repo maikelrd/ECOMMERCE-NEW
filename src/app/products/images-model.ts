@@ -7,4 +7,5 @@ export interface IImageModel{
     PicByte:string;
     ProductId: number
     fileHandle: FileHandle;
+    Url: string;
 }
