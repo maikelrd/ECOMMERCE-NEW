@@ -24,17 +24,7 @@
                              </span>
                           </div>                       
                        </div>
-                       <!-- NO es responsive  de esta manera -->
-                       <!-- <div class="mb-3 row"> 
-                        <label for="inputPassword" class="col-sm-5 col-md-4 col-lg-3">Password</label>
-                        <div class="input-group col-sm-6 col-md-7 col-lg-8 " >                         
-                          <input [type]=" showPassword ? 'text' : 'password'" formControlName="password" class="form-control" id="inputPassword"
-                          placeholder="Password" aria-label="Password" aria-describedby="basic-addon2"> 
-                          <span class="input-group-text" id="inputPassword">
-                           <i class="fa" id="inputPassword" [ngClass]="{'fa-eye-slash':!showPassword, 'fa-eye':showPassword}" (click)="showHidePassword()"> </i>
-                          </span>
-                         </div> 
-                      </div>  -->
+                     
                      
                  </div>    
                  <button type="submit" class="btn btn-primary ms-4"  [disabled]="!loginForm.valid">Sign in</button>          
@@ -47,41 +37,3 @@
 </div> 
 
 
-<!-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
-           <div class="card">
-               <form [formGroup]="loginForm" (ngSubmit)="login()">
-                   <div class="card-body">
-                       <h5 class="card-title text-center">Login</h5>
-                       <div class="mb-3 row">
-                           <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                           <div class="col-sm-9">
-                             <input type="text"  formControlName="email" class="form-control" id="staticEmail" value="">
-                           </div>
-                         </div>
-                         <div class="mb-3 row">
-                           <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                           <div class="col-sm-9">
-                           
-                             <input [type]=" showPassword ? 'text' : 'password'" formControlName="password" class="form-control" id="inputPassword">
-                          
-                            </div>
-                            <div class="col-sm-1">
-                              <span>
-                                <i class="fa" [ngClass]="{'fa-eye-slash':!showPassword, 'fa-eye':showPassword}" (click)="showHidePassword()"> </i>
-                               </span>
-                            </div>
-                         
-                         </div>
-                       
-                   </div>    
-                   <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Sign in</button>          
-               </form> 
-               <a class="btn btn-success mt-4" routerLink="/register">Create an account</a>
-                          
-        </div>
-    </div>
-</div>
-</div> 
- -->

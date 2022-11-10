@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserAuthBase } from './Models/user-auth-base';
 import { UserService } from './services/user.service';
 import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
+
+export let browserRefresh = false;
 
 //import { ProductListComponent } from './products/product-list/product-list.component';
 
@@ -13,13 +15,22 @@ import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy{
+  subscriptionRefresh: Subscription;
+
   pageTitle = 'ECOMMERCE';
   securityObject: UserAuthBase = new UserAuthBase()// | undefined;
   subscription :Subscription | undefined;
   totalCartItems: number = 0;
   errorMessage: string = '';
   constructor(private securityService: UserService, private router: Router, private shoppingCartService: ShoppingCartService){
+    this.subscriptionRefresh = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        browserRefresh = !router.navigated;
+      }
+  });
+
+
     let auth = undefined;
     let value = localStorage.getItem("AuthObject");
     if (value){
@@ -38,6 +49,10 @@ export class AppComponent {
     })
  this.getTotalItem();
 this.getSecurityObject();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptionRefresh.unsubscribe();
   }
 
    getTotalItem(){

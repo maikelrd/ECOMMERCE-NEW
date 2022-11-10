@@ -84,12 +84,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   /*  this.sub = this.route.paramMap.subscribe(
-      params => {
-        const id =+params.get('id');
-        this.getProduct(id );
-      }
-    ); */
+   
     const param=this.route.snapshot.paramMap.get('id');
     if(param){
       const id= +param
@@ -206,9 +201,7 @@ export class ProductEditComponent implements OnInit {
 
     deleteImage(id: number){     
       console.log(id);
-      /* this.arrayFiles.forEach((element, index)=>{
-        if(element == id) this.arrayFiles.splice(index,1);
-      )}; */
+      
    
           this.arrayFile.splice(id,1);
 

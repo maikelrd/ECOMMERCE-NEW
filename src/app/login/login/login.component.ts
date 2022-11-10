@@ -60,8 +60,8 @@ export class LoginComponent implements OnInit {
     },
     Error =>{
       console.log("Error", console.error);
-      this.toastr.error(Error.error, "User login");
-      this.errorString=Error.error;
+      this.toastr.error(Error.error.title, "User login");
+      this.errorString=Error.error.title;
     })
   }
 

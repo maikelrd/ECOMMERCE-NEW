@@ -1,6 +1,6 @@
-import { Component, OnInit, ɵɵsetComponentScope  } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription,  } from 'rxjs';
+import { Component, OnInit, Input, ɵɵsetComponentScope  } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Observable, Subscription, filter} from 'rxjs';
 import { IProduct } from 'src/app/products/products';
 import { ProductService } from 'src/app/products/product.service';
 import { ShoppingCartService } from '../shopping-cart.service';
@@ -9,6 +9,7 @@ import { IShoppingCart } from './shopping-cart';
 import { IProductShoppingCart } from '../productShoppingCart';
 //import { IProductShoppingCart } from '../productInShoppingCart';
 
+import { browserRefresh } from 'src/app/app.component';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -16,6 +17,10 @@ import { IProductShoppingCart } from '../productShoppingCart';
   styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
+ // @Input() productId: number = 0;
+ public browserRefresh: boolean = false;
+
+  prodCartId: number = 0;
    products: IProduct[] = [];  
   //products: IProduct[] = [];
 
@@ -56,37 +61,31 @@ export class ShoppingCartComponent implements OnInit {
     
   }
 
- /*  ngOnChanges(changes: SimpleChanges): void {
-    {
-      this.getShoppingCarts();
-    }
-  } */
+   
+
   ngOnInit(): void {
-    var param = this.route.snapshot.paramMap.get('id');
-    if(param){
-      //this.router.navigate(['shopping-cart']);
+   
+   this.browserRefresh = browserRefresh;
+   //if is a refresh do not increment de product amaount
+   if(!this.browserRefresh)
+   {
+    var param = this.route.snapshot.paramMap.get('id');  
+    if(param){      
       const id = +param;   
       this.getProduct(id);
-    //  this.createCartItem(this.product, this.userEmail);
-      
-      
-     // this.getTotalItem()
-     //param ='';
-     //this.router.navigate(['shopping-cart'])
-    }
-    else{
-      this.getShoppingCarts();
-    }
+    }     
+   }
+   this.getShoppingCarts();
     this.getTotalItem()
+   
   }
 
 
  getTotalItem(){
   this.shoppingCartService.getTotalCartItem().subscribe({
     next: total =>{ 
-      this.totalCartItems = total;
-      //To active o desactive the button of clear your shopping cart
-      if( this.totalCartItems == 0){
+      
+        if( total == 0){
           this.disableButton = true;
       }else{
         this.disableButton = false;
@@ -112,9 +111,11 @@ export class ShoppingCartComponent implements OnInit {
         this.productShoppingCart = productsShoppingCart;
         this.totalToPay = 0;
         this.subTotalToPay = 0;
+        this.totalCartItems = 0;
           this.productShoppingCart.forEach(element => {
           element.Total= element.Product.UnitPrice * element.Quantity;
           this.subTotalToPay = this.subTotalToPay + element.Total;
+          this.totalCartItems = this.totalCartItems + element.Quantity;
         });  
         this.fee = this.subTotalToPay *0.10;
         this.totalToPay = this.subTotalToPay + this.fee + this.shipping;

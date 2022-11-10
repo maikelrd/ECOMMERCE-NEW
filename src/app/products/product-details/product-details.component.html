@@ -14,8 +14,9 @@
      <img class="center-block img-responsive"
           [style.height.px]="250"
           [style.margin.px]="1"
-          [src]="product.Images[0].Url"
+         
           [title]="product.ProductName">
+          <!-- [src]="product.Images[0].Url"> -->
    </div> 
 
    
@@ -45,32 +46,7 @@
     </div>   
 </div>
   
-       <!--  <div class="col-md-4 col-lg-4">
-          <div class="row">
-            <div class="col-md-3">Name:</div>
-            <div class="col-md-6"><b>{{product.ProductName}}</b></div>
-          </div>
-  
-          <div class="row">
-            <div class="col-md-3">Description:</div>
-            <div class="col-md-6"><b>{{product.Description}}</b></div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">Price:</div>
-            <div class="col-md-6"><b>{{product.UnitPrice|currency:"USD":"symbol"}}</b></div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">Availability:</div>
-            <div class="col-md-6"><b>{{product.StockQty}}</b></div>
-          </div>        
-          <div class="row">
-            <div class="col-md-3 ">5 Star Rating:</div>
-            <div class="col-md-6">
-              <app-star [rating]="product.StarRating">
-              </app-star>
-            </div>
-          </div>   
-      </div> -->
+       
   
 
       <div class="row mt-4">
@@ -98,16 +74,14 @@
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div  class="carousel-inner">
           <div class="carousel-item active">
-            <img [src]="product.Images[0].Url" >
+            <!-- <img [src]="product.Images[0].Url" > -->
           </div>
           <div *ngFor="let image of product.Images" class="carousel-item">
             <img 
-            [style.margin.px]="2"
-            [src]="image.Url"> 
+            [style.margin.px]="2">
+            <!-- [src]="image.Url">  -->
           </div>
-          <!-- <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-          </div> -->
+          
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -33,21 +33,16 @@
       </div>
 
       <div class="row" >
-        <!-- <div *ngFor="let product of filteredProducts | paginate: {itemsPerPage: 10, currentPage: page}"  class="col-sm-3 col-lg-3 mb-4"> -->
+       
           <div *ngFor="let product of filteredProducts"  class="col-sm-3 col-lg-3 mb-4">
            <div class="card border-light " >   
-            <!-- <img class="card-img-top"
-            [src]="product.Images[0].fileHandle.url"
-            [title]="product.ProductName"
-            [style.width.px]="imageWidth"
-            [style.height.px]="imageHeigth"
-            [style.margin.px]="imageMargin">    -->       
+                  
               <div class="card-body">
                 <div class="text-center">
                   <img class="img-responsive pb-3"
                   [style.height.px]="250"
-                  [style.margin.px]="2"
-                  [src]="product.Images[0].Url"> 
+                  [style.margin.px]="2">
+                  <!-- [src]="product.Images[0].Url">  -->
                   <!-- [src]="product.Images[0].fileHandle.url">  -->
                 </div>                 
                     <div> <b>{{product.ProductName}}</b> </div>
@@ -57,6 +52,7 @@
                  </div>
                     <div class="price pb-3">{{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
                     <!-- <div> Description: {{product.Description}}</div> -->
+                    
                     <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
                       Details
                     </a>
