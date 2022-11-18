@@ -42,6 +42,8 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.controls["password"].value;
     this.userService.login(email,password).subscribe((resp:any)=>{
       if(resp){
+        localStorage.setItem('token', resp.Token);
+        localStorage.setItem('refreshtoken', resp.RefreshToken);
         localStorage.setItem("AuthObject",JSON.stringify(resp));
         this.securityObject = resp;
         this.errorString = "";

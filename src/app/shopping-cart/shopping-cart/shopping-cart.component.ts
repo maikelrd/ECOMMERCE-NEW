@@ -154,7 +154,7 @@ export class ShoppingCartComponent implements OnInit {
    })
   }
 
-  update(productShoppingCart: IProductShoppingCart){
+  update(productShoppingCart: IProductShoppingCart ){
     
     this.shoppingCartService.updateShoppingCart(productShoppingCart).subscribe({
       next: data =>{ 

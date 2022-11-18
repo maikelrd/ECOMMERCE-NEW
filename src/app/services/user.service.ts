@@ -7,6 +7,9 @@ import { UserBase } from '../Models/user-base';
 import { IProduct } from '../products/products';
 import { User } from '../Models/user';
 import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { Router } from '@angular/router';
+
+import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 
 
 
@@ -18,10 +21,11 @@ export class UserService {
   securityObject:UserAuthBase=new UserAuthBase();
   private hasChanged= new BehaviorSubject<number>(0);
   private  url:string=""
+  private refreshTokenUrl = "https://localhost:44386/api/Users/RefreshToken";
 
   private securityObject$: Subject<UserAuthBase|undefined>
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private router: Router, private shoppingCartService: ShoppingCartService) {
     this.securityObject$ = new Subject();
   }
 
@@ -107,12 +111,54 @@ export class UserService {
     return throwError(()=>errorMessage);
 }
 
-  logOut():void{
-    this.securityObject.init(); 
-    
-      //Inform everyone the security object has changed
-      this.hasChanged.next(0);
+ 
+
+  GenerateRefreshToken() {
+    let input = {
+      "Token": this.GetToken(),
+      "RefreshToken": this.GetRefreshToken()
+    }
+    return this.http.post(this.refreshTokenUrl, input) .pipe(
+      tap(resp=>{
+          this.SaveTokens(resp);
+          console.log(resp);
+       
+      },Error=>{
+        console.log("Error", console.error);       
+       
+      })
+    ) ; 
   }
 
+  GetToken() {    
+    return localStorage.getItem("token") || '';
+  }
+  GetRefreshToken() {
+    return localStorage.getItem("refreshtoken") || '';
+  }
+
+  SaveTokens(tokendata: any) {
+    localStorage.setItem('token', tokendata.Token);
+    localStorage.setItem('refreshtoken', tokendata.RefreshToken);
+  }
+
+  logOut():void{
+    this.securityObject.init(); 
+  
+      //Inform everyone the security object has changed
+      this.hasChanged.next(0);
+    
+      let temp=this.GetToken();
+      if(temp == ''){
+        alert('Your session expired');
+      }
+      
+      localStorage.removeItem("AuthObject");
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshtoken");
+    localStorage.clear();
+    this.shoppingCartService.totalCartItem(0);
+    this.router.navigateByUrl('/login');
+  }
 
 }

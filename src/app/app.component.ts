@@ -77,7 +77,10 @@ this.getSecurityObject();
   logOut(){
     this.securityService.logOut();
     this.securityObject=this.securityService.securityObject;
-    localStorage.removeItem("AuthObject");
+  //  this.securityObject = null;
+    
+    //localStorage.clear();
     this.totalCartItems = 0;
+
   }
 }

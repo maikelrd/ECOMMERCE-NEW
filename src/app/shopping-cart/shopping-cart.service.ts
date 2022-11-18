@@ -82,7 +82,7 @@ export class ShoppingCartService {
           this.totalItems = 0;
           var productShoppingCart = data;
           productShoppingCart.forEach(element => {
-            this.totalItems++
+            this.totalItems = this.totalItems+element.Quantity;
           }); 
            /* this.shoppingCartItems.forEach(element => {
             this.totalItems++
@@ -109,7 +109,7 @@ export class ShoppingCartService {
     const url = `${this.productShoppingCartUrl}/${productShoppingCart.ProductShoppingCartId}`;
     return this.http.put<IProductShoppingCart>(url, productShoppingCart, {headers})
      .pipe(
-      tap(() =>console.log('updateShoppingCart: ' + productShoppingCart.ProductShoppingCartId)),
+      tap(() => console.log('updateShoppingCart: ' + productShoppingCart.ProductShoppingCartId)),
       catchError(this.handleError)
      );
    }
