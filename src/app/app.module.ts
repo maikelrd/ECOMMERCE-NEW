@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './http-interceptor/auth.interceptor';;
 import { ToastrModule } from 'ngx-toastr';
 import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
+import { ContactComponent } from './contact/contact/contact.component';
 
 //import { ProductService } from './products/product.service';
 
@@ -20,7 +21,7 @@ import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
   declarations: [
     AppComponent,
     HomeComponent, 
-        RegisterComponent, LoginComponent
+        RegisterComponent, LoginComponent, ContactComponent
   ],
   imports: [
     BrowserModule,   
@@ -32,6 +33,7 @@ import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
       {path:"home",component:HomeComponent}, 
       {path:"register",component:RegisterComponent},  
       {path:"login", component:LoginComponent},   
+      {path:"contact", component:ContactComponent},   
       {path:'', loadChildren: ()=> import('./products/product.module').then(m=> m.ProductModule)} ,  
       {path:'',redirectTo:'HomeComponent',pathMatch:'full'},
       {path:'**',redirectTo:'HomeComponent',pathMatch:'full'}

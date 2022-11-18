@@ -153,10 +153,10 @@ export class UserService {
         alert('Your session expired');
       }
       
-      localStorage.removeItem("AuthObject");
+     /*  localStorage.removeItem("AuthObject");
     localStorage.removeItem("token");
-    localStorage.removeItem("refreshtoken");
-    localStorage.clear();
+    localStorage.removeItem("refreshtoken");*/
+    localStorage.clear(); 
     this.shoppingCartService.totalCartItem(0);
     this.router.navigateByUrl('/login');
   }
