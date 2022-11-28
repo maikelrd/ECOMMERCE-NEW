@@ -188,7 +188,9 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  checkOut(){}
+  checkOut(){
+    this.router.navigateByUrl('/checkout');
+  }
 
  
 

@@ -10,6 +10,7 @@ import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Router } from '@angular/router';
 
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
+import { Address } from '../Models/address';
 
 
 
@@ -23,10 +24,12 @@ export class UserService {
   private  url:string=""
   private refreshTokenUrl = "https://localhost:44386/api/Users/RefreshToken";
 
-  private securityObject$: Subject<UserAuthBase|undefined>
-
+  private securityObject$: Subject<UserAuthBase|undefined> ;
+  private deliveryAddress$: Subject<Address> ;
+  
   constructor(private http:HttpClient, private router: Router, private shoppingCartService: ShoppingCartService) {
     this.securityObject$ = new Subject();
+    this.deliveryAddress$ = new Subject();
   }
 
 
@@ -89,6 +92,41 @@ export class UserService {
        
       })
     )  
+  }
+
+  public PostAddress(address: Address):Observable<any>{
+    
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
+    //return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
+      return this.http.post("https://localhost:44386/api/Users/Address",address).pipe(
+      tap(resp=>{     
+           console.log(resp);       
+      },Error=>{
+        console.log("Error", console.error);       
+       
+      })
+    )  
+  }
+
+  public getAddress(Email: string):Observable<Address>{
+    
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
+    const url=`https://localhost:44386/api/Users/Email?Email=${Email}`;
+      return this.http.get<Address>(url).pipe(
+      tap(resp=>{            
+        this.deliveryAddress$.next(resp);
+        //Inform everyone that a new login has occurred
+        this.hasChanged.next(0);
+           console.log(resp);       
+      },Error=>{
+        console.log("Error", console.error);       
+       
+      })
+    )  
+  }
+
+  getDeliveryAddress(): Observable<Address>{
+    return this.deliveryAddress$.asObservable();
   }
 
   getSecurityObjetct(): Observable<UserAuthBase|undefined>{

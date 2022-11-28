@@ -2,12 +2,12 @@
 <div class='card'>
     <div class='card-header'>
         <div class="row">
-          <div class="col-sm-4 col-lg-1">
+            <div class="col-sm-4 col-lg-1">
             <a type="button" class="btn btn-dark float-end"
             data-bs-toggle="offcanvas" data-bs-target="#AllDepartments" aria-controls="AllDepartments">
             All
            </a>        
-           </div>
+           </div>  
           <div class="col-sm-4 col-lg-2">
             Products List by Category <b>{{category.CategoryName}}</b>
          </div>
@@ -96,7 +96,7 @@
                </div>
              </div>                        
           </div>
-      </div>  
+      </div>   
 
       <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
  <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">

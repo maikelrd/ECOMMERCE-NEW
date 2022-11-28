@@ -20,6 +20,7 @@ import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { DragDirective } from './drag.directive';
 
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CheckoutComponent } from '../shopping-cart/checkout/checkout.component';
 
 
 
@@ -49,7 +50,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
       {path:"department", component:DepartmentComponent},
       {path:"product/:id/shopping-cart/:id", component: ShoppingCartComponent, canActivate: [AuthGuard]},
       {path:"category/:id/product/:id/shopping-cart/:id", component:ShoppingCartComponent, canActivate: [AuthGuard]},
-      {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]}
+      {path:"shopping-cart", component: ShoppingCartComponent, canActivate: [AuthGuard]},
+      {path:"checkout", component: CheckoutComponent, canActivate:[AuthGuard]}
     ]}
   
     ]),

@@ -1,0 +1,193 @@
+
+<div class="card ">
+    <div class="card-header text-center">CheckOut({{totalCartItems}} Items)</div>
+    <div class="card-body">
+       <div class="row">
+        <div class="card col-8">
+            
+            <div class="card-body">
+                <div class="row">
+                   <div class="col-3">
+                    <h4>1 Shipping address: </h4>
+                   </div>
+                   <div class="col-7">
+                    <h4>{{this.deliveryAddress}}</h4>
+                   </div> 
+                   <div class="col-2">
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#address" >Edit</button> 
+                   </div>                   
+                </div>
+                <hr>
+                <div>
+                    <h4>2 Payment method</h4>                    
+                </div>
+                <hr>
+                <div>
+                    <h4>3 Review items and shipping</h4>
+                    <div class="" *ngFor="let productInShoppingCart of productShoppingCart ">
+                       <p>{{productInShoppingCart.Product.ProductName}}</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="card col-3 ms-4">
+            <div class="card-header">
+                <div class="d-grid gap-2  col-6 mx-auto">
+                    <button class="btn btn-warning btn-lg ">Place your order</button>                    
+                </div>
+                <div>
+                    <h5>By placing your order, you agree to  privacy notice and conditions of use.</h5>
+                </div>
+              
+            </div>
+            <div class="card-body ">
+                <h2><b>Orden Summary</b></h2>
+                <div class="row">
+                    <div>
+                        <h5>Items: {{totalCartItems}}</h5>               
+                    </div>            
+                   <!--  <div>
+                        <h5><b>Fee: </b><strong>{{fee | currency:'USD':'symbol':'1.2-2'}}</strong></h5>               
+                    </div> -->
+                    <div>
+                        <h5>shipping & handling: {{shipping | currency:'USD':'symbol':'1.2-2'}}</h5>               
+                    </div>
+                    <div>
+                        <h5>Total before taxes: {{subTotalToPay | currency:'USD':'symbol':'1.2-2'}}</h5>               
+                    </div>
+                    <div>
+                        <h5>Order Total: {{totalToPay | currency:'USD':'symbol':'1.2-2'}}</h5>               
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer ">
+                <h5>How are shipping costs calculated?</h5>
+            </div>
+          </div>
+    </div>
+       </div>
+    <div class="card-footer ">
+       <div class="row">
+        <div class="col-2">
+            <button class="btn btn-warning  ">Place your order</button>                              
+        </div>
+        <div class="col-3">
+            <h5>Order Total: {{totalToPay | currency:'USD':'symbol':'1.2-2'}}</h5> 
+        </div>
+    </div>
+       </div>
+</div>
+<div class="modal fade" id="address" tabindex="-1" aria-labelledby="addressLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addressLabel">Delivery address</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form novalidate
+                (ngSubmit)="addAddress()"
+                [formGroup]="addressForm">
+
+                <!-- <div class="form-group row mb-2">
+                    <label class="col-md-3 col-form-label"
+                           for="phoneNumberId">phoneNumber</label>
+                    <div class="col-md-8">
+                      <input class="form-control"
+                             id="phoneNumberId"
+                             type="text"
+                             placeholder="phoneNumber (required)"              
+                             formControlName="PhoneNumber"
+                             [ngClass]="{'is-invalid': (addressForm.get('PhoneNumber')?.touched || addressForm.get('PhoneNumber')?.dirty) && !addressForm.get('PhoneNumber')?.valid }" />
+                             <span class="invalid-feedback">
+                                <span *ngIf="addressForm.controls['PhoneNumber'].errors?.['required']">
+                                  Please enter your first name.
+                                </span>                              
+                              </span>                  
+                    </div>
+                </div> -->
+                <div class="form-group row mb-2">
+                    <label class="col-md-3 col-form-label"
+                           for="streetId">Street </label>
+                    <div class="col-md-8">
+                      <input class="form-control"
+                             id="streetId"
+                             type="text"
+                             placeholder="Street address (required)"              
+                             formControlName="Street"
+                             [ngClass]="{'is-invalid': (addressForm.get('Street')?.touched || addressForm.get('Street')?.dirty) && !addressForm.get('Street')?.valid }" />
+                             <span class="invalid-feedback">
+                                <span *ngIf="addressForm.controls['Street'].errors?.['required']">
+                                  Please enter your street address.
+                                </span>
+                               <!--  <span *ngIf="addressForm.controls['phoneNumber'].errors?.['minlength']">
+                                  The first name must be longer than 3 characters.
+                                </span> -->
+                              </span>                  
+                    </div>
+                </div>
+               
+                <div class="form-group row mb-2">
+                    <label class=" col-form-label"
+                          for="cityId">City, State, Zip Code</label>
+                    <div class="col-md-3">
+                      <input class="form-control"
+                            id="cityId"
+                            type="text"
+                            placeholder="City"                            
+                            formControlName="City"
+                            [ngClass]="{'is-invalid': (addressForm.get('City')?.touched || addressForm.get('City')?.dirty) && !addressForm.get('City')?.valid }">
+                            <span class="invalid-feedback">
+                              <span *ngIf="addressForm.controls['City'].errors?.['required']">
+                                Please enter your city.
+                              </span>                           
+                            </span>  
+                    </div>
+                    <div class="col-md-3">
+                      <select class="form-control"
+                              id="stateId"                            
+                              formControlName="State"
+                              [ngClass]="{'is-invalid': (addressForm.get('State')?.touched || addressForm.get('State')?.dirty) && !addressForm.get('State')?.valid }">
+                        <option value=""
+                                disabled
+                                selected
+                                hidden>Select a State...</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="FL">Florida</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                      </select>
+                      <span class="invalid-feedback">
+                        <span *ngIf="addressForm.controls['State'].errors?.['required']">
+                          Please enter your state.
+                        </span>                           
+                      </span> 
+                    </div>
+                    <div class="col-md-3">
+                      <input class="form-control"
+                            id="zipId"
+                            type="number"
+                            placeholder="Zip"            
+                            formControlName="ZipCode"
+                            [ngClass]="{'is-invalid': (addressForm.get('ZipCode')?.touched || addressForm.get('ZipCode')?.dirty) && !addressForm.get('ZipCode')?.valid }">
+                            <span class="invalid-feedback">
+                              <span *ngIf="addressForm.controls['ZipCode'].errors?.['required']">
+                                Please enter your zipcode.
+                              </span>                           
+                            </span> 
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit"  class="btn btn-primary ms-2">Save </button> 
+            </form>
+        </div>
+       
+      </div>
+    </div>
+</div>

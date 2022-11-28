@@ -32,9 +32,12 @@ export class ShoppingCartService {
  //shoppingCartItem: IShoppingCart | undefined;
  totalItems: number = 0;
  private totalCartItem$: Subject<number>;
+ subTotal: number = 0;
+ private subtotal$: Subject<number>;
  
   constructor(private http: HttpClient) { 
     this.totalCartItem$ = new Subject();
+    this.subtotal$ = new Subject();
 
   }
 
@@ -80,15 +83,19 @@ export class ShoppingCartService {
              console.log('shoppingCarts' +JSON.stringify(data));
          // this.shoppingCartItems = data;
           this.totalItems = 0;
+          this.subTotal = 0;
           var productShoppingCart = data;
           productShoppingCart.forEach(element => {
-            this.totalItems = this.totalItems+element.Quantity;
+            this.totalItems = this.totalItems + element.Quantity;
+             this.subTotal = this.subTotal + element.Quantity*element.Product.UnitPrice;   
           }); 
            /* this.shoppingCartItems.forEach(element => {
             this.totalItems++
           });  */
           this.totalCartItem(this.totalItems);
           this.getTotalCartItem();// check if 
+          this.subTotalCartItem(this.subTotal);
+          this.getSubtotal();
         }),
           catchError(this.handleError) 
          );
@@ -103,6 +110,15 @@ export class ShoppingCartService {
    getTotalCartItem():Observable<number>{
      return this.totalCartItem$.asObservable();
    }
+
+   subTotalCartItem(subtotal: number){
+     this.subtotal$.next(subtotal);
+   }
+   
+   getSubtotal(): Observable<number>{
+    return this.subtotal$.asObservable();
+   }
+
 
    updateShoppingCart(productShoppingCart: IProductShoppingCart):Observable<IProductShoppingCart>{
     const headers= new HttpHeaders({ 'Content-Type': 'application/json' });
