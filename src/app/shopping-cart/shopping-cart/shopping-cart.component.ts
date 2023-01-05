@@ -42,7 +42,7 @@ export class ShoppingCartComponent implements OnInit {
   subTotalToPay: number = 0;
   fee: number = 0;
   shipping = 10;
-  disableButton: boolean = false;  //To active o desactive the button of clear your shopping cart
+  //disableButton: boolean = false;  //To active o desactive the button of clear your shopping cart
 
   totalCartItems: number = 0;
 
@@ -76,12 +76,12 @@ export class ShoppingCartComponent implements OnInit {
     }     
    }
    this.getShoppingCarts();
-    this.getTotalItem()
+   // this.getTotalItem()
    
   }
 
 
- getTotalItem(){
+ /* getTotalItem(){
   this.shoppingCartService.getTotalCartItem().subscribe({
     next: total =>{ 
       
@@ -93,7 +93,7 @@ export class ShoppingCartComponent implements OnInit {
     },
     error: err => this.errorMessage = err
    })
- }
+ } */
 
   getProduct(id: number){
     this.productService.getProduct(id).subscribe({

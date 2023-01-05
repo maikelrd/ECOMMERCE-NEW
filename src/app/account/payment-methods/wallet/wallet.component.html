@@ -1,0 +1,291 @@
+<nav class="ms-3" style="--bs-breadcrumb-divider: '>';">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/account">Your Account</a></li>
+        <li class="breadcrumb-item"><a routerLink="/paymentMethod">Your Payments</a></li>       
+        <li class="breadcrumb-item active" aria-current="page">Wallet</li>
+    </ol>
+</nav>
+<div class="row">
+  <div>
+    <h4>Cards & Account</h4>
+  </div>
+  <div  class="row" *ngFor="let card of cards">
+    <div class="card col-4">
+      <div class="card-body">
+       <b>({{card.Type}})</b> Card ending in *****{{card.lastDigits}}
+       <b *ngIf="card.DefaultPMethod" >(Default)</b>
+        <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#editCardModal" (click)="editPayment(card)" >
+          Edit
+        </button>          
+      </div>
+      
+    </div>
+  </div>
+    <div class="col-1 mt-3">
+        <button class="btn btn-light payZone" data-bs-toggle="modal" data-bs-target="#addCardModal" >
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>        
+    </div>
+    <div class="col-3 mt-4">
+        <p>add a credit or debit card</p>
+    </div>
+</div>
+
+<!-- Modal add card-->
+<div class="modal fade" id="addCardModal" tabindex="-1" aria-labelledby="addCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addCardModalLabel">Add a credit or debit card</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form novalidate
+            (ngSubmit)="addCard()"
+            [formGroup]="cardForm">
+
+            <div class="form-group row mb-2">
+                <label class="col-md-3 col-form-label"
+                       for="CardNumberId">Card Number </label>
+                <div class="col-md-8">
+                  <input class="form-control"
+                         id="CardNumberId"
+                         type="text"
+                         placeholder="Card Number (required)"              
+                         formControlName="CardNumber"
+                         [ngClass]="{'is-invalid': (cardForm.get('CardNumber')?.touched || cardForm.get('CardNumber')?.dirty) && !cardForm.get('CardNumber')?.valid }" />
+                         <span class="invalid-feedback">
+                            <span *ngIf="cardForm.controls['CardNumber'].errors?.['required']">
+                              Please enter your card number.
+                            </span>   
+                            <span *ngIf="cardForm.controls['CardNumber'].errors?.['onlyNumber']">
+                              Invalid  card number.
+                            </span>                                                
+                          </span>                  
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-md-3 col-form-label"
+                       for="NameOnCardId">Name on card </label>
+                <div class="col-md-8">
+                  <input class="form-control"
+                         id="NameOnCardId"
+                         type="text"
+                         placeholder="Name on Card (required)"              
+                         formControlName="NameOnCard"
+                         [ngClass]="{'is-invalid': (cardForm.get('NameOnCard')?.touched || cardForm.get('NameOnCard')?.dirty) && !cardForm.get('NameOnCard')?.valid }" />
+                         <span class="invalid-feedback">
+                            <span *ngIf="cardForm.controls['NameOnCard'].errors?.['required']">
+                              Please enter your name on  card .
+                            </span>                          
+                          </span>                  
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <label class=" col-form-label">Expiration Date</label>                
+                <div class="col-md-3">
+                  <select class="form-control"
+                          id="ExpMonthId"                            
+                          formControlName="ExpMonth"
+                          [ngClass]="{'is-invalid': (cardForm.get('ExpMonth')?.touched || cardForm.get('ExpMonth')?.dirty) && !cardForm.get('ExpMonth')?.valid }">
+                    <option value=""
+                            disabled
+                            selected
+                            hidden>Month</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                  </select>
+                  <span class="invalid-feedback">
+                    <span *ngIf="cardForm.controls['ExpMonth'].errors?.['required']">
+                      Please enter your expiration month.
+                    </span>                           
+                  </span> 
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            id="ExpYearId"                            
+                            formControlName="ExpYear"
+                            [ngClass]="{'is-invalid': (cardForm.get('ExpYear')?.touched || cardForm.get('ExpYear')?.dirty) && !cardForm.get('ExpYear')?.valid }">
+                      <option value=""
+                              disabled
+                              selected
+                              hidden>Year</option>
+                              <option value="2022">2022</option>
+                              <option value="2023">2023</option>
+                              <option value="2024">2024</option>
+                              <option value="2025">2025</option>
+                              <option value="2026">2026</option>
+                              <option value="2027">2027</option>
+                              <option value="2028">2028</option>
+                              <option value="2029">2029</option>
+                              <option value="2030">2030</option>
+                    </select>
+                    <span class="invalid-feedback">
+                      <span *ngIf="cardForm.controls['ExpYear'].errors?.['required']">
+                        Please enter expiration year.
+                      </span>                           
+                    </span> 
+                  </div>
+              </div>
+              <div class="alert alert-danger"
+              *ngIf="errorMessage">{{errorMessage}}              
+         </div>                
+                
+                 <div *ngIf="!defaultPMethod">
+                  <label class="form-check-label" >
+                    <input class="form-check-input"
+                          id="defaultMethodAdd"
+                          type="checkbox"                    
+                          formControlName="DefaultPMethod"> Set as default payment method.
+                  </label>  
+                 </div>
+                       
+             <div class="mt-4">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit"  class="btn btn-primary ms-2">Save </button> 
+             </div>
+        </form>
+        </div>        
+      </div>
+    </div>
+</div> 
+<!-- Modal edit card-->
+<div class="modal fade" id="editCardModal" tabindex="-1" aria-labelledby="editCardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editCardModalLabel">Edit payment method</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form novalidate
+          (ngSubmit)="updateCard()"
+          [formGroup]="cardForm">
+
+          <div class="form-group row mb-2">
+              <label class="col-md-3 col-form-label"
+                     for="CardNumberId">Card Number </label>
+              <div class="col-md-8">
+                <input class="form-control"
+                       id="CardNumberId"
+                       type="text"
+                       placeholder="Card Number (required)"              
+                       formControlName="CardNumber"
+                       [ngClass]="{'is-invalid': (cardForm.get('CardNumber')?.touched || cardForm.get('CardNumber')?.dirty) && !cardForm.get('CardNumber')?.valid }" />
+                       <span class="invalid-feedback">
+                          <span *ngIf="cardForm.controls['CardNumber'].errors?.['required']">
+                            Please enter your card number.
+                          </span>   
+                          <span *ngIf="cardForm.controls['CardNumber'].errors?.['onlyNumber']">
+                            Invalid  card number.
+                          </span>                                                
+                        </span>                  
+              </div>
+          </div>
+
+          <div class="form-group row mb-2">
+              <label class="col-md-3 col-form-label"
+                     for="NameOnCardId">Name on card </label>
+              <div class="col-md-8">
+                <input class="form-control"
+                       id="NameOnCardId"
+                       type="text"
+                       placeholder="Name on Card (required)"              
+                       formControlName="NameOnCard"
+                       [ngClass]="{'is-invalid': (cardForm.get('NameOnCard')?.touched || cardForm.get('NameOnCard')?.dirty) && !cardForm.get('NameOnCard')?.valid }" />
+                       <span class="invalid-feedback">
+                          <span *ngIf="cardForm.controls['NameOnCard'].errors?.['required']">
+                            Please enter your name on  card .
+                          </span>                          
+                        </span>                  
+              </div>
+          </div>
+          <div class="form-group row mb-2">
+              <label class=" col-form-label">Expiration Date</label>                
+              <div class="col-md-3">
+                <select class="form-control"
+                        id="ExpMonthId"                            
+                        formControlName="ExpMonth"
+                        [ngClass]="{'is-invalid': (cardForm.get('ExpMonth')?.touched || cardForm.get('ExpMonth')?.dirty) && !cardForm.get('ExpMonth')?.valid }">
+                  <option value=""
+                          disabled
+                          selected
+                          hidden>Month</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                </select>
+                <span class="invalid-feedback">
+                  <span *ngIf="cardForm.controls['ExpMonth'].errors?.['required']">
+                    Please enter your expiration month.
+                  </span>                           
+                </span> 
+              </div>
+              <div class="col-md-3">
+                  <select class="form-control"
+                          id="ExpYearId"                            
+                          formControlName="ExpYear"
+                          [ngClass]="{'is-invalid': (cardForm.get('ExpYear')?.touched || cardForm.get('ExpYear')?.dirty) && !cardForm.get('ExpYear')?.valid }">
+                    <option value=""
+                            disabled
+                            selected
+                            hidden>Year</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                  </select>
+                  <span class="invalid-feedback">
+                    <span *ngIf="cardForm.controls['ExpYear'].errors?.['required']">
+                      Please enter expiration year.
+                    </span>                           
+                  </span> 
+                </div>
+            </div>
+            <div class="alert alert-danger"
+            *ngIf="errorMessage">{{errorMessage}}
+       </div>  
+       <div *ngIf="card.ShowDefaultP">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 id="defaultMethodEdit"
+                 type="checkbox"                    
+                 formControlName="DefaultPMethod"> Set as default payment method.
+         </label>
+       </div>
+            <div class="mt-4">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
+              <button type="submit"  class="btn btn-primary me-4">Save </button> 
+              <button class="btn btn-danger ms-4"  (click)="removePayment()" >Remove from wallet</button>
+            </div>
+            
+      </form>
+      </div>        
+    </div>
+  </div>
+</div> 

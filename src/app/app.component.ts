@@ -68,13 +68,18 @@ export class AppComponent implements OnDestroy{
    
     this.shoppingCartService.getShoppingCarts(this.securityObject?.Email).subscribe({
       next: shoppingCartItems => {
-        this.totalCartItems= shoppingCartItems.length;
+        this.totalCartItems = 0;
+        shoppingCartItems.forEach(element => {
+          this.totalCartItems = this.totalCartItems + element.Quantity;
+             
+        }); 
+       // this.totalCartItems= shoppingCartItems.length;
       },
       error: err => {
         this.errorMessage = err;
         console.log(err)
       }
-    })
+    }) 
  this.getTotalItem();
 this.getSecurityObject();
 this.getDeliveryAdress();
@@ -155,8 +160,8 @@ this.getCategories();
   }
   logOut(){
     this.securityService.logOut();
-    this.securityObject=this.securityService.securityObject;
-  //  this.securityObject = null;
+    this.securityObject.init(); 
+    localStorage.clear(); 
     
     //localStorage.clear();
     this.totalCartItems = 0;

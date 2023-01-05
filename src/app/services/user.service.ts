@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 import { Address } from '../Models/address';
+import { Card } from '../Models/card';
 
 
 
@@ -129,6 +130,19 @@ export class UserService {
     return this.deliveryAddress$.asObservable();
   }
 
+  public PostCard(card: Card):Observable<any>{
+    
+    const headers= new HttpHeaders({'Content-type': 'application/json'});
+   
+      return this.http.post("https://localhost:44386/api/Card/AddCard",card).pipe(
+      tap(resp=>{     
+           console.log(resp);       
+      },Error=>{
+        console.log("Error", console.error);       
+       
+      })
+    )  
+  }
   getSecurityObjetct(): Observable<UserAuthBase|undefined>{
     return this.securityObject$.asObservable();
   }

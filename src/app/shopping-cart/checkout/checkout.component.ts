@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { FormGroup, FormControl,FormBuilder, Validators, MinLengthValidator } from '@angular/forms';
 import { Address } from 'src/app/Models/address';
 import { IProductShoppingCart } from '../productShoppingCart';
+import { PaymentService } from 'src/app/services/payment.service';
+import { Card } from 'src/app/Models/card';
 
 @Component({
   selector: 'app-checkout',
@@ -32,7 +34,10 @@ export class CheckoutComponent implements OnInit {
 
   productShoppingCart: IProductShoppingCart[]=[];
 
-  constructor(private shoppingCartService: ShoppingCartService, private securityService: UserService, private fb:FormBuilder) {
+  paymentMethod: Card = new Card();
+ 
+  constructor(private shoppingCartService: ShoppingCartService, private securityService: UserService, private fb:FormBuilder,
+     private paymentService: PaymentService) {
     this.addressForm=this.fb.group({
       //PhoneNumber:['',Validators.required],
       Street:['', Validators.required],   
@@ -64,6 +69,7 @@ export class CheckoutComponent implements OnInit {
     this.getAddress();
     this.getDeliveryAdress();
     this. getShoppingCarts();
+    this.getPaymentMethod();
   }
   
   addAddress(){
@@ -142,5 +148,35 @@ export class CheckoutComponent implements OnInit {
         console.log(err)
       }
     })
+  }
+
+  getPaymentMethod(){
+    this.paymentService.getCards(this.securityObject.Email).subscribe({
+      next: resp =>{
+        resp.forEach(card =>{
+          if(card.DefaultPMethod == true){
+            this.paymentMethod = card;
+            this.paymentMethod.lastDigits = this.paymentMethod.CardNumber.substring(12, 16);
+            switch(this.paymentMethod.CardNumber.charAt(0)){
+              case '3': this.paymentMethod.Type = 'American Express';
+              break;
+              case '4': this.paymentMethod.Type = 'Visa';
+              break;
+              case '5': this.paymentMethod.Type = 'Mastercards';
+              break;
+              case '6': this.paymentMethod.Type = 'Discover';
+              break;
+              default: this.paymentMethod.Type = 'Unknow'
+              break;
+            } 
+          }
+        }); 
+      }
+
+    })
+   /*  this.paymentService.getPaymentMethod().subscribe({
+      next: paymentMethod => this.paymentMethod = paymentMethod,
+      error: err => this.errorMessage = err
+    }); */
   }
 }

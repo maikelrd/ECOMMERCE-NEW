@@ -18,15 +18,22 @@
                    </div>                   
                 </div>
                 <hr>
-                <div>
-                    <h4>2 Payment method</h4>                    
+                <div class="row">
+                  <div class="col-3">
+                    <h4>2 Payment method: </h4> 
+                  </div>
+                  <div class="col-7">
+                    <b>({{paymentMethod.Type}})</b> Card ending in *****{{paymentMethod.lastDigits}}  
+                  </div>                                  
                 </div>
                 <hr>
                 <div>
-                    <h4>3 Review items and shipping</h4>
-                    <div class="" *ngFor="let productInShoppingCart of productShoppingCart ">
-                       <p>{{productInShoppingCart.Product.ProductName}}</p>
-                    </div>
+                    <h2>3 Review items and shipping</h2>
+                   <ul>
+                    <li *ngFor="let productInShoppingCart of productShoppingCart ">
+                      {{productInShoppingCart.Product.ProductName}}<b>( {{productInShoppingCart.Quantity}} items)</b>
+                   </li>
+                   </ul>
                 </div>
             </div>
             

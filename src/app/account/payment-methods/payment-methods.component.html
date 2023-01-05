@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-footer">
+         <nav class="nav">
+            <a class="nav-link btn btn-outline-light" (click)="overviewMethod()" >Overview</a>
+            <a class="nav-link btn btn-outline-light" (click)=" walletMethod()" >Wallet</a>
+            <a class="nav-link btn btn-outline-light" (click)="transactionsMethod()">Transactions</a>
+            <a class="nav-link  btn btn-outline-light" (click)="settingsMethod()">Settings</a>
+          </nav>         
+    </div>
+    <div class="card-body">
+        <div *ngIf="this.wallet">
+         <app-wallet></app-wallet>
+        </div>
+        <div *ngIf="this.overview">
+            <app-overview></app-overview>
+        </div>
+        <div *ngIf="this.transactions">
+            <app-transactions></app-transactions>
+        </div>
+        <div *ngIf="this.settings">
+            <app-settings></app-settings>
+        </div>
+    </div>  
+</div>

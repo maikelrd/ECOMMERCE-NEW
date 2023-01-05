@@ -106,7 +106,7 @@
         </div>
         <div class="scart-list card-footer">
             <div class="row ">
-                <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()" [disabled]="disableButton">Clear your shopping cart</button>
+                <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()" [disabled]="!totalCartItems">Clear your shopping cart</button>
             </div>
         </div>
     </div>
@@ -117,7 +117,9 @@
             </div>
             <div class="row" >            
                 <div class="d-grid gap-2  col-6 mx-auto">
-                    <button class="btn btn-success    " (click)="checkOut()" [disabled]="disableButton">Proceed to checkout</button>
+                    <button class="btn btn-success    " (click)="checkOut()" [disabled]="!totalCartItems">Proceed to checkout</button>
+                   <!--  <button class="btn btn-success    " (click)="checkOut()" [disabled]="disableButton">Proceed to checkout</button> -->
+
                 </div>
             </div>
        </div>
