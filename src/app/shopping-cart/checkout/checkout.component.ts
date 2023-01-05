@@ -173,10 +173,6 @@ export class CheckoutComponent implements OnInit {
         }); 
       }
 
-    })
-   /*  this.paymentService.getPaymentMethod().subscribe({
-      next: paymentMethod => this.paymentMethod = paymentMethod,
-      error: err => this.errorMessage = err
-    }); */
+    })  
   }
 }
