@@ -10,6 +10,7 @@ import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Router } from '@angular/router';
 
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
+import { ConfigurationService } from '../shared/configuration/configuration.service';
 import { Address } from '../Models/address';
 import { Card } from '../Models/card';
 
@@ -23,14 +24,16 @@ export class UserService {
   securityObject:UserAuthBase=new UserAuthBase();
   private hasChanged= new BehaviorSubject<number>(0);
   private  url:string=""
+  apiUrl: string = "";
   private refreshTokenUrl = "https://localhost:44386/api/Users/RefreshToken";
 
   private securityObject$: Subject<UserAuthBase|undefined> ;
   private deliveryAddress$: Subject<Address> ;
   
-  constructor(private http:HttpClient, private router: Router, private shoppingCartService: ShoppingCartService) {
+  constructor(private http:HttpClient, private router: Router, private shoppingCartService: ShoppingCartService, private configService: ConfigurationService) {
     this.securityObject$ = new Subject();
     this.deliveryAddress$ = new Subject();
+    this.apiUrl = this.configService.setting.apiUrl;
   }
 
 
@@ -47,9 +50,9 @@ export class UserService {
     
    // return this.http.post("https://localhost:44386/api/users/RegisterUser",body,{headers}).pipe(
     if(!isAdmin){
-     this.url= "https://localhost:44386/api/Users/RegisterUser"
+     this.url= this.apiUrl + "Users/RegisterUser"
     }else{
-      this.url = "https://localhost:44386/api/Users/register-admin"
+      this.url = this.apiUrl + "Users/register-admin"
     }
     return this.http.post(this.url,body,{headers}).pipe(
       tap(resp=>{
@@ -75,7 +78,9 @@ export class UserService {
     }
     const headers= new HttpHeaders({'Content-type': 'application/json'});
     //return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
-      return this.http.post("https://localhost:44386/api/Users/Login",body).pipe(
+      this.url = this.apiUrl + "Users/Login";
+     // return this.http.post("https://localhost:44386/api/Users/Login",body).pipe(
+      return this.http.post(this.url,body).pipe(
       tap(resp=>{
        
           //Use object assign to update the current object
@@ -99,7 +104,9 @@ export class UserService {
     
     const headers= new HttpHeaders({'Content-type': 'application/json'});
     //return this.http.post("https://localhost:44386/api/Security/Login",body).pipe(
-      return this.http.post("https://localhost:44386/api/Users/Address",address).pipe(
+      this.url = this.apiUrl + "Users/Address";
+     // return this.http.post("https://localhost:44386/api/Users/Address",address).pipe(
+      return this.http.post(this.url,address).pipe(
       tap(resp=>{     
            console.log(resp);       
       },Error=>{
@@ -112,7 +119,8 @@ export class UserService {
   public getAddress(Email: string):Observable<Address>{
     
     const headers= new HttpHeaders({'Content-type': 'application/json'});
-    const url=`https://localhost:44386/api/Users/Email?Email=${Email}`;
+    //const url=`https://localhost:44386/api/Users/Email?Email=${Email}`;
+    const url=`${this.apiUrl}Users/Email?Email=${Email}`;
       return this.http.get<Address>(url).pipe(
       tap(resp=>{            
         this.deliveryAddress$.next(resp);
@@ -130,11 +138,12 @@ export class UserService {
     return this.deliveryAddress$.asObservable();
   }
 
-  public PostCard(card: Card):Observable<any>{
+ /*  public PostCard(card: Card):Observable<any>{
     
     const headers= new HttpHeaders({'Content-type': 'application/json'});
+    this.url = this.apiUrl + "Card/AddCard"
    
-      return this.http.post("https://localhost:44386/api/Card/AddCard",card).pipe(
+      return this.http.post(this.url,card).pipe(
       tap(resp=>{     
            console.log(resp);       
       },Error=>{
@@ -142,7 +151,7 @@ export class UserService {
        
       })
     )  
-  }
+  } */
   getSecurityObjetct(): Observable<UserAuthBase|undefined>{
     return this.securityObject$.asObservable();
   }
@@ -170,7 +179,9 @@ export class UserService {
       "Token": this.GetToken(),
       "RefreshToken": this.GetRefreshToken()
     }
-    return this.http.post(this.refreshTokenUrl, input) .pipe(
+    this.url = this.apiUrl + "Users/RefreshToken";
+   // return this.http.post(this.refreshTokenUrl, input) .pipe(
+    return this.http.post(this.url, input) .pipe(
       tap(resp=>{
           this.SaveTokens(resp);
           console.log(resp);

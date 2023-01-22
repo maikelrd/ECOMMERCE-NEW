@@ -82,6 +82,7 @@ export class AppComponent implements OnDestroy{
     }) 
  this.getTotalItem();
 this.getSecurityObject();
+this.getAddress();
 this.getDeliveryAdress();
 
 this.getDepartments();
@@ -159,6 +160,7 @@ this.getCategories();
     });
   }
   logOut(){
+    localStorage.clear(); 
     this.securityService.logOut();
     this.securityObject.init(); 
     localStorage.clear(); 

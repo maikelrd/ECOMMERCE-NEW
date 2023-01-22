@@ -5,19 +5,22 @@ import { } from 'rxjs/operators';
 import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Router } from '@angular/router';
 import { Card } from '../Models/card';
+import { ConfigurationService } from '../shared/configuration/configuration.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
   private  url:string="";
+  apiUrl: string = "";
   cardUrl: string = "https://localhost:44386/api/Card"
  
   // private  paymentMethod$: Subject<Card>;
   // private hasChanged= new BehaviorSubject<number>(0);
 
-  constructor(private http:HttpClient, private router: Router) {
+  constructor(private http:HttpClient, private router: Router, private configService: ConfigurationService) {
     // this.paymentMethod$ = new Subject();
+    this.apiUrl = this.configService.setting.apiUrl;
    }  
  
 
@@ -25,7 +28,8 @@ export class PaymentService {
     
     const headers= new HttpHeaders({'Content-type': 'application/json'});
    // https://localhost:44386/api/Card/userEmail?userEmail=maikelrd%40gmail.com
-    const url=`https://localhost:44386/api/Card/userEmail?userEmail=${userEmail}`;
+    //const url=`https://localhost:44386/api/Card/userEmail?userEmail=${userEmail}`;
+    const url=`${this.apiUrl}Card/userEmail?userEmail=${userEmail}`;
       return this.http.get<Card[]>(url).pipe(
       tap(resp=>{   
         console.log(resp)  ;   
@@ -53,8 +57,9 @@ export class PaymentService {
   public PostCard(card: Card):Observable<any>{
     
     const headers= new HttpHeaders({'Content-type': 'application/json'});
-   
-      return this.http.post("https://localhost:44386/api/Card/AddCard",card).pipe(
+    this.url = this.apiUrl + "Card/AddCard"
+     // return this.http.post("https://localhost:44386/api/Card/AddCard",card).pipe(
+      return this.http.post(this.url,card).pipe(
       tap(resp=>{     
            console.log(resp);       
       },Error=>{
@@ -66,7 +71,8 @@ export class PaymentService {
 
   updateCard(card: Card): Observable<Card> {
     const headers= new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url=`${this.cardUrl}/${card.CardId}`;
+   // const url=`${this.cardUrl}/${card.CardId}`;
+   const url=`${this.apiUrl + "Card"}/${card.CardId}`;
     return this.http.put<Card>(url, card, {headers})
      .pipe(
       tap(()=>console.log('updateProduct: '+ card.CardId)),
@@ -76,7 +82,8 @@ export class PaymentService {
 
   deleteCard(cardId: number): Observable<any>{
     const headers= new HttpHeaders({ 'Content-Type': 'application/json'});
-    const url=`${this.cardUrl}/${cardId}`;
+    //const url=`${this.cardUrl}/${cardId}`;
+    const url=`${this.apiUrl + "Card"}/${cardId}`;
     return this.http.delete<any>(url, {headers})
       .pipe(
          tap(data=>console.log('deleteCard: '+ cardId)),

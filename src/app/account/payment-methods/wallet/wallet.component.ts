@@ -157,11 +157,12 @@ export class WalletComponent implements OnInit {
    }
    this.paymentService.PostCard(p).subscribe({
     next: data=>{
+      this.getCards();
      this.cardForm.reset();
-     const p = {...this.card, ...this.cardForm.value};
+     //const p = {...this.card, ...this.cardForm.value};
      this.errorMessage = ''
       console.log(data);
-      this.getCards();
+      //this.getCards();
     },
     error: err => this.errorMessage = err.error
    })

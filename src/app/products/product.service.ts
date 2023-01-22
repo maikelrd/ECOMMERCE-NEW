@@ -8,6 +8,7 @@ import { IImageModel } from './images-model';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { IFilterModel } from '../Models/filterModel';
+import { ConfigurationService } from '../shared/configuration/configuration.service';
 
 
 @Injectable({
@@ -20,18 +21,26 @@ export class ProductService {
   private filterInCategoryUrl = "https://localhost:44386/api/FilterInCategory";
   private filterProductUrl = "https://localhost:44386/api/FilterProducts";
 
-  constructor(private http:HttpClient, private sanitizer: DomSanitizer) { }
+  apiUrl: string = "";
+  //url: string = "";
+
+  constructor(private http:HttpClient, private sanitizer: DomSanitizer, private configService: ConfigurationService) { 
+    this.apiUrl = this.configService.setting.apiUrl;
+  }
 
   getProducts():Observable<IProduct[]>{
-    return this.http.get<IProduct[]>("https://localhost:44386/api/Products").pipe(
+    const url=  this.apiUrl + "Products"
+    //return this.http.get<IProduct[]>("https://localhost:44386/api/Products").pipe(
+      return this.http.get<IProduct[]>(url).pipe(
       tap(data=>console.log('All',JSON.stringify(data))),
     // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
       catchError(this.handleError)
     );
   }
 
-  getProductsByPage(page: number):Observable<IProduct[]>{
-    const url =`${this.productPageUrl}/${page}`;
+  getProductsByPage(page: number):Observable<IProduct[]>{    
+   // const url =`${this.productPageUrl}/${page}`;
+   const url =`${this.apiUrl + "Pagination"}/${page}`;
     return this.http.get<IProduct[]>(url).pipe(
       tap(data=>console.log('All',JSON.stringify(data))),
     // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
@@ -40,7 +49,8 @@ export class ProductService {
   }
 
   getCountProducts(): Observable<number>{     
-    return this.http.get<number>(this.productPageUrl)
+    const url = this.apiUrl + "Pagination";
+    return this.http.get<number>(url)
      .pipe(
       tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
       catchError(this.handleError)
@@ -48,7 +58,8 @@ export class ProductService {
   }
 
   getCountProductsByCategory(categoryId: number): Observable<number>{     
-    const url =`${this.productPageByCategoryUrl}/${categoryId}`
+    //const url =`${this.productPageByCategoryUrl}/${categoryId}`
+    const url =`${this.apiUrl + "PaginationCategory"}/${categoryId}`;
     return this.http.get<number>(url)
      .pipe(
       tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
@@ -57,7 +68,7 @@ export class ProductService {
   }
 
   getProductsByCategoryPage(categoryId: number,page: number):Observable<IProduct[]>{
-    const url =`${this.productPageByCategoryUrl}/${categoryId}/${page}`;
+    const url =`${this.apiUrl + "PaginationCategory"}/${categoryId}/${page}`;
     return this.http.get<IProduct[]>(url).pipe(
       tap(data=>console.log('All',JSON.stringify(data))),
      //map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
@@ -74,7 +85,8 @@ export class ProductService {
     );
   } */
   getCountProductsCategoryFilter(categoryId: number,filterBy: string): Observable<number>{   
-    const url =`${this.filterInCategoryUrl}/${categoryId}/${filterBy}`;  
+   // const url =`${this.filterInCategoryUrl}/${categoryId}/${filterBy}`;  
+    const url =`${this.apiUrl + "FilterInCategory"}/${categoryId}/${filterBy}`; 
     return this.http.get<number>(url)
      .pipe(
       tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
@@ -83,7 +95,8 @@ export class ProductService {
   }
 
   GetProductsByCategoryFilter(categoryId: number, page: number,filterBy: string):Observable<IProduct[]>{
-    const url =`${this.filterInCategoryUrl}/${categoryId}/${page}/${filterBy}`;
+   // const url =`${this.filterInCategoryUrl}/${categoryId}/${page}/${filterBy}`;
+   const url =`${this.apiUrl + "FilterInCategory"}/${categoryId}/${page}/${filterBy}`;
     return this.http.get<IProduct[]>(url).pipe(
       tap(data=>console.log('All',JSON.stringify(data))),
     // map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
@@ -92,7 +105,8 @@ export class ProductService {
   }
 
   getCountProductsFilter(filterBy: string): Observable<number>{   
-    const url =`${this.filterProductUrl}/${filterBy}`;  
+    //const url =`${this.filterProductUrl}/${filterBy}`;  
+    const url =`${this.apiUrl + "FilterProducts"}/${filterBy}`;      
     return this.http.get<number>(url)
      .pipe(
       tap(data=>console.log('count of Products: '+ JSON.stringify(data))),     
@@ -100,7 +114,8 @@ export class ProductService {
      );
   }
   GetProductsFilter(page: number, filterBy: string):Observable<IProduct[]>{
-    const url =`${this.filterProductUrl}/${page}/${filterBy}`;
+    //const url =`${this.filterProductUrl}/${page}/${filterBy}`;
+    const url =`${this.apiUrl + "FilterProducts"}/${page}/${filterBy}`;
     return this.http.get<IProduct[]>(url).pipe(
       tap(data=>console.log('All',JSON.stringify(data))),
      //map((x: IProduct[], i) => x.map((product:IProduct) => this.createImages(product))),
@@ -113,7 +128,8 @@ getProduct(id:number): Observable<IProduct>{
   if(id===0){
     return of(this.initializeProduct());
   }
-  const url=`${this.productUrl}/${id}`;
+  //const url=`${this.productUrl}/${id}`;
+  const url=`${this.apiUrl + "Products"}/${id}`;
   return this.http.get<IProduct>(url)
    .pipe(
     tap(data=>console.log('getProduct: '+ JSON.stringify(data))),
@@ -126,7 +142,8 @@ createProduct(product:FormData): Observable<IProduct> {
   const headers= new HttpHeaders({'Content-type': 'application/json'});
  //product.ProductId=0;
  console.log(...product);
-  return this.http.post<IProduct>(this.productUrl,product)
+ const url = this.apiUrl + "Products";
+  return this.http.post<IProduct>(url,product)
      .pipe(
       tap(data=>console.log('createProduct: '+ JSON.stringify(data))),
       catchError(this.handleError)
@@ -135,7 +152,8 @@ createProduct(product:FormData): Observable<IProduct> {
 
 deleteProduct(id: number): Observable<{}> {
   const headers= new HttpHeaders({ 'Content-Type': 'application/json'});
-  const url=`${this.productUrl}/${id}`;
+  //const url=`${this.productUrl}/${id}`;
+  const url=`${this.apiUrl + "Products"}/${id}`;
   return this.http.delete<IProduct>(url, {headers})
     .pipe(
        tap(data=>console.log('deleteProduct: '+ id)),
@@ -145,7 +163,7 @@ deleteProduct(id: number): Observable<{}> {
 
 updateProduct(product: IProduct): Observable<IProduct> {
   const headers= new HttpHeaders({ 'Content-Type': 'application/json' });
-  const url=`${this.productUrl}/${product.ProductId}`;
+  const url=`${this.apiUrl + "Products"}/${product.ProductId}`;
   return this.http.put<IProduct>(url, product, {headers})
    .pipe(
     tap(()=>console.log('updateProduct: '+ product.ProductId)),
