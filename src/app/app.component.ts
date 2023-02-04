@@ -65,25 +65,36 @@ export class AppComponent implements OnDestroy{
       this.securityObject = JSON.parse(value);
       
     }
-   
-    this.shoppingCartService.getShoppingCarts(this.securityObject?.Email).subscribe({
-      next: shoppingCartItems => {
-        this.totalCartItems = 0;
-        shoppingCartItems.forEach(element => {
-          this.totalCartItems = this.totalCartItems + element.Quantity;
-             
-        }); 
-       // this.totalCartItems= shoppingCartItems.length;
-      },
-      error: err => {
-        this.errorMessage = err;
-        console.log(err)
-      }
-    }) 
- this.getTotalItem();
-this.getSecurityObject();
+    
+
+    if(this.securityObject.Email == ''){
+      this.totalCartItems = 0;
+      this.deliveryAddress = '';
+    }else{
+      this.shoppingCartService.getShoppingCarts(this.securityObject?.Email).subscribe({
+        next: shoppingCartItems => {
+          this.totalCartItems = 0;
+          shoppingCartItems.forEach(element => {
+            this.totalCartItems = this.totalCartItems + element.Quantity;
+               
+          }); 
+         // this.totalCartItems= shoppingCartItems.length;
+        },
+        error: err => {
+          this.errorMessage = err;
+          console.log(err)
+        }
+      }) ;
+      this.getTotalItem();
+      this.getSecurityObject();
+      this.getAddress();
+      this.getDeliveryAdress();
+    }
+    
+ //this.getTotalItem();
+/* this.getSecurityObject();
 this.getAddress();
-this.getDeliveryAdress();
+this.getDeliveryAdress(); */
 
 this.getDepartments();
 this.getCategories();
@@ -107,7 +118,7 @@ this.getCategories();
     }
 
     getAddress(){
-      //this.address = this.adressForm.value;
+      //this.address = this.adressForm.value;     
         
         this.securityService.getAddress(this.securityObject.Email).subscribe()
       }
