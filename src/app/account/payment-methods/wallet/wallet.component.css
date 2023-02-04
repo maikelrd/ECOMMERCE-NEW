@@ -1,0 +1,10 @@
+.payZone {
+    height: 50px;
+    min-width: 100px;
+    display: table;
+    background-color: #eee;
+    width: 100px;
+    border: dashed 1px #aaa ;
+    border-radius: 10px;
+    
+ }

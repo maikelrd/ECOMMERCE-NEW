@@ -4,6 +4,7 @@ import { ActivatedRoute,Router } from '@angular/router';
 import { IProduct } from '../products'; 
 import { ProductService } from '../product.service';
 
+
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
@@ -12,7 +13,23 @@ import { ProductService } from '../product.service';
 export class ProductDetailsComponent implements OnInit {
   pageTitle='Product Detail';
   errorMessage='';
-  product:IProduct | undefined;
+ // product:IProduct | undefined;
+ product:IProduct =
+  {
+    ProductId:0,
+    ProductName:'',
+    ProductCode:'',
+    ReleaseDate:'',
+    CategoryId:0,
+    UnitPrice:0,
+    StockQty:0,
+    Description: '',
+    StarRating: 0,
+    //Url:'',
+    //Total:0
+    Images:  []
+    
+    };
 
   constructor(private route: ActivatedRoute,
               private router:Router,
@@ -28,13 +45,18 @@ export class ProductDetailsComponent implements OnInit {
 
   getProducts(id: number) {
    this.productService.getProduct(id).subscribe({
-    next:product=>this.product=product,
+    next:product=>{
+     // this.product=this.createImages(product);  
+     this.product = product;    
+      console.log(this.product);
+      
+    },
     error:err=>this.errorMessage=err
    })
   }
 
   onBack():void{
-    this.router.navigate(['/products']);
-  }
+    this.router.navigate(['']);
+  }  
 
 }

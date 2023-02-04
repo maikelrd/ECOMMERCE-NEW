@@ -1,0 +1,41 @@
+.shopping-cart-list {
+    background-color: rgb(250, 248, 246);
+    padding: 30px 10px;
+    margin: 20px 0;
+}
+
+.sc-product-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sc-product-price {
+    font-size: 25px;
+}
+
+.shopping-cart-list .input-group {
+    padding-bottom: 15px;
+    width: 200px;
+}
+
+.shopping-cart-list .btn-success {
+    background-color: #212529;
+}
+
+.sc-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 767px){
+    .sc-mobile {
+        display: block;
+    }
+
+    .sc-desktop {
+        display: none;
+    }
+
+    .scart-list button {
+        width: -webkit-fill-available;  
+    }
+}

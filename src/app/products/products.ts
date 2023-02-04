@@ -1,3 +1,5 @@
+import { IImageModel } from "./images-model";
+
 export interface IProduct{
 /*     prodId:number;
     prodName:string;
@@ -18,6 +20,9 @@ export interface IProduct{
     StockQty:number;
     Description: string;
     StarRating: number;
-    ImageUrl:string;
+    //ImageUrl:string;
+    //Url:string;
+    
+    Images: IImageModel[];
     //Total:Number;
 }

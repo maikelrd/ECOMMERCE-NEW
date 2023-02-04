@@ -4,8 +4,29 @@
         <div class="card-header">
             <h2>Your shopping Cart</h2>
         </div>
-        <div class="card-body">
+
+        <div class="shopping-cart-list sc-mobile" *ngFor="let productInShoppingCart of productShoppingCart ">
+            <p class="sc-product-name">{{productInShoppingCart.Product.ProductName}}</p>
+            <p class="sc-product-price">{{productInShoppingCart.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</p>
             <div class="row">
+                <div class="col-8">
+                    <div class="input-group ">                           
+                        <input type="number" [(ngModel)]="productInShoppingCart.Quantity" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(productInShoppingCart)"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    </div>
+        
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-secondary" (click)="deleteShoppingCartItem(productInShoppingCart.ProductShoppingCartId )"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</button>
+
+                </div>
+
+            </div>
+            
+        </div>
+
+        <div class="card-body">
+            <div class="sc-desktop row">
                 <div class="table-responsive  col-sm-9 col-lg-9">
                     <table class="table table-hover table-borderless">
                         <thead>
@@ -18,28 +39,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let shoppingCartItem of shoppingCartItems">
+                            <tr *ngFor="let productInShoppingCart of productShoppingCart ">
                                 <td class="col sm-8 col-md-6">
                                     <div class="media">
-                                        <img class="me-3 thumbnail img-fluid" width="75"
-                                        [src]="shoppingCartItem.Product.ImageUrl">
+                                        <img class="me-3 thumbnail img-fluid" width="75">
+                                        <!-- [src]="shoppingCartItem.Product.ImageUrl"> -->
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="mt-0 media-heading text-primary">{{shoppingCartItem.Product.Description}}</h5>
+                                        <h5 class="mt-0 media-heading text-primary">{{productInShoppingCart.Product.ProductName}}</h5>
                                     </div>
                                 </td>
                                 <td class="col-sm-3 col-md-3" style="text-align: center">
                                   
                                     <div class="input-group ">                           
-                                        <input type="number" [(ngModel)]="shoppingCartItem.Amount" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(shoppingCartItem)">update</button>
+                                        <input type="number" [(ngModel)]="productInShoppingCart.Quantity" class="form-control" placeholder="Amount" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <button class="btn btn-success" type="button" id="button-addon2" (click)="update(productInShoppingCart)">update</button>
                                       </div>
                                       
                                 </td>
-                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</strong></td>
-                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{shoppingCartItem.Total | currency:'USD':'symbol':'1.2-2'}}</strong></td>
+                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{productInShoppingCart.Product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</strong></td>
+                                <td clas="col-sm-1 col-md-1 text-center"><strong>{{productInShoppingCart.Total | currency:'USD':'symbol':'1.2-2'}}</strong></td>
                                 <td class="col-sm-1 col-md-1">
-                                    <button type="button" class="btn btn-danger" (click)="deleteShoppingCartItem(shoppingCartItem.ShoppingCartItemId )">X</button>
+                                    <button type="button" class="btn btn-danger" (click)="deleteShoppingCartItem(productInShoppingCart.ProductShoppingCartId )">X</button>
                                 </td>
                             </tr>
                             <tr  *ngIf="totalCartItems">
@@ -83,9 +104,9 @@
                 </div>  
             </div>
         </div>
-        <div class="card-footer">
+        <div class="scart-list card-footer">
             <div class="row ">
-                <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()" [disabled]="disableButton">Clear your shopping cart</button>
+                <button  class="btn btn-danger m-4  col-sm-3 col-md-3" (click)="clearShoppingCart()" [disabled]="!totalCartItems">Clear your shopping cart</button>
             </div>
         </div>
     </div>
@@ -96,7 +117,9 @@
             </div>
             <div class="row" >            
                 <div class="d-grid gap-2  col-6 mx-auto">
-                    <button class="btn btn-success    " (click)="checkOut()" [disabled]="disableButton">Proceed to checkout</button>
+                    <button class="btn btn-success    " (click)="checkOut()" [disabled]="!totalCartItems">Proceed to checkout</button>
+                   <!--  <button class="btn btn-success    " (click)="checkOut()" [disabled]="disableButton">Proceed to checkout</button> -->
+
                 </div>
             </div>
        </div>

@@ -4,27 +4,54 @@ import { Observable, catchError, tap, throwError, of, Subject } from 'rxjs';
 import { IShoppingCart } from './shopping-cart/shopping-cart';
 import { IProduct } from '../products/products';
 
+import { IProductShoppingCart } from './productShoppingCart';
+import { ConfigurationService } from '../shared/configuration/configuration.service';
+// {IProductShoppingCart} from "src/app/shopping-cart"
+//import {ShoppingCartService as LazyServiceInterface}
+//import { Resolve } from '@angular/router';
 
-@Injectable({
+
+@Injectable(
+  {
   providedIn: 'root'
-})
+}
+)
 export class ShoppingCartService {
  private cartUrl = "https://localhost:44386/api/ShoppingCart";
+ private shoppingCartUrl = "https://localhost:44386/api/Shopping_Cart"
+ private productShoppingCartUrl = "https://localhost:44386/api/ProductsShoppingCart"
+
+ apiUrl: string = "";
 
  shoppingCartItems: IShoppingCart[]=[];
+ shoppingCart: IShoppingCart ={ShoppingCartId: 0,
+                                UserEmail:"",
+                                ProductsInShoppingCart:[{
+                                  ProductShoppingCart: {ProductId:0, ProductCode:'', ProductName:'',UnitPrice:0,StockQty:0, StarRating:0, ReleaseDate:'', Description:'', Images:[], CategoryId:0},
+                                  Quantity: 1
+                                }],
+                                Total:0
+                              } ;
  //shoppingCartItem: IShoppingCart | undefined;
  totalItems: number = 0;
  private totalCartItem$: Subject<number>;
+ subTotal: number = 0;
+ private subtotal$: Subject<number>;
  
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private configService: ConfigurationService) { 
+    this.apiUrl = this.configService.setting.apiUrl;
+
     this.totalCartItem$ = new Subject();
+    this.subtotal$ = new Subject();
 
   }
 
   createCartItem(product:IProduct, userEmail: string): Observable<IShoppingCart>{
     const headers= new HttpHeaders({'Content-type': 'application/json'});
     const cartItem = this.InitializeCartItem(product, userEmail);
-   return this.http.post<IShoppingCart>(this.cartUrl, cartItem,{headers})
+    const url = this.apiUrl + "Shopping_Cart";
+   //return this.http.post<IShoppingCart>(this.shoppingCartUrl, cartItem,{headers})
+   return this.http.post<IShoppingCart>(url, cartItem,{headers})
               .pipe(
                 tap(data => console.log('CreateShoppingCartItem' + JSON.stringify(data))),
                 catchError(this.handleError)
@@ -32,7 +59,7 @@ export class ShoppingCartService {
 
   }
 
-  getShoppingCarts(userEmail: string): Observable<IShoppingCart[]>{
+ /*  getShoppingCarts(userEmail: string): Observable<IShoppingCart[]>{
     const headers= new HttpHeaders({'Content-type': 'application/json'});
    // userEmail.replace('@','%40');
     const url=`${this.cartUrl}/email?email=${userEmail}`;
@@ -51,20 +78,38 @@ export class ShoppingCartService {
         }),
           catchError(this.handleError) 
          );
-  }
-
-/*   getShoppingCart(id: number): Observable<IShoppingCart>{
+  } */
+   getShoppingCarts(userEmail: string): Observable<IProductShoppingCart[]>{
     const headers= new HttpHeaders({'Content-type': 'application/json'});
-    const url = `${this.cartUrl}/${id}`;
-    return this.http.get<IShoppingCart>(url)
-     .pipe(
-      tap(data => {
-        console.log('ShoppingCart'+ JSON.stringify(data));   
-      }),
-      catchError(this.handleError)
-     )
-  }
- */
+   // userEmail.replace('@','%40');
+   // const url=`${this.productShoppingCartUrl}/userEmail?userEmail=${userEmail}`;
+   const url=`${this.apiUrl + "ProductsShoppingCart"}/userEmail?userEmail=${userEmail}`;
+    //"https://localhost:44386/api/ShoppingCart/email?email=maikelrd%40gmail.com"
+    return this.http.get<IProductShoppingCart[]>(url)
+         .pipe(
+          tap(data =>{
+             console.log('shoppingCarts' +JSON.stringify(data));
+         // this.shoppingCartItems = data;
+          this.totalItems = 0;
+          this.subTotal = 0;
+          var productShoppingCart = data;
+          productShoppingCart.forEach(element => {
+            this.totalItems = this.totalItems + element.Quantity;
+             this.subTotal = this.subTotal + element.Quantity*element.Product.UnitPrice;   
+          }); 
+           /* this.shoppingCartItems.forEach(element => {
+            this.totalItems++
+          });  */
+          this.totalCartItem(this.totalItems);
+          this.getTotalCartItem();// check if 
+          this.subTotalCartItem(this.subTotal);
+          this.getSubtotal();
+        }),
+          catchError(this.handleError) 
+         );
+  } 
+
+
   totalCartItem(total: number){
     // this.totalCartItem$=this.totalItems;
      this.totalCartItem$.next(total);
@@ -74,12 +119,22 @@ export class ShoppingCartService {
      return this.totalCartItem$.asObservable();
    }
 
-   updateShoppingCart(shoppingCart: IShoppingCart):Observable<IShoppingCart>{
+   subTotalCartItem(subtotal: number){
+     this.subtotal$.next(subtotal);
+   }
+   
+   getSubtotal(): Observable<number>{
+    return this.subtotal$.asObservable();
+   }
+
+
+   updateShoppingCart(productShoppingCart: IProductShoppingCart):Observable<IProductShoppingCart>{
     const headers= new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.cartUrl}/${shoppingCart.ShoppingCartItemId}`;
-    return this.http.put<IShoppingCart>(url, shoppingCart, {headers})
+   // const url = `${this.productShoppingCartUrl}/${productShoppingCart.ProductShoppingCartId}`;
+   const url = `${this.apiUrl + "ProductsShoppingCart"}/${productShoppingCart.ProductShoppingCartId}`;
+    return this.http.put<IProductShoppingCart>(url, productShoppingCart, {headers})
      .pipe(
-      tap(() =>console.log('updateShoppingCart: ' + shoppingCart.ShoppingCartItemId)),
+      tap(() => console.log('updateShoppingCart: ' + productShoppingCart.ProductShoppingCartId)),
       catchError(this.handleError)
      );
    }
@@ -87,7 +142,8 @@ export class ShoppingCartService {
    deleteShoppingCarItem(id: number): Observable<any>{
     // super importante esto para evitar este error "Server returned code: 200, error message is: Http failure during parsing for https://localhost:44386/api"
     let headers=  { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
-    const url= `${this.cartUrl}/${id}`;
+    //const url= `${this.productShoppingCartUrl}/${id}`;
+    const url= `${this.apiUrl + "ProductsShoppingCart"}/${id}`;
     return this.http.delete(url, headers)
     .pipe(
       tap(data => console.log('delete shoppingCartItem: '+ id)),
@@ -97,7 +153,8 @@ export class ShoppingCartService {
 
   clearShoppingCart(userEmail: string){
     let headers=  { headers: new HttpHeaders({ 'Content-Type': 'application/json', }), responseType: 'text' as 'json' };
-    const url=`${this.cartUrl}/email?email=${userEmail}`;
+    //const url=`${this.productShoppingCartUrl}/userEmail?userEmail=${userEmail}`;
+    const url=`${this.apiUrl + "ProductsShoppingCart"}/userEmail?userEmail=${userEmail}`;
     return this.http.delete(url, headers)
      .pipe(
       tap(data => console.log('Deleting all ShoppingCartItem of user:'+ userEmail)),
@@ -121,7 +178,21 @@ export class ShoppingCartService {
     return throwError(()=>errorMessage);
 }
 
-  private InitializeCartItem(product: IProduct, userEmail: string ): IShoppingCart{
+private InitializeCartItem(product: IProduct, userEmail: string ): IShoppingCart{
+  return{
+    ShoppingCartId: 0,
+    UserEmail: userEmail,
+    ProductsInShoppingCart: [{
+      ProductShoppingCart: product,
+      Quantity: 1
+    }],
+    Total:0
+   
+   
+     
+    
+  };
+ /*  private InitializeCartItem(product: IProduct, userEmail: string ): IShoppingCart{
     return{
       ShoppingCartItemId: 0,
       Product: product,
@@ -129,7 +200,7 @@ export class ShoppingCartService {
       Amount: 1,
       UserEmail: userEmail,
       Total: 0
-    };
+    }; */
   }
 
 

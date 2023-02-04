@@ -9,6 +9,9 @@ import { IProduct } from '../products';
 import { ProductService } from '../product.service';
 
 import { NumberValidators } from 'src/app/shared/number.validator';
+import { FileHandle } from '../file-handle';
+import { DomSanitizer } from '@angular/platform-browser';
+import { IImageModel } from '../images-model';
 
 
 
@@ -23,7 +26,12 @@ export class ProductEditComponent implements OnInit {
   pageTitle='Product Edit';
   errorMessage: string='';
 
+  imageWidth:number=150;
+    imageMargin:number=2;
+
   registerForm:FormGroup;
+
+  arrayFile: FileHandle[]=[]
 
   product:IProduct={
     ProductId:0,
@@ -35,27 +43,40 @@ export class ProductEditComponent implements OnInit {
     StockQty:0,
     Description: '',
     StarRating: 0,
-    ImageUrl:''
-    //Total:0
+    //ImageUrl:'',
+//Url: '',
+    Images: [] 
+  
   };
+
+  imageModel: IImageModel ={
+    Id:0,
+    Type: '',
+   PicByte:'' ,
+    Name: '',
+   ProductId: 0,
+  fileHandle: {file: {} as File, url:''}   ,
+  Url: ''     
+}
   //private sub:Subscription;
 
   constructor(private fb:FormBuilder,
               private route:ActivatedRoute,
               private router:Router,
-              private productService:ProductService)
+              private productService:ProductService,
+              private sanitizer: DomSanitizer)
   { 
     this.registerForm=this.fb.group({
       ProductName:['',[Validators.required,
                     Validators.minLength(3)]],
-      ProductCode:['',Validators.required],
-      ReleaseDate:['',Validators.required],
+      ProductCode:[''],
+      ReleaseDate:[''],
       CategoryId:['',Number],
       UnitPrice:['', Number],
       StockQty:['', Number],
       Description:'',
-      StarRating:['', NumberValidators.range(1,5)],
-      ImageUrl:''
+      StarRating:['', NumberValidators.range(1,5)]
+     // ImageUrl:''
      
     });
   
@@ -63,12 +84,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   /*  this.sub = this.route.paramMap.subscribe(
-      params => {
-        const id =+params.get('id');
-        this.getProduct(id );
-      }
-    ); */
+   
     const param=this.route.snapshot.paramMap.get('id');
     if(param){
       const id= +param
@@ -76,16 +92,21 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
+  
+
   getProduct(id: number):void {
     this.productService.getProduct(id).subscribe({
-      next:(product:IProduct)=>this.displayProduct(product),
+      next:(product:IProduct)=>{
+       // product = this.createImages(product);
+        this.displayProduct(product)
+      },
       error:err=>this.errorMessage=err
     });
   }
 
   displayProduct(product: IProduct): void {
     if(this.registerForm){
-      this.registerForm.reset();
+     // this.registerForm.reset();
     }
     this.product=product;
 
@@ -104,10 +125,10 @@ export class ProductEditComponent implements OnInit {
       UnitPrice: this.product.UnitPrice,
       StockQty: this.product.StockQty,
       Description: this.product.Description,
-      StarRating: this.product.StarRating,
-      ImageUrl: this.product.ImageUrl
-      
+      StarRating: this.product.StarRating
+      //ImageUrl: this.product.ImageUrl      
     })
+
   }
 
   deleteProduct():void{
@@ -129,8 +150,10 @@ export class ProductEditComponent implements OnInit {
       if (this.registerForm.dirty){
         const p= {...this.product, ...this.registerForm.value};
 
-        if(p.ProdId===0){
-          this.productService.createProduct(p).subscribe({
+        if(p.ProductId===0){
+          const productFormData = this.prepareFormData(p);
+          console.log(...productFormData)
+          this.productService.createProduct(productFormData).subscribe({
             next: () => this.onSaveCompleted(),
             error: err => this.errorMessage = err
           });
@@ -151,10 +174,69 @@ export class ProductEditComponent implements OnInit {
 
   onSaveCompleted(): void {
     // Reset the form to clear the flags
+   //1 this.registerForm.reset();
+    //this.router.navigate(['/products']);
     this.registerForm.reset();
-    this.router.navigate(['/products']);
+    this.router.navigate(['']);
   }
 
+  onFileSelected(event: any){
+    if(event.target.files){
+      const file = event.target.files[0]; 
+  
+      const fileHandle: FileHandle ={
+        file: file,
+       // url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
+       url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file))
+      }
+      
+      this.arrayFile.push(fileHandle);
+      /* this.arrayFiles.push(fileHandle);
+      this.count=this.count +1; */
+      console.log(this.arrayFile);
+    
+     
+    }
+    }
 
+    deleteImage(id: number){     
+      console.log(id);
+      
+   
+          this.arrayFile.splice(id,1);
+
+      console.log(this.arrayFile)
+    }
+
+
+    fileDropped(fileHandle: FileHandle){
+      this.arrayFile.push(fileHandle);
+      console.log(this.arrayFile)
+    }
+    prepareFormData(product: IProduct): FormData{
+      const formData = new FormData();  
+  
+  // Display the key/value pairs
+  
+  
+        formData.append(
+        'Product', 
+         //new Blob([JSON.stringify(this.product)], {type: 'application/json'})
+         JSON.stringify(product)
+         ) ; 
+         
+         for(var i = 0; i < this.arrayFile.length; i++){
+          formData.append(
+            'ImageFile',
+            this.arrayFile[i].file,
+           this.arrayFile[i].file.name   
+         );         
+        }  
+      console.log(...formData) 
+   
+
+        return formData;
+    }
+    
 
 }

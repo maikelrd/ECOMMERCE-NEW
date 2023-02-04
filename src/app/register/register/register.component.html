@@ -1,8 +1,8 @@
 
 
 <div class="card">
-  <div class="card-header">
-    Register!
+  <div class="card-header text-center">
+    <b >Register!</b>
   </div>
 
   <div class="card-body">
@@ -11,7 +11,7 @@
           [formGroup]="registerForm">
 
       <div class="form-group row mb-2">
-        <label class="col-md-2 col-form-label"
+        <label class="col-md-3 col-form-label"
                for="firstNameId">First Name</label>
         <div class="col-md-8">
           <input class="form-control"
@@ -33,7 +33,7 @@
       </div>
 
       <div class="form-group row mb-2">
-        <label class="col-md-2 col-form-label"
+        <label class="col-md-3 col-form-label"
                for="lastNameId">Last Name</label>
         <div class="col-md-8">
           <input class="form-control"
@@ -55,7 +55,7 @@
     
 
       <div class="form-group row mb-2">
-        <label class="col-md-2 col-form-label"
+        <label class="col-md-3 col-form-label"
                for="emailId">Email</label>
         <div class="col-md-8">
           <input class="form-control"
@@ -76,7 +76,7 @@
   
   <div formGroupName="passwords">      
     <div class="form-group row mb-2">
-      <label class="col-md-2 col-form-label"
+      <label class="col-md-3 col-form-label"
              for="passwordId">Password</label>
       <div class="col-md-8">
         <input class="form-control"
@@ -97,7 +97,7 @@
                   </span> 
                 </span>
         </div>
-        <div class="col-sm-1 ">
+        <div class="col-md-1 .align-self-sm-end">
           <span>
             <i class="fa" [ngClass]="{'fa-eye-slash':!showPassword, 'fa-eye':showPassword}" (click)="showHidePassword()"> </i>
            </span>
@@ -105,7 +105,7 @@
     </div>
 
     <div class="form-group row mb-2">
-      <label class="col-md-2 col-form-label"
+      <label class="col-md-3 col-form-label"
              for="confirmPasswordId">ConfirmPassword</label>
        <div class="col-md-8">
           <input class="form-control"
@@ -129,6 +129,19 @@
       </div>
   </div>
  
+  <div class="form-group row mb-2">
+    <div class="col-md-8">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 id="isAdminId"
+                 type="checkbox"                    
+                 formControlName="isAdmin"> is an Adminitrator user?
+        </label>
+      </div>
+    </div>
+  </div>
+
   <div class="form-group row mb-2">
     <div class="col-md-8">
       <div class="form-check">

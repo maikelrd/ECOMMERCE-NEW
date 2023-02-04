@@ -2,12 +2,12 @@
 <div class='card'>
     <div class='card-header'>
       <div class="row">
-        <div class="col-sm-4 col-lg-1">
+         <div class="col-sm-4 col-lg-1">
          <a type="button" class="btn btn-dark float-end"
-         data-bs-toggle="offcanvas" data-bs-target="#AllDepartments" aria-controls="AllDepartments">
+         data-bs-toggle="offcanvas" data-bs-target="#AllDepartments2" aria-controls="AllDepartments2">
          All
         </a>        
-        </div>
+        </div>  
         <div class="col-sm-4 col-lg-2">
           {{pageTitle}}
         </div>
@@ -17,8 +17,13 @@
       <div class='row'>
         <div class='col-md-2'>Filter by:</div>
         <div class='col-md-4'>
-          <input type='text' 
-          [(ngModel)]="listFilter"/>
+          <!-- <input type='text' 
+          [(ngModel)]="listFilter"/> -->
+          <div class="input-group mb-3">            
+            <input [(ngModel)]="textfilter" type="text" class="form-control" placeholder="" aria-label="Recipient's username" 
+            aria-describedby="button-addon2"  (keydown.enter)="filterKeyPressed($event)">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="filter()"><i class="fa fa-search"></i></button>           
+          </div>
         </div>
       </div>
       <div class='row'>
@@ -28,27 +33,27 @@
       </div>
 
       <div class="row" >
-        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
-           <div class="card">   
-            <img class="card-img-top"
-            [src]="product.ImageUrl"
-            [title]="product.ProductName"
-            [style.width.px]="imageWidth"
-            [style.margin.px]="imageMargin">          
-              <div class="card-body">                                
+       
+          <div *ngFor="let product of filteredProducts"  class="col-sm-3 col-lg-3 mb-4">
+           <div class="card border-light " >   
+                  
+              <div class="card-body">
+                <div class="text-center">
+                  <img class="img-responsive pb-3"
+                  [style.height.px]="250"
+                  [style.margin.px]="2"
+                   [src]="product.Images[0].Url">  
+                  <!-- [src]="product.Images[0].fileHandle.url">  -->
+                </div>                 
                     <div> <b>{{product.ProductName}}</b> </div>
-                    <div>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
-                    <div> Description: {{product.Description}}</div>
-                    <div class="row">
-                         <div class="col-md-6 col-lg-4">
-                          StarRating: {{product.StarRating}} 
-                         </div> 
-                         <div class="col-md-6 col-lg-4">
-                          <app-star [rating]='product.StarRating'
-                          (ratingClicked)="onRatingClicked($event)"></app-star>
-                          </div> 
-                    </div>
-                    <a  class="btn btn-primary mt-2" [routerLink]="['/products',product.ProductId]"> 
+                    <div class="pb-3"> 
+                       <app-star [rating]='product.StarRating'
+                       (ratingClicked)="onRatingClicked($event)"></app-star>
+                 </div>
+                    <div class="price pb-3">{{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
+                    <!-- <div> Description: {{product.Description}}</div> -->
+                    
+                    <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
                       Details
                     </a>
                
@@ -61,11 +66,13 @@
 
       </div>
 
-      <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
-                       id="AllDepartments" aria-labelledby="AllDepartmentsLabel">
+     
+
+       <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
+                       id="AllDepartments2" aria-labelledby="AllDepartmentsLabel2">
 
           <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="AllDepartmentsLabel">All departments</h5>
+              <h5 class="offcanvas-title" id="AllDepartmentsLabel2">All departments</h5>
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                     aria-label="Close">
               </button>
@@ -76,61 +83,27 @@
                <div *ngFor="let category of department.Categories">
                  <ul>
                   <li>
-                    <a class="" [routerLink]="['/category', category.CategoryId ]">{{category.CategoryName}}</a>
+                    <a class="" [routerLink]="['category', category.CategoryId ]">{{category.CategoryName}}</a>
                   </li>
                  </ul>
                </div>
-             </div>
-
-                        
+             </div>                        
           </div>
-      </div>
-     <!--  <div class='table-responsive' *ngIf="products.length">    
-        <table class='table'>   
-          <thead>
-            <tr>
-              <th>
-                <button class='btn btn-primary'
-                (click)="toggleImage()">
-                  {{showImage ? 'Hide':'Show'}} Image
-                </button>
-              </th>
-              <th>ProductName</th>
-              <th>ProdCode</th>
-              <th>ReleaseDate</th>             
-              <th>UnitPrice</th>
-              <th>StockQty</th>
-              <th>5 Star Rating</th> 
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of filteredProducts">
-                <td>
-                    <img *ngIf="showImage"
-                          [src]="product.ImageUrl"
-                          [title]="product.ProductName"
-                          [style.width.px]="imageWidth"
-                          [style.margin.px]="imageMargin">
-                </td>
-                <td><a [routerLink]="['/products',product.ProductId]"> 
-                  {{ product.ProductName }}
-                </a>
-                 </td>
-                <td>{{ product.ProductCode | lowercase }}</td>
-                <td>{{ product.ReleaseDate }}</td>                
-                <td>{{ product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</td>
-                <td>{{ product.StockQty }}</td>
-                <td>
-                    <!-- {{product.StarRating}} -->
-                <!--   <app-star [rating]='product.StarRating'
-                  (ratingClicked)="onRatingClicked($event)">
-                  
-                </app-star>
-            </td> 
-            </tr>
-          </tbody>
-        </table>
-      </div> --> 
-  
+      </div>   
     </div>
   </div>
+
+ <div class="text-center pb-5">
+  <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
+  <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">
+    <button class="btn btn-primary" (click)="productsPage(i)" [ngStyle]="{'background-color': i === page ? 'green' : 'blue'}" >{{count}}</button>
+  </div>
+  <button class="btn btn-primary ms-2" (click)="nextPageProducts()" [disabled]="nextEnable">&gt; next</button>
+ </div>
+  
+  <!-- <pagination-controls (pageChange)="page= $event" previousLabel="previous" nextLabel="next"></pagination-controls> -->
+<div class="card-footer bg-dark pb-2 pt-2">
+  <div>
+    <p class="text-center" style="color:#ffffff">Copyright (c) 2022</p>
+  </div>
+</div>

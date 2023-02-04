@@ -42,15 +42,19 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.controls["password"].value;
     this.userService.login(email,password).subscribe((resp:any)=>{
       if(resp){
+        localStorage.setItem('token', resp.Token);
+        localStorage.setItem('refreshtoken', resp.RefreshToken);
         localStorage.setItem("AuthObject",JSON.stringify(resp));
         this.securityObject = resp;
         this.errorString = "";
         this.loginForm.reset();
         if(this.returnUrl){
+          this.loginForm.reset();
           this.router.navigateByUrl(this.returnUrl);
         }
-        else{
+        else{       
           this.router.navigate(["shopping-cart"]);
+         //this.router.navigate([""]);
         }
        
         
@@ -58,8 +62,8 @@ export class LoginComponent implements OnInit {
     },
     Error =>{
       console.log("Error", console.error);
-      this.toastr.error(Error.error, "User login");
-      this.errorString=Error.error;
+      this.toastr.error(Error.error.title, "User login");
+      this.errorString=Error.error.title;
     })
   }
 

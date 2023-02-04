@@ -1,34 +1,22 @@
-<!-- <nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">      
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/products">Product List</a>
-        </li>     
-         <li class="nav-item " >
-          <a class="nav-link" routerLink="/register">Register</a>
-        </li>    
-     
-      </ul>
-    </div>
-  </div>
-</nav> -->
-
-
        
               <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
             <div class="container">
-                <a class="navbar-brand" routerLink="">
+              <!--  <div class="col-sm-4 col-lg-1">
+                <a type="button" class="btn btn-dark float-end"
+                data-bs-toggle="offcanvas" data-bs-target="#AllDepartments3" aria-controls="AllDepartments3">
+                All
+               </a>        
+              </div>  -->
+
+                <a class="navbar-brand" >
                             ECOMMERCE
+                            <button class="btn-btn-light" data-bs-toggle="modal" data-bs-target="#address">
+                              <i class="fa fa-map-marker" aria-hidden="true"></i> Deliver to {{securityObject.UserName}} {{deliveryAddress}}
+                            </button>
                 </a>
-          
+                
+                <a type="button"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+              
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -45,46 +33,184 @@
                               Product
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="nav-dropdown">
-                              <li><a class="dropdown-item"  routerLink="/products">Products List</a></li>
-                              <li><a class="dropdown-item" [routerLink]="['/products/0/edit']">Add Product</a></li>
+                              <li><a class="dropdown-item"  routerLink="">Products List</a></li>
+                              <li><a class="dropdown-item" [routerLink]="['/product/0/product/0/edit']">Add Product</a></li>
                           </ul>                          
                       </li>
-                     
-                      <!--   <li class="nav-item dropdown justify-content-end">
-                            <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Account
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="nav-dropdown">
-                                <li><a class="dropdown-item"  routerLink="/register">Register</a></li>
-                                <li><a class="dropdown-item" *ngIf="!securityObject!.IsAuthenticated" routerLink="/login">Login</a></li>
-                            </ul>
-                        </li> -->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                       
                         <li class="nav-item">
-                          <a class="nav-link" *ngIf="!securityObject!.IsAuthenticated" routerLink="/login">Sign in</a>
+                          <a class="nav-link"  *ngIf="!securityObject.IsAuthenticated" routerLink="/login">Sign in</a>
                         </li>
 
+                        <!-- <li class="nav-item">                       
+                          <a class="nav-link" *ngIf="securityObject.IsAuthenticated" href="/login" (click)="logOut()">LogOut  {{securityObject.UserName}}</a>
+                      </li> -->
+
+                      <li class="nav-item dropdown justify-content-end">
+                        <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Hello  {{securityObject.UserName}} Account & Lists
+                        </a>s
+                        <ul class="dropdown-menu" aria-labelledby="nav-dropdown">
+                            <li><a class="dropdown-item" routerLink="/account" >Account</a></li>
+                            <li><a class="dropdown-item">Orders</a></li>
+                            <li><a class="dropdown-item" >Switch Accounts</a></li>
+                            <li><a class="dropdown-item" href="/login" (click)="logOut()" >Log Out</a></li>
+                        </ul>                          
+                    </li>
+
                         <li class="nav-item">
-                          <a class="nav-link" *ngIf="securityObject!.IsAuthenticated" href="#" (click)="logOut()">LogOut  {{securityObject!.UserName}}</a>
-                      </li>
+                            <a class="nav-link"  routerLink="/contact" >Contact</a>
+                        </li >
                         <li class="nav-item">
-                            <a class="nav-link" routerLink="">Contact</a>
+                          <a class="btn btn-dark" routerLink="/shopping-cart">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"> {{totalCartItems}}</i>
+                          </a>
                         </li>
-                        <a class="btn btn-dark" routerLink="/shopping-cart">
-                          <i class="fa fa-shopping-cart" aria-hidden="true"> {{totalCartItems}}</i>
-                        </a>
-                    </ul>
-                      
-                    
+                    </ul>  
                 </div>
             </div>
           </nav>
-          <div>
+          <div class="modal fade" id="address" tabindex="-1" aria-labelledby="addressLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="addressLabel">Delivery address</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate
+                        (ngSubmit)="addAddress()"
+                        [formGroup]="adressForm">
+        
+                        <!-- <div class="form-group row mb-2">
+                            <label class="col-md-3 col-form-label"
+                                   for="phoneNumberId">phoneNumber</label>
+                            <div class="col-md-8">
+                              <input class="form-control"
+                                     id="phoneNumberId"
+                                     type="text"
+                                     placeholder="phoneNumber (required)"              
+                                     formControlName="PhoneNumber"
+                                     [ngClass]="{'is-invalid': (adressForm.get('PhoneNumber')?.touched || adressForm.get('PhoneNumber')?.dirty) && !adressForm.get('PhoneNumber')?.valid }" />
+                                     <span class="invalid-feedback">
+                                        <span *ngIf="adressForm.controls['PhoneNumber'].errors?.['required']">
+                                          Please enter your first name.
+                                        </span>                              
+                                      </span>                  
+                            </div>
+                        </div> -->
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 col-form-label"
+                                   for="streetId">Street </label>
+                            <div class="col-md-8">
+                              <input class="form-control"
+                                     id="streetId"
+                                     type="text"
+                                     placeholder="Street address (required)"              
+                                     formControlName="Street"
+                                     [ngClass]="{'is-invalid': (adressForm.get('Street')?.touched || adressForm.get('Street')?.dirty) && !adressForm.get('Street')?.valid }" />
+                                     <span class="invalid-feedback">
+                                        <span *ngIf="adressForm.controls['Street'].errors?.['required']">
+                                          Please enter your street address.
+                                        </span>
+                                       <!--  <span *ngIf="adressForm.controls['phoneNumber'].errors?.['minlength']">
+                                          The first name must be longer than 3 characters.
+                                        </span> -->
+                                      </span>                  
+                            </div>
+                        </div>
+                       
+                        <div class="form-group row mb-2">
+                            <label class=" col-form-label"
+                                  for="cityId">City, State, Zip Code</label>
+                            <div class="col-md-3">
+                              <input class="form-control"
+                                    id="cityId"
+                                    type="text"
+                                    placeholder="City"                            
+                                    formControlName="City"
+                                    [ngClass]="{'is-invalid': (adressForm.get('City')?.touched || adressForm.get('City')?.dirty) && !adressForm.get('City')?.valid }">
+                                    <span class="invalid-feedback">
+                                      <span *ngIf="adressForm.controls['City'].errors?.['required']">
+                                        Please enter your city.
+                                      </span>                           
+                                    </span>  
+                            </div>
+                            <div class="col-md-3">
+                              <select class="form-control"
+                                      id="stateId"                            
+                                      formControlName="State"
+                                      [ngClass]="{'is-invalid': (adressForm.get('State')?.touched || adressForm.get('State')?.dirty) && !adressForm.get('State')?.valid }">
+                                <option value=""
+                                        disabled
+                                        selected
+                                        hidden>Select a State...</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="FL">Florida</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                              </select>
+                              <span class="invalid-feedback">
+                                <span *ngIf="adressForm.controls['State'].errors?.['required']">
+                                  Please enter your state.
+                                </span>                           
+                              </span> 
+                            </div>
+                            <div class="col-md-3">
+                              <input class="form-control"
+                                    id="zipId"
+                                    type="number"
+                                    placeholder="Zip"            
+                                    formControlName="ZipCode"
+                                    [ngClass]="{'is-invalid': (adressForm.get('ZipCode')?.touched || adressForm.get('ZipCode')?.dirty) && !adressForm.get('ZipCode')?.valid }">
+                                    <span class="invalid-feedback">
+                                      <span *ngIf="adressForm.controls['ZipCode'].errors?.['required']">
+                                        Please enter your zipcode.
+                                      </span>                           
+                                    </span> 
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary ms-2">Save </button> 
+                    </form>
+                </div>
+               
+              </div>
+            </div>
+        </div>
+
+         <!-- <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
+                       id="AllDepartments3" aria-labelledby="AllDepartmentsLabel3">
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="AllDepartmentsLabel3">All departments</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+              </button>
+          </div>  
+          <div class="offcanvas-body">
+             <div *ngFor="let department of departments">
+               <h2>{{department.DepartmentName}}</h2>
+               <div *ngFor="let category of department.Categories">
+                 <ul>
+                  <li>
+                    <a class="nav-item"  [routerLink]="['/category', category.CategoryId ]">{{category.CategoryName}}</a>
+                  </li>
+                 </ul>
+               </div>
+             </div>                        
+          </div>
+          </div>  -->
+          <div>         
             <router-outlet></router-outlet>
           </div>
+
             
           
            

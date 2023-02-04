@@ -1,35 +1,119 @@
 
 <div class='card'>
     <div class='card-header'>
-        <div class="col-sm-4 col-lg-2">
-           Product List <b>{{category.CategoryName}}</b>
-          </div>
+        <div class="row">
+            <div class="col-sm-4 col-lg-1">
+            <a type="button" class="btn btn-dark float-end"
+            data-bs-toggle="offcanvas" data-bs-target="#AllDepartments" aria-controls="AllDepartments">
+            All
+           </a>        
+           </div>  
+          <div class="col-sm-4 col-lg-2">
+            Products List by Category <b>{{category.CategoryName}}</b>
+         </div>
+        </div>
   
     
     </div>
     <div class='card-body'>
       <div class='row'>
-        <div class='col-md-2'>Filter by:</div>
+        <div class='col-md-2'><b>Filter by:</b></div>
         <div class='col-md-4'>
-          <input type='text' 
-          [(ngModel)]="listFilter"/>
+         <!--  <input type='text' 
+          [(ngModel)]="listFilter"/> -->
+          <div class="input-group mb-3">            
+            <input [(ngModel)]="textfilter" type="text" class="form-control" placeholder="" aria-label="Recipient's username" 
+            (keydown.enter)="filterKeyPressed($event)" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="filter()"><i class="fa fa-search"></i></button>           
+          </div>
         </div>
       </div>
       <div class='row'>
-        <div class='col-md-6'>
+       <!--  <div class='col-md-6'>
           <h4>Filtered by: {{listFilter}}</h4>
-        </div>
+        </div> -->
       </div>
 
-      <div class="row" >
-        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
-           <div class="card">   
-            <img class="card-img-top"
-            [src]="product.ImageUrl"
+     <div class="row" >
+        <div *ngFor="let product of filteredProducts" class="col-sm-12 col-md-6 col-lg-4 mb-4">
+           <div class="card border-light " >   
+            <!-- <img class="card-img-top"
+            [src]="product.Images[0].fileHandle.url"
             [title]="product.ProductName"
             [style.width.px]="imageWidth"
-            [style.margin.px]="imageMargin">          
+            [style.height.px]="imageHeigth"
+            [style.margin.px]="imageMargin">    -->       
+              <div class="card-body ">    
+                <img class=" img-responsive"
+                [style.height.px]="250"
+                [style.margin.px]="2"
+                [src]="product.Images[0].Url">                    
+                    <div> <b>{{product.ProductName}}</b> </div>
+                    <div>Price: {{product.UnitPrice | currency:'USD':'symbol':'1.2-2'}}</div>
+                    <div> Description: {{product.Description}}</div>
+                    <div class="row">
+                         <div class="col-md-7 col-lg-4">
+                          StarRating: {{product.StarRating}} 
+                         </div> 
+                         <div class="col-md-5 col-lg-7">
+                          <app-star [rating]='product.StarRating'
+                          ></app-star>
+                          </div> 
+                    </div>
+                    <!-- <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]">  -->
+                      
+                    <a  class="btn btn-primary mt-2" [routerLink]="['product',product.ProductId]"> 
+                      Details
+                    </a>
+               
+                 <div>
+                   
+                 </div>
+            </div>
+           </div>
+        </div>
+
+      </div>
+
+      <div class="offcanvas offcanvas-start shopping-cart-offcanvas"data-bs-scroll="true" tabindex="-1"
+                       id="AllDepartments" aria-labelledby="AllDepartmentsLabel">
+
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="AllDepartmentsLabel">All departments</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+              </button>
+          </div>  
+          <div class="offcanvas-body">
+             <div *ngFor="let department of departments">
+               <h2>{{department.DepartmentName}}</h2>
+               <div *ngFor="let category of department.Categories">
+                 <ul>
+                  <li>
+                    <a class="" [routerLink]="['category', category.CategoryId ]">{{category.CategoryName}}</a>
+                  </li>
+                 </ul>
+               </div>
+             </div>                        
+          </div>
+      </div>   
+
+      <button class="btn btn-primary" (click)="previousPageProducts()" [disabled]="previousEnable">&lt; previous</button>
+ <div *ngFor="let count of arrayCountPages; index as i" style="display: inline;" class="ms-2 ">
+   <button class="btn btn-primary" (click)="productsPage(i)" [ngStyle]="{'background-color': i === page ? 'green' : 'blue'}" >{{count}}</button>
+ </div>
+ <button class="btn btn-primary ms-2" (click)="nextPageProducts()" [disabled]="nextEnable">&gt; next</button>
+ 
+
+      <!-- <div class="row" >
+        <div *ngFor="let product of filteredProducts" class="col-sm-3 col-lg-3 mb-4">
+           <div class="card">          
+           
               <div class="card-body">
+                <img class=" img-responsive"
+                [style.width.px]="250"
+                [style.margin.px]="2"
+                [src]="product.Images[0].fileHandle.url">   
                  <div >
                     <ul>
                       <ol> <b>{{product.ProductName}}</b> </ol>
@@ -54,4 +138,4 @@
            </div>
         </div>
 
-      </div>
+      </div> -->

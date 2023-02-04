@@ -1,0 +1,12 @@
+
+
+@media screen and (max-width: 1199px) {
+    .card-body img {
+     height: unset !important;
+     width: 100%;
+    } 
+ } 
+
+@media screen and (max-width: 767px) {
+
+}  

@@ -1,11 +1,15 @@
-import { Component, OnInit, ɵɵsetComponentScope  } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription,  } from 'rxjs';
+import { Component, OnInit, Input, ɵɵsetComponentScope  } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Observable, Subscription, filter} from 'rxjs';
 import { IProduct } from 'src/app/products/products';
 import { ProductService } from 'src/app/products/product.service';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { IShoppingCart } from './shopping-cart';
 
+import { IProductShoppingCart } from '../productShoppingCart';
+//import { IProductShoppingCart } from '../productInShoppingCart';
+
+import { browserRefresh } from 'src/app/app.component';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -13,11 +17,23 @@ import { IShoppingCart } from './shopping-cart';
   styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
+ // @Input() productId: number = 0;
+ public browserRefresh: boolean = false;
+
+  prodCartId: number = 0;
    products: IProduct[] = [];  
   //products: IProduct[] = [];
 
   product:IProduct | undefined;
-  shoppingCartItems: IShoppingCart[]=[];
+  //shoppingCart: IShoppingCart;
+  shoppingCart: IShoppingCart={ShoppingCartId: 0,
+    UserEmail:"",
+    ProductsInShoppingCart:[{
+      ProductShoppingCart: {ProductId:0, ProductCode:'', ProductName:'',UnitPrice:0,StockQty:0, StarRating:0, ReleaseDate:'', Description:'', Images:[], CategoryId:0},
+      Quantity: 1
+    }],
+    Total:0
+  } ;
   errorMessage: string ='';
   userEmail: string='';
   totalItems: number = 0;
@@ -26,10 +42,11 @@ export class ShoppingCartComponent implements OnInit {
   subTotalToPay: number = 0;
   fee: number = 0;
   shipping = 10;
-  disableButton: boolean = false;  //To active o desactive the button of clear your shopping cart
+  //disableButton: boolean = false;  //To active o desactive the button of clear your shopping cart
 
   totalCartItems: number = 0;
 
+   productShoppingCart: IProductShoppingCart[]=[];
 
 
   constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService, 
@@ -44,36 +61,31 @@ export class ShoppingCartComponent implements OnInit {
     
   }
 
- /*  ngOnChanges(changes: SimpleChanges): void {
-    {
-      this.getShoppingCarts();
-    }
-  } */
+   
+
   ngOnInit(): void {
-    const param = this.route.snapshot.paramMap.get('id');
-    if(param){
-      //this.router.navigate(['shopping-cart']);
+   
+   this.browserRefresh = browserRefresh;
+   //if is a refresh do not increment de product amaount
+   if(!this.browserRefresh)
+   {
+    var param = this.route.snapshot.paramMap.get('id');  
+    if(param){      
       const id = +param;   
       this.getProduct(id);
-    //  this.createCartItem(this.product, this.userEmail);
-      
-      
-     // this.getTotalItem()
-     
-    }
-    else{
-      this.getShoppingCarts();
-    }
-    this.getTotalItem()
+    }     
+   }
+   this.getShoppingCarts();
+   // this.getTotalItem()
+   
   }
 
 
- getTotalItem(){
+ /* getTotalItem(){
   this.shoppingCartService.getTotalCartItem().subscribe({
     next: total =>{ 
-      this.totalCartItems = total;
-      //To active o desactive the button of clear your shopping cart
-      if( this.totalCartItems == 0){
+      
+        if( total == 0){
           this.disableButton = true;
       }else{
         this.disableButton = false;
@@ -81,7 +93,7 @@ export class ShoppingCartComponent implements OnInit {
     },
     error: err => this.errorMessage = err
    })
- }
+ } */
 
   getProduct(id: number){
     this.productService.getProduct(id).subscribe({
@@ -95,18 +107,20 @@ export class ShoppingCartComponent implements OnInit {
 
   getShoppingCarts(){
     this.shoppingCartService.getShoppingCarts(this.userEmail).subscribe({
-      next: shoppingCartItems => {
-        this.shoppingCartItems = shoppingCartItems;
+      next: productsShoppingCart => {
+        this.productShoppingCart = productsShoppingCart;
         this.totalToPay = 0;
         this.subTotalToPay = 0;
-         this.shoppingCartItems.forEach(element => {
-          element.Total= element.Product.UnitPrice * element.Amount;
+        this.totalCartItems = 0;
+          this.productShoppingCart.forEach(element => {
+          element.Total= element.Product.UnitPrice * element.Quantity;
           this.subTotalToPay = this.subTotalToPay + element.Total;
-        }); 
+          this.totalCartItems = this.totalCartItems + element.Quantity;
+        });  
         this.fee = this.subTotalToPay *0.10;
         this.totalToPay = this.subTotalToPay + this.fee + this.shipping;
         //Hago lo de abajo para evitar tener ruta http://localhost:4200/shopping-cart/1 o el Id del shoppigCart, y cuando le doy f5 a la pagina crea un nuevo Item
-        this.router.navigate(['shopping-cart']);
+       // this.router.navigate(['shopping-cart']);
       },
       error: err => {
         this.errorMessage = err;
@@ -130,6 +144,7 @@ export class ShoppingCartComponent implements OnInit {
    this.shoppingCartService.createCartItem(product, email).subscribe({
     next: data=> {
       console.log(data);    
+      //this.shoppingCart = data;
     this.getShoppingCarts();
   },
     error: err=> {
@@ -139,9 +154,9 @@ export class ShoppingCartComponent implements OnInit {
    })
   }
 
-  update(shoppingCartItem: IShoppingCart){
+  update(productShoppingCart: IProductShoppingCart ){
     
-    this.shoppingCartService.updateShoppingCart(shoppingCartItem).subscribe({
+    this.shoppingCartService.updateShoppingCart(productShoppingCart).subscribe({
       next: data =>{ 
         console.log(data);
         this.getShoppingCarts();
@@ -153,8 +168,8 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  deleteShoppingCartItem(shoppingCartItemId: number): any{
-   this.shoppingCartService.deleteShoppingCarItem(shoppingCartItemId).subscribe({
+  deleteShoppingCartItem(productShoppingCartId: number): any{
+   this.shoppingCartService.deleteShoppingCarItem(productShoppingCartId).subscribe({
     next: data =>{
       console.log(data);
       this.getShoppingCarts();
@@ -173,7 +188,9 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  checkOut(){}
+  checkOut(){
+    this.router.navigateByUrl('/checkout');
+  }
 
  
 
