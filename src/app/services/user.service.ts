@@ -21,7 +21,8 @@ import { Card } from '../Models/card';
   providedIn: 'root'
 })
 export class UserService {
-  securityObject:UserAuthBase=new UserAuthBase();
+  securityObject:UserAuthBase= new UserAuthBase();
+  updateAddress: Address = new Address();
   private hasChanged= new BehaviorSubject<number>(0);
   private  url:string=""
   apiUrl: string = "";
@@ -207,9 +208,15 @@ export class UserService {
 
   logOut():void{
     this.securityObject.init(); 
-  
-      //Inform everyone the security object has changed
-      this.hasChanged.next(0);
+     //adding this below in order to show the user in appcomponent.html
+     this.securityObject$.next(this.securityObject);
+     //Inform everyone that a new login has occurred
+     this.hasChanged.next(0);
+    
+     //this is to clear deliveryAddress and show it in app.component
+     this.deliveryAddress$.next(this.updateAddress);
+     //Inform everyone that a new address has occurred
+     this.hasChanged.next(0);
     
       let temp=this.GetToken();
       if(temp == ''){

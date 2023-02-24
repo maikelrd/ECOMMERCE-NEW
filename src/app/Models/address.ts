@@ -8,6 +8,6 @@ export class Address{
     Street:string="";  
     City:string="";
     State:string="";    
-    ZipCode:number=0;    
+    ZipCode:string='';    
     
 }
