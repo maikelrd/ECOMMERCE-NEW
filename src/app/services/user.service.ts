@@ -218,10 +218,10 @@ export class UserService {
      //Inform everyone that a new address has occurred
      this.hasChanged.next(0);
     
-      let temp=this.GetToken();
+   /*    let temp=this.GetToken();
       if(temp == ''){
         alert('Your session expired');
-      }
+      } */
       
      /*  localStorage.removeItem("AuthObject");
     localStorage.removeItem("token");
