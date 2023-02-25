@@ -1,3 +1,3 @@
 # ECOMMERCENEW
 
-The last version is in branch "configuration"
+The last version is in branch "main"
